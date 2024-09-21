@@ -67,7 +67,6 @@
     "prefer-const": "warn",
     "prefer-arrow-callback": "warn",
     "prefer-destructuring": "warn",
-    "require-await": "warn",
     "yoda": "warn",
     "arrow-parens": "warn",
     "arrow-spacing": "warn",
