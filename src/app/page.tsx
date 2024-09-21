@@ -1,6 +1,6 @@
-import {FaCalendarAlt} from 'react-icons/fa';
-import {FaChartLine, FaCirclePlay, FaGear, FaHeartPulse} from 'react-icons/fa6';
-import {ModuleButton, ModuleButtonProps} from '@/app/(components)/moduleButton';
+import { FaCalendarAlt } from 'react-icons/fa';
+import { FaChartLine, FaCirclePlay, FaGear, FaHeartPulse } from 'react-icons/fa6';
+import { ModuleButton, ModuleButtonProps } from '@/app/(components)/moduleButton';
 
 export default function Home() {
   const modules: ModuleButtonProps[] = [
@@ -33,11 +33,18 @@ export default function Home() {
   ];
 
   return (
-    <div className={'w-full flex flex-col flex-grow justify-start lg:justify-center items-center p-10'}>
+    <div
+      className={
+        'w-full flex flex-col flex-grow justify-start lg:justify-center items-center p-10'
+      }
+    >
       <div
-        className={'w-full lg:w-[80%] 2xl:w-[60%] grid grid-cols-2 lg:grid-cols-3 grid-rows-3 lg:grid-rows-2 gap-2 md:gap-4'}>
+        className={
+          'w-full lg:w-[80%] 2xl:w-[60%] grid grid-cols-2 lg:grid-cols-3 grid-rows-3 lg:grid-rows-2 gap-2 md:gap-4'
+        }
+      >
         {modules.map((module) => (
-          <ModuleButton key={module.name} {...module}/>
+          <ModuleButton key={module.name} {...module} />
         ))}
       </div>
     </div>

@@ -1,11 +1,12 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"],
-
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript"
+  ],
   "rules": {
     /* modified built-in rules */
     "no-undef": "off",
     "no-unused-vars": "warn",
-
     /* warnings */
     "no-compare-neg-zero": "warn",
     "no-constant-condition": "warn",
@@ -68,6 +69,8 @@
     "prefer-arrow-callback": "warn",
     "prefer-destructuring": "warn",
     "yoda": "warn",
+    "space-in-parens": "warn",
+    "object-curly-spacing": ["warn", "always"],
     "arrow-parens": "warn",
     "arrow-spacing": "warn",
     "block-spacing": "warn",
@@ -79,6 +82,7 @@
       }
     ],
     "comma-spacing": "warn",
+    "comma-style": "warn",
     "func-call-spacing": "warn",
     "implicit-arrow-linebreak": [
       "warn",
@@ -96,10 +100,7 @@
         "SwitchCase": 1
       }
     ],
-    "jsx-quotes": [
-      "warn",
-      "prefer-double"
-    ],
+    "quotes": ["warn", "single", { "avoidEscape": true }],
     "keyword-spacing": "warn",
     "lines-between-class-members": [
       "warn",
@@ -123,14 +124,21 @@
         ]
       }
     ],
-    "max-statements-per-line": ["warn", {
-      "max": 2
-    }],
-    "no-trailing-spaces": ["warn", {
-      "skipBlankLines": true
-    }],
+    "max-statements-per-line": [
+      "warn",
+      {
+        "max": 2
+      }
+    ],
+    "no-trailing-spaces": [
+      "warn",
+      {
+        "skipBlankLines": true
+      }
+    ],
     "no-whitespace-before-property": "warn",
-    "padding-line-between-statements": ["warn",
+    "padding-line-between-statements": [
+      "warn",
       {
         "blankLine": "always",
         "prev": "*",
@@ -167,22 +175,27 @@
         "next": "let"
       }
     ],
-    "rest-spread-spacing": ["warn", "never"],
+    "rest-spread-spacing": [
+      "warn",
+      "never"
+    ],
     "semi": "warn",
     "space-before-blocks": "warn",
     "space-infix-ops": "warn",
-    "space-unary-ops": ["warn", {
-      "words": true,
-      "nonwords": false,
-      "overrides": {
-        "--": false,
-        "++": false,
-        "!": false,
-        "!!": false
+    "space-unary-ops": [
+      "warn",
+      {
+        "words": true,
+        "nonwords": false,
+        "overrides": {
+          "--": false,
+          "++": false,
+          "!": false,
+          "!!": false
+        }
       }
-    }],
+    ],
     "switch-colon-spacing": "warn",
-
     /* errors */
     "for-direction": "error",
     "no-cond-assign": "error",

@@ -2,18 +2,14 @@ import React from 'react';
 import { IconType } from 'react-icons';
 
 type IconProps = {
-  icon: IconType
-  className?: string,
-}
+  icon: IconType;
+  className?: string;
+};
 
 function Icon(props: IconProps) {
-  const {className, icon: Component} = props;
+  const { className, icon: Component } = props;
 
-  return (
-    <Component
-      className={className}
-    />
-  );
+  return <Component className={className} />;
 }
 
-export {Icon};
+export { Icon };
