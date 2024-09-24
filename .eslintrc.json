@@ -6,7 +6,8 @@
   "rules": {
     /* modified built-in rules */
     "no-undef": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
     /* warnings */
     "no-compare-neg-zero": "warn",
     "no-constant-condition": "warn",
