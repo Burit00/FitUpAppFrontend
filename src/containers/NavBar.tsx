@@ -11,7 +11,7 @@ async function NavBar() {
       }
     >
       <Link href={'/'}>
-        <Logo className={'h-[30px]'} />
+        <Logo className={'h-[24px]'} />
       </Link>
       <div>
         <Button size={'icon'} variant={'ghost'}>
