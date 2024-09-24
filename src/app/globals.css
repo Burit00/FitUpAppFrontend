@@ -22,7 +22,7 @@ body {
     --muted: 0 0% 40%;
     --background: 0 0% 12%;
     --background2: 0 0% 21%;
-    --surface: 0 0% 16%;
+    --surface: 0 0% 20%;
     --foreground: 140 47% 96%;
 
     /*--background: 20 14.3% 4.1%;*/
@@ -38,10 +38,11 @@ body {
     --muted-foreground: 240 5% 64.9%;
     --accent: 12 6.5% 15.1%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 86% 58%;
     --destructive-foreground: 0 85.7% 97.3%;
     --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    /*--input: 240 3.7% 15.9%;*/
+    --input: var(--surface);
     --ring: 142.4 71.8% 29.2%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -57,5 +58,29 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  h1 {
+    @apply mb-4 text-4xl font-bold;
+  }
+
+  h2 {
+    @apply mb-4 text-3xl font-bold;
+  }
+
+  h3 {
+    @apply mb-2 text-2xl font-semibold;
+  }
+
+  p {
+    @apply mb-4 text-muted-foreground;
+  }
+
+  ol {
+    @apply mb-2 list-inside list-decimal;
+  }
+
+  li {
+    @apply mb-2 list-inside list-disc;
   }
 }
