@@ -13,6 +13,7 @@ const config: Config = {
       colors: {
         background: 'hsl(var(--background))',
         background2: 'hsl(var(--background2))',
+        surface: 'hsl(var(--surface))',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',
