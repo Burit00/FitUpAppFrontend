@@ -20,11 +20,11 @@ function Navigation(props: NavigationProps) {
   return (
     <>
       <NavBar />
-      <div className={'flex gap-5 p-5 relative'}>
+      <div className={'w-full flex-grow flex gap-5 p-5 relative'}>
         <div
           className={cn(
             'hidden lg:flex flex-col gap-2 p-2 rounded bg-background2 h-[89.5vh] w-[20%] min-2-[220px] max-w-[350px] sticky top-5',
-            location === '/' ? 'lg:hidden' : '',
+            location === '/' || location === '/auth' ? 'lg:hidden' : '',
           )}
         >
           <div className={'flex flex-col gap-1 flex-grow'}>
