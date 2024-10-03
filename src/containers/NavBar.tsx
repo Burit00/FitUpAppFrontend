@@ -3,13 +3,9 @@ import { FaRegUser } from 'react-icons/fa6';
 import Link from 'next/link';
 import { Button, Icon, Logo } from '@/components/ui';
 
-async function NavBar() {
+function NavBar() {
   return (
-    <nav
-      className={
-        'w-full flex flex-row justify-between items-center px-4 py-2 bg-background2'
-      }
-    >
+    <nav className={'w-full flex flex-row justify-between items-center px-4 py-2 bg-background2'}>
       <Link href={'/'}>
         <Logo className={'h-[24px]'} />
       </Link>
