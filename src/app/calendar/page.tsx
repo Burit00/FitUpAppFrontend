@@ -1,30 +1,38 @@
 'use client';
-
-import React, { useMemo, useState } from 'react';
-import { Workout, WORKOUTS_MOCK } from '@/app/calendar/trenings.mock';
-import CalendarGrid from '@/app/calendar/(components)/CalendarGrid';
-import { Button } from '@/components/ui';
-import { FaArrowLeft } from 'react-icons/fa6';
+import React, { useEffect, useMemo, useState } from 'react';
+import WORKOUTS_MOCK, { Workout } from '@/app/calendar/mocks/workouts';
+import CalendarGrid from '@/app/calendar/components/CalendarGrid';
+import CalendarBar from '@/app/calendar/components/CalendarBar';
 
 type CalendarPageProps = {
-  params: {};
-  searchParams: {};
+  searchParams: {
+    year: number;
+  };
 };
 
 function CalendarPage(props: CalendarPageProps) {
-  const [workouts, setWorkouts] = useState<Workout[]>(WORKOUTS_MOCK);
-  const [year, setYear] = useState<number>(new Date().getFullYear());
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [today] = useState<Date>(new Date());
+  const [year, setYear] = useState<number>(props.searchParams.year ?? today.getFullYear());
+  const [scrollToToday, setScrollToToday] = useState<boolean>(true);
 
-  const days = useMemo(() => workouts.map((workout: Workout) => workout.date), [workouts]);
+  useEffect(() => {
+    setWorkouts(WORKOUTS_MOCK.filter((workouts) => workouts.date.getFullYear() === year));
+  }, [year]);
+
+  const days: Date[] = useMemo<Date[]>(() => workouts?.map((workout: Workout) => workout.date), [workouts]);
+
+  const handleScrollToToday = () => {
+    setScrollToToday(false);
+    setTimeout(() => {
+      setScrollToToday(true);
+    }, 1);
+  };
 
   return (
     <div className={'w-full h-full flex flex-col gap-4 items-center'}>
-      <div className={'bg-background2 w-[80%] p-2 flex justify-between sticky z-[100] top-5'}>
-        <Button size={'icon'} variant={'ghost'} onClick={() => history.back()}>
-          <FaArrowLeft />
-        </Button>
-      </div>
-      <CalendarGrid className={'w-full'} days={days} year={year} scrollToToday />
+      <CalendarBar year={year} onScrollToToday={handleScrollToToday} onYearChange={setYear} />
+      <CalendarGrid className={'w-full'} days={days} year={year} scrollToToday={scrollToToday} />
     </div>
   );
 }
