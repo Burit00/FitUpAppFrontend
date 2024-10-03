@@ -1,12 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
+import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
+import AuthForm from '@/app/auth/components/AuthForm';
 
 const signInFormSchema = z.object({
   login: z.string().min(1, 'Pole wymagane'),
@@ -37,9 +39,7 @@ type LoginFormProps = {
   className?: string;
 };
 
-function LoginForm(props: LoginFormProps) {
-  const { className } = props;
-
+function LoginForm({ className }: LoginFormProps) {
   const form = useForm<SignInForm>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -54,7 +54,7 @@ function LoginForm(props: LoginFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={cn('h-full flex flex-col items-center gap-4', className)}>
+      <AuthForm onSubmit={form.handleSubmit(onSubmit)} className={className}>
         <h1 className={'text-primary text-center'}>Witaj z powrotem!</h1>
         {formElements.map((element) => {
           return (
@@ -85,11 +85,11 @@ function LoginForm(props: LoginFormProps) {
         </Button>
         <p>
           Nie posiadasz jeszcze konta?{' '}
-          <Link href={'/auth?auth=signup'} className={'text-primary underline'}>
+          <Link href={'/auth?auth=' + AuthSearchEnum.SIGNUP} className={'text-primary underline'}>
             Zarejestruj się
           </Link>
         </p>
-      </form>
+      </AuthForm>
     </Form>
   );
 }

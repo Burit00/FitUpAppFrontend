@@ -1,34 +1,26 @@
 import React from 'react';
-import LoginForm from '@/app/auth/LoginForm';
-import SignUpForm from '@/app/auth/SignUpForm';
+import LoginForm from '@/app/auth/components/LoginForm';
+import SignUpForm from '@/app/auth/components/SignUpForm';
 import { Logo } from '@/components/ui';
 import { cn } from '@/lib/utils';
-
-enum AuthPageEnum {
-  LOGIN = 'login',
-  SIGNUP = 'signup',
-}
+import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
 
 type AuthPageProps = {
   searchParams: {
-    auth: AuthPageEnum;
+    auth: AuthSearchEnum;
   };
 };
 
 function AuthPage(props: AuthPageProps) {
-  let { auth } = props.searchParams;
-
-  if (!auth) {
-    auth = AuthPageEnum.LOGIN;
-  }
+  const auth = props.searchParams.auth ?? AuthSearchEnum.LOGIN;
 
   return (
     <div className={'relative w-full h-full p-10 sm:px-[5rem] flex-grow flex justify-around items-center'}>
       <LoginForm
-        className={cn('w-full max-w-[450px] lg:w-2/5', auth === AuthPageEnum.LOGIN ? 'flex' : 'hidden lg:flex')}
+        className={cn('w-full max-w-[450px] lg:w-2/5', auth === AuthSearchEnum.LOGIN ? 'flex' : 'hidden lg:flex')}
       />
       <SignUpForm
-        className={cn('w-full max-w-[450px] lg:w-2/5', auth === AuthPageEnum.SIGNUP ? 'flex' : 'hidden lg:flex')}
+        className={cn('w-full max-w-[450px] lg:w-2/5', auth === AuthSearchEnum.SIGNUP ? 'flex' : 'hidden lg:flex')}
       />
       <div
         className={cn(

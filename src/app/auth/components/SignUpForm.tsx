@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { cn } from '@/lib/utils';
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
+import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
+import AuthForm from '@/app/auth/components/AuthForm';
 
 const ACCOUNT_REQUIREMENTS = {
   login: {
@@ -35,7 +36,7 @@ const registerFormSchema = z
       .regex(ACCOUNT_REQUIREMENTS.password.lowerCaseREGEX, 'Hasło musi mieć co najmniej jedną małą literę')
       .regex(ACCOUNT_REQUIREMENTS.password.upperCaseREGEX, 'Hasło musi mieć co najmniej jedną wielką literę')
       .regex(ACCOUNT_REQUIREMENTS.password.numberREGEX, 'Hasło musi mieć co najmniej jedną cyfrę')
-      .regex(ACCOUNT_REQUIREMENTS.password.specialCharREGEX, 'Hasło musi mieć co najmniej jeden znak specjany'),
+      .regex(ACCOUNT_REQUIREMENTS.password.specialCharREGEX, 'Hasło musi mieć co najmniej jeden znak specjalny'),
     confirmPassword: z.string().min(1, 'Pole wymagane'),
   })
   .superRefine((data, ctx) => {
@@ -84,8 +85,7 @@ type SignUpFormProps = {
   className?: string;
 };
 
-function SignUpForm(props: SignUpFormProps) {
-  const { className } = props;
+function SignUpForm({ className }: SignUpFormProps) {
   const form = useForm<RegisterForm>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -102,7 +102,7 @@ function SignUpForm(props: SignUpFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={cn('h-full flex flex-col items-center gap-4', className)}>
+      <AuthForm onSubmit={form.handleSubmit(onSubmit)} className={className}>
         <h1 className={'text-primary text-center'}>Utwórz konto!</h1>
         {formElements.map((element) => (
           <FormField
@@ -124,11 +124,11 @@ function SignUpForm(props: SignUpFormProps) {
         </Button>
         <p>
           Masz już konto?{' '}
-          <Link href={'/auth?auth=login'} className={'text-primary underline'}>
+          <Link href={'/auth?auth=' + AuthSearchEnum.LOGIN} className={'text-primary underline'}>
             Zaloguj się
           </Link>
         </p>
-      </form>
+      </AuthForm>
     </Form>
   );
 }
