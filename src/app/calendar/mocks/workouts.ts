@@ -1,20 +1,22 @@
+import { TDateTimeISO } from '@/types/TISODate';
+
 export enum ExerciseType {
   WEIGHT_REPS,
   DISTANCE_TIME,
 }
 
-type DistanceTime = {
+export interface DistanceTime {
   time: number;
   distance: number;
-};
+}
 
-type WeightReps = {
+export interface WeightReps {
   reps: number;
   weight: number;
-};
+}
 
-type Exercise = {
-  exerciseName: string;
+export type Exercise = {
+  name: string;
 } & (
   | {
       exerciseType: ExerciseType.WEIGHT_REPS;
@@ -27,7 +29,7 @@ type Exercise = {
 );
 
 export type Workout = {
-  date: Date;
+  date: TDateTimeISO;
   exercises: Exercise[];
 };
 
@@ -46,14 +48,17 @@ function getRandomRunningExercise(): Exercise {
   const sets: DistanceTime[] = [];
 
   for (let i = 0; i < Math.random() * 3 + 1; i++) {
+    const randomDistance = parseInt((Math.random() * 1500 + 500).toString());
+    const randomTime = parseInt((Math.random() * 60 + 8).toString());
+
     sets.push({
-      distance: parseInt((Math.random() * 1500 + 500).toString()) % 10,
-      time: parseInt((Math.random() * 60).toString()) + 8,
+      distance: randomDistance - (randomDistance % 10),
+      time: randomTime,
     });
   }
 
   const exercise: Exercise = {
-    exerciseName: 'Running',
+    name: 'Running',
     exerciseType: ExerciseType.DISTANCE_TIME,
     sets,
   };
@@ -65,14 +70,17 @@ function getRandomBenchPressExercise(): Exercise {
   const sets: WeightReps[] = [];
 
   for (let i = 0; i < Math.random() * 3 + 1; i++) {
+    const randomWeight = parseInt((Math.random() * 100 + 50).toString());
+    const randomReps = parseInt((Math.random() * 12 + 8).toString());
+
     sets.push({
-      weight: parseInt((Math.random() * 100 + 50).toString()) % 10,
-      reps: parseInt((Math.random() * 12).toString()) + 8,
+      weight: randomWeight - (randomWeight % 10),
+      reps: randomReps,
     });
   }
 
   const exercise: Exercise = {
-    exerciseName: 'Bench Press',
+    name: 'Bench Press',
     exerciseType: ExerciseType.WEIGHT_REPS,
     sets,
   };
@@ -83,10 +91,14 @@ function getRandomBenchPressExercise(): Exercise {
 for (let year = 2022; year <= 2025; year++) {
   for (let month = 0; month < 12; month++) {
     for (let dayNumber = 1; dayNumber <= 4; dayNumber++) {
-      const date = new Date(year, month, parseInt((Math.random() * new Date(year, month + 1, 0).getDate()).toString()));
+      const date = new Date(
+        year,
+        month,
+        parseInt((Math.random() * new Date(year, month + 1, 0).getDate()).toString()),
+      ).toISOString() as TDateTimeISO;
       const exercises: Exercise[] = [];
 
-      for (let i = 0; i < Math.random() * 2 + 1; i++) {
+      for (let i = 0; i < Math.random() * 10 + 10; i++) {
         if (Math.random() > 0.5) {
           exercises.push(getRandomRunningExercise());
         } else {

@@ -17,7 +17,7 @@ function CalendarBar(props: CalendarBarProps) {
   const router = useRouter();
 
   return (
-    <div className={'bg-background2 w-full p-2 flex justify-between sticky z-[100] top-5 rounded'}>
+    <div className={'bg-background2 w-full p-2 flex justify-between sticky z-[50] top-5 rounded'}>
       <Button
         size={'icon'}
         variant={'ghost'}

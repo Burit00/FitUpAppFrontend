@@ -84,3 +84,21 @@ body {
     @apply mb-2 list-inside list-disc;
   }
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 3px solid hsl(var(--background));
+  background: hsl(var(--primary));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(var(--primary) / 0.8);
+}

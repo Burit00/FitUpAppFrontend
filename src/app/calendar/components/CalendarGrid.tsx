@@ -1,9 +1,11 @@
 import { Calendar } from '@/components/ui';
 import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { pl } from 'date-fns/locale/pl';
 
 type CalendarGridProps = {
   scrollToToday?: boolean;
+  onDaySelect: (selectedDay: Date) => void;
   days: Date[];
   year: number;
   className?: string;
@@ -26,7 +28,7 @@ function CalendarGrid(props: CalendarGridProps) {
   }, [props.scrollToToday]);
 
   const onDayClick = (days: Date[], selectedDay: Date) => {
-    console.log({ selectedDay });
+    props.onDaySelect(selectedDay);
   };
 
   return (
@@ -46,6 +48,7 @@ function CalendarGrid(props: CalendarGridProps) {
           }}
         >
           <Calendar
+            locale={pl}
             selected={props.days}
             components={{}}
             mode={'multiple'}
