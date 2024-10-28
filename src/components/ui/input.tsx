@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useId, useState } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/merge-class-names';
 import { Label } from '@/components/ui/label';
 import { Icon } from '@/components/ui/icon';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
@@ -42,6 +42,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, className
       />
       {type === 'password' && (
         <Button
+          tabIndex={-1}
           type={'button'}
           onClick={toggleInputType}
           className={'absolute right-0 bottom-0 hover:bg-primary/20'}

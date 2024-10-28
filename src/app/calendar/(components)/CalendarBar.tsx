@@ -5,7 +5,7 @@ import { Button } from '@/components/ui';
 import { useRouter } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa6';
 import { IoTodaySharp } from 'react-icons/io5';
-import CalendarBarYearCounter from '@/app/calendar/components/CalendarBarYearCounter';
+import CalendarBarYearCounter from '@/app/calendar/(components)/CalendarBarYearCounter';
 
 type CalendarBarProps = {
   year: number;

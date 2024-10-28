@@ -6,6 +6,6 @@ type TMinutes = `${number}${number}`;
 type TSeconds = `${number}${number}`;
 type TMilliseconds = `${number}${number}${number}`;
 
-export type TDateISO = `${TYear}-${TMonth}-${TDay}`;
-export type TTimeISO = `${THours}:${TMinutes}:${TSeconds}.${TMilliseconds}`;
+type TDateISO = `${TYear}-${TMonth}-${TDay}`;
+type TTimeISO = `${THours}:${TMinutes}:${TSeconds}.${TMilliseconds}`;
 export type TDateTimeISO = `${TDateISO}T${TTimeISO}Z`;

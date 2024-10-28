@@ -1,30 +1,27 @@
 'use client';
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
 import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
-import AuthForm from '@/app/auth/components/AuthForm';
-
-const signInFormSchema = z.object({
-  login: z.string().min(1, 'Pole wymagane'),
-  password: z.string().min(1, 'Pole wymagane'),
-});
-
-type SignInForm = z.infer<typeof signInFormSchema>;
+import AuthForm from '@/app/auth/(components)/AuthForm';
+import { SignInSchema, TSignIn } from '@/api/types/auth/TSignIn';
+import { signIn } from '@/api/actions/auth/sign-in';
+import { AuthContext } from '@/components/providers/AuthProvider';
+import { useSearchParams } from '@/hooks/useSearchParams';
+import { usePathname } from 'next/navigation';
+import { isHttpError } from '@/api/types/common/THttpError';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
-  name: keyof SignInForm;
+  name: keyof TSignIn;
   label: string;
 })[] = [
   {
-    name: 'login',
-    label: 'Login',
-    placeholder: 'Login',
+    name: 'email',
+    label: 'Email',
+    placeholder: 'Email',
     type: 'text',
   },
   {
@@ -40,16 +37,21 @@ type LoginFormProps = {
 };
 
 function LoginForm({ className }: LoginFormProps) {
-  const form = useForm<SignInForm>({
-    resolver: zodResolver(signInFormSchema),
+  const pathname = usePathname();
+  const { createQueryString } = useSearchParams();
+  const authContext = useContext(AuthContext);
+  const form = useForm<TSignIn>({
+    resolver: zodResolver(SignInSchema),
     defaultValues: {
-      login: '',
+      email: '',
       password: '',
     },
   });
 
-  const onSubmit = (data: SignInForm) => {
-    console.log('success', data);
+  const onSubmit = async (data: TSignIn) => {
+    const user = await signIn(data);
+
+    if (!isHttpError(user)) authContext.login(user);
   };
 
   return (
@@ -77,7 +79,7 @@ function LoginForm({ className }: LoginFormProps) {
         })}
         <div className={'w-full text-right'}>
           <Link href={'/'} className={'underline'}>
-            Zapomnialeś hasła?
+            Zapomniałeś hasła?
           </Link>
         </div>
         <Button type={'submit'} className={'w-full mt-10'}>
@@ -85,7 +87,10 @@ function LoginForm({ className }: LoginFormProps) {
         </Button>
         <p>
           Nie posiadasz jeszcze konta?{' '}
-          <Link href={'/auth?auth=' + AuthSearchEnum.SIGNUP} className={'text-primary underline'}>
+          <Link
+            href={pathname + '?' + createQueryString(['auth', AuthSearchEnum.SIGNUP])}
+            className={'text-primary underline'}
+          >
             Zarejestruj się
           </Link>
         </p>

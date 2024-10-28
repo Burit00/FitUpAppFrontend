@@ -1,9 +1,10 @@
 import React from 'react';
-import LoginForm from '@/app/auth/components/LoginForm';
-import SignUpForm from '@/app/auth/components/SignUpForm';
-import { Logo } from '@/components/ui';
-import { cn } from '@/lib/utils';
+import LoginForm from '@/app/auth/(components)/LoginForm';
+import SignUpForm from '@/app/auth/(components)/SignUpForm';
 import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
+import { Logo } from '@/components/ui';
+import { cn } from '@/utils/merge-class-names';
+import { isInEnum } from '@/utils/is-in-enum';
 
 type AuthPageProps = {
   searchParams: {
@@ -12,7 +13,11 @@ type AuthPageProps = {
 };
 
 function AuthPage(props: AuthPageProps) {
-  const auth = props.searchParams.auth ?? AuthSearchEnum.LOGIN;
+  let { auth } = props.searchParams;
+
+  if (!isInEnum(props.searchParams.auth, AuthSearchEnum)) {
+    auth = AuthSearchEnum.LOGIN;
+  }
 
   return (
     <div className={'relative w-full h-full p-10 sm:px-[5rem] flex-grow flex justify-around items-center'}>

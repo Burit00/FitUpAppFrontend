@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './reset.css';
 import './globals.css';
-import Navigation from '@/containers/Navigation';
+import Navigation from '@/components/navigation/Navigation';
+import Providers from '@/components/providers';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -28,7 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`flex flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Navigation>{children}</Navigation>
+        <Providers>
+          <Navigation>{children}</Navigation>
+        </Providers>
       </body>
     </html>
   );

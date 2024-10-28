@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/merge-class-names';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import Link from 'next/link';

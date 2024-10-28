@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/merge-class-names';
 
 type AnimatedCounterProps = {
   value: number;

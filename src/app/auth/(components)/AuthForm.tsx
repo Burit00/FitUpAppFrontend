@@ -1,5 +1,5 @@
 import { forwardRef, HTMLAttributes } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/merge-class-names';
 
 const AuthForm = forwardRef<HTMLFormElement, HTMLAttributes<HTMLFormElement>>((props, ref) => {
   return (

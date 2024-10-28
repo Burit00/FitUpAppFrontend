@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui';
 import { appLinks, settings } from '@/roots/links';
 import { Separator } from '@/components/ui/separator';
-import NavBar from '@/containers/NavBar';
-import { cn } from '@/lib/utils';
+import NavBar from '@/components/navigation/NavBar';
+import { cn } from '@/utils/merge-class-names';
 import { usePathname } from 'next/navigation';
 
 type NavigationProps = {} & PropsWithChildren;
@@ -20,7 +20,7 @@ function Navigation(props: NavigationProps) {
   return (
     <>
       <NavBar />
-      <div className={'w-full flex-grow flex gap-5 p-5 relative'}>
+      <nav className={'w-full flex-grow flex gap-5 p-5 relative'}>
         <div
           className={cn(
             'hidden lg:flex flex-col gap-2 p-2 rounded bg-background2 h-[89.5vh] w-[20%] min-2-[220px] max-w-[350px] sticky top-5',
@@ -52,7 +52,7 @@ function Navigation(props: NavigationProps) {
           </div>
         </div>
         <div className={navigationButtonClassName}>{props.children}</div>
-      </div>
+      </nav>
     </>
   );
 }

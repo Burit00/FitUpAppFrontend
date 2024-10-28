@@ -1,11 +1,12 @@
 'use client';
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { Workout } from '@/app/calendar/mocks/workouts';
-import CalendarGrid from '@/app/calendar/components/CalendarGrid';
-import CalendarBar from '@/app/calendar/components/CalendarBar';
-import WorkoutDialog from '@/app/calendar/components/WorkoutDialog';
-import { getWorkouts } from '@/api/mock/workouts';
+import CalendarGrid from '@/app/calendar/(components)/CalendarGrid';
+import CalendarBar from '@/app/calendar/(components)/CalendarBar';
+import WorkoutDialog from '@/app/calendar/(components)/WorkoutDialog';
 import { TDateTimeISO } from '@/types/TISODate';
+import { getWorkouts } from '@/api/actions/workouts/get-workouts';
 
 type CalendarPageProps = {
   searchParams: {
@@ -13,7 +14,7 @@ type CalendarPageProps = {
   };
 };
 
-function CalendarPage(props: CalendarPageProps) {
+export default function CalendarPage(props: CalendarPageProps) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [workout, setWorkout] = useState<Workout>(null);
   const [today] = useState<Date>(new Date());
@@ -21,10 +22,15 @@ function CalendarPage(props: CalendarPageProps) {
   const [scrollToToday, setScrollToToday] = useState<boolean>(true);
 
   useEffect(() => {
-    getWorkouts({ year }).then(setWorkouts);
+    const dateStart = new Date(year, 0, 0).toISOString() as TDateTimeISO;
+    const dateEnd = new Date(year + 1, 0, -1).toISOString() as TDateTimeISO;
+
+    getWorkouts({ dateStart, dateEnd }).then(setWorkouts);
   }, [year]);
 
-  const days: Date[] = useMemo<Date[]>(() => workouts?.map((workout: Workout) => new Date(workout.date)), [workouts]);
+  const days: Date[] = useMemo<Date[]>(() => {
+    return workouts?.map((workout: Workout) => new Date(workout.date));
+  }, [workouts]);
 
   const handleScrollToToday = () => {
     setScrollToToday(false);
@@ -63,5 +69,3 @@ function CalendarPage(props: CalendarPageProps) {
     </div>
   );
 }
-
-export default CalendarPage;

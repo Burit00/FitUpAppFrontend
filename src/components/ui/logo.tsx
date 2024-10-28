@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/merge-class-names';
 
 type LogoProps = {
   className: string;
@@ -8,12 +8,7 @@ const Logo = (props: LogoProps) => {
   const { className } = props;
 
   return (
-    <svg
-      viewBox="0 0 81 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn(className)}
-    >
+    <svg viewBox="0 0 81 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={cn(className)}>
       <mask
         id="mask0_101_1838"
         style={{ maskType: 'alpha' }}
