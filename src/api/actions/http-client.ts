@@ -48,7 +48,7 @@ export class HttpClient {
   }
 
   public static async fetchHttp(url: string, options?: RequestInit): Promise<Response> {
-    const headers = this.getHeaders(options.headers);
+    const headers = await this.getHeaders(options.headers);
     const endpointUrl = new URL(url, this.baseUrl);
 
     const res = await fetch(endpointUrl, {
@@ -56,13 +56,13 @@ export class HttpClient {
       headers,
     });
 
-    if (!res.ok) console.error(res.json());
+    // if (!res.ok) console.error(res.json());
 
     return res;
   }
 
-  private static getHeaders(headers?: HeadersInit): HeadersInit {
-    const token = getUserCookie()?.accessToken;
+  private static async getHeaders(headers?: HeadersInit): Promise<HeadersInit> {
+    const token = (await getUserCookie())?.accessToken;
 
     return {
       'Content-Type': 'application/json',

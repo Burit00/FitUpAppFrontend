@@ -1,4 +1,4 @@
-import { cn } from '@/utils/merge-class-names';
+import { cn } from '@/utils';
 
 type LogoProps = {
   className: string;

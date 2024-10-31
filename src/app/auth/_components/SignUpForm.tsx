@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
 import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
-import AuthForm from '@/app/auth/(components)/AuthForm';
+import AuthForm from '@/app/auth/_components/AuthForm';
 import { usePathname, useRouter } from 'next/navigation';
 import { signUp } from '@/api/actions/auth/sign-up';
 import { SignUpSchema, TSignUp } from '@/api/types/auth/TSignUp';

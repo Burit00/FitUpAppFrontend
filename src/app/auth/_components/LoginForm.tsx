@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
 import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
-import AuthForm from '@/app/auth/(components)/AuthForm';
+import AuthForm from '@/app/auth/_components/AuthForm';
 import { SignInSchema, TSignIn } from '@/api/types/auth/TSignIn';
 import { signIn } from '@/api/actions/auth/sign-in';
 import { AuthContext } from '@/components/providers/AuthProvider';

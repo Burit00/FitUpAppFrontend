@@ -15,17 +15,15 @@ function NavBar() {
         <Logo className={'h-[24px]'} />
       </Link>
       <div className={'h-10'}>
-        {authContext.user && (
-          <Button
-            size={'icon'}
-            variant={'ghost'}
-            onClick={() => {
-              authContext.logout();
-            }}
-          >
-            <Icon icon={FaRegUser} />
-          </Button>
-        )}
+        <Button
+          size={'icon'}
+          variant={'ghost'}
+          onClick={() => {
+            if (authContext.user) authContext.logout(false);
+          }}
+        >
+          <Icon icon={FaRegUser} />
+        </Button>
       </div>
     </header>
   );

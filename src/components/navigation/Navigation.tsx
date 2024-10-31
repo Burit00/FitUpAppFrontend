@@ -7,7 +7,7 @@ import { Button } from '@/components/ui';
 import { appLinks, settings } from '@/roots/links';
 import { Separator } from '@/components/ui/separator';
 import NavBar from '@/components/navigation/NavBar';
-import { cn } from '@/utils/merge-class-names';
+import { cn } from '@/utils';
 import { usePathname } from 'next/navigation';
 
 type NavigationProps = {} & PropsWithChildren;
@@ -20,8 +20,8 @@ function Navigation(props: NavigationProps) {
   return (
     <>
       <NavBar />
-      <nav className={'w-full flex-grow flex gap-5 p-5 relative'}>
-        <div
+      <div className={'w-full flex-grow flex gap-5 p-5 relative'}>
+        <nav
           className={cn(
             'hidden lg:flex flex-col gap-2 p-2 rounded bg-background2 h-[89.5vh] w-[20%] min-2-[220px] max-w-[350px] sticky top-5',
             location === '/' || location === '/auth' ? 'lg:hidden' : '',
@@ -50,9 +50,9 @@ function Navigation(props: NavigationProps) {
               </Button>
             </Link>
           </div>
-        </div>
-        <div className={navigationButtonClassName}>{props.children}</div>
-      </nav>
+        </nav>
+        <div className={'flex justify-between gap-4 w-full'}>{props.children}</div>
+      </div>
     </>
   );
 }

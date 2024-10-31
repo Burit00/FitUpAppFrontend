@@ -1,6 +1,6 @@
 import { Calendar } from '@/components/ui';
 import React, { useEffect, useRef } from 'react';
-import { cn } from '@/utils/merge-class-names';
+import { cn } from '@/utils';
 import { pl } from 'date-fns/locale/pl';
 
 type CalendarGridProps = {

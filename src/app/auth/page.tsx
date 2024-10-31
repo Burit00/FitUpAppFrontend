@@ -1,9 +1,9 @@
 import React from 'react';
-import LoginForm from '@/app/auth/(components)/LoginForm';
-import SignUpForm from '@/app/auth/(components)/SignUpForm';
+import LoginForm from '@/app/auth/_components/LoginForm';
+import SignUpForm from '@/app/auth/_components/SignUpForm';
 import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
 import { Logo } from '@/components/ui';
-import { cn } from '@/utils/merge-class-names';
+import { cn } from '@/utils';
 import { isInEnum } from '@/utils/is-in-enum';
 
 type AuthPageProps = {

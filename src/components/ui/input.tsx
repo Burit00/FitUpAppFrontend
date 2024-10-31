@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useId, useState } from 'react';
 
-import { cn } from '@/utils/merge-class-names';
+import { cn } from '@/utils';
 import { Label } from '@/components/ui/label';
 import { Icon } from '@/components/ui/icon';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';

@@ -144,36 +144,6 @@
         "blankLine": "always",
         "prev": "*",
         "next": "return"
-      },
-      {
-        "blankLine": "always",
-        "prev": "let",
-        "next": "*"
-      },
-      {
-        "blankLine": "always",
-        "prev": "const",
-        "next": "*"
-      },
-      {
-        "blankLine": "any",
-        "prev": "const",
-        "next": "let"
-      },
-      {
-        "blankLine": "any",
-        "prev": "let",
-        "next": "const"
-      },
-      {
-        "blankLine": "any",
-        "prev": "const",
-        "next": "const"
-      },
-      {
-        "blankLine": "any",
-        "prev": "let",
-        "next": "let"
       }
     ],
     "rest-spread-spacing": [
