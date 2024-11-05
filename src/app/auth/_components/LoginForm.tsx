@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useContext } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
@@ -9,10 +8,8 @@ import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
 import AuthForm from '@/app/auth/_components/AuthForm';
 import { SignInSchema, TSignIn } from '@/api/types/auth/TSignIn';
 import { signIn } from '@/api/actions/auth/sign-in';
-import { AuthContext } from '@/components/providers/AuthProvider';
-import { useSearchParams } from '@/hooks/useSearchParams';
 import { usePathname } from 'next/navigation';
-import { isHttpError } from '@/api/types/common/THttpError';
+import { useAuth } from '@/hooks/useAuth';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
   name: keyof TSignIn;
@@ -38,8 +35,7 @@ type LoginFormProps = {
 
 function LoginForm({ className }: LoginFormProps) {
   const pathname = usePathname();
-  const { createQueryString } = useSearchParams();
-  const authContext = useContext(AuthContext);
+  const authContext = useAuth();
   const form = useForm<TSignIn>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
@@ -50,8 +46,7 @@ function LoginForm({ className }: LoginFormProps) {
 
   const onSubmit = async (data: TSignIn) => {
     const user = await signIn(data);
-
-    if (!isHttpError(user)) authContext.login(user);
+    authContext.login(user);
   };
 
   return (
@@ -87,10 +82,7 @@ function LoginForm({ className }: LoginFormProps) {
         </Button>
         <p>
           Nie posiadasz jeszcze konta?{' '}
-          <Link
-            href={pathname + '?' + createQueryString(['auth', AuthSearchEnum.SIGNUP])}
-            className={'text-primary underline'}
-          >
+          <Link href={pathname + '?auth=' + AuthSearchEnum.SIGNUP} className={'text-primary underline'}>
             Zarejestruj się
           </Link>
         </p>

@@ -1,29 +1,7 @@
-'use server';
-
 import { TSignIn } from '@/api/types/auth/TSignIn';
 import { TUserToken } from '@/api/types/auth/TUserToken';
-import { setUserCookie } from '@/utils/get-server-cookies';
-import { HttpStatusEnum } from '@/api/enums/HttpStatusEnum';
-import { HttpClient } from '@/api/actions/http-client';
-import { THttpError } from '@/api/types/common/THttpError';
+import FitUpHttpClient from '@/api/http/fit-up/fit-up-http-client';
 
-export const signIn = async (data: TSignIn): Promise<TUserToken | THttpError> => {
-  const res = await HttpClient.postHttp('account/sign-in', data);
-
-  switch (res.status as HttpStatusEnum) {
-    case HttpStatusEnum.OK:
-      const user = (await res.json()) satisfies TUserToken as TUserToken;
-
-      setUserCookie(user);
-
-      return user;
-    case HttpStatusEnum.BAD_REQUEST:
-      const error: THttpError = {
-        status: res.status,
-        message: 'Złe dane logowania',
-      } satisfies THttpError as THttpError;
-
-      return error;
-    default:
-  }
-};
+export async function signIn(signIn: TSignIn): Promise<TUserToken> {
+  return FitUpHttpClient.post<TSignIn>('account/sign-in', signIn).then((res) => res.json());
+}

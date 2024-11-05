@@ -1,51 +1,51 @@
 'use client';
 
-import { createContext, PropsWithChildren, useEffect } from 'react';
+import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { TUserToken } from '@/api/types/auth/TUserToken';
-import { useRouter } from 'next/navigation';
+import FitUpHttpClient from '@/api/http/fit-up/fit-up-http-client';
+import { HttpStatusEnum } from '@/api/enums/HttpStatusEnum';
 import { useCookie } from '@/hooks/useCookie';
+import { CookieKeys } from '@/constants/CookieKeys';
 
-type TAuthContext = {
+export type TAuthContext = {
   user: TUserToken;
   login: (auth: TUserToken) => void;
   logout: (redirect?: boolean) => void;
 };
 
 export const AuthContext = createContext<TAuthContext>(null);
-const REDIRECT_KEY = 'redirect';
-
 type AuthProviderProps = {} & PropsWithChildren;
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser, deleteUser] = useCookie<TUserToken>('user');
+  const [logoutInterceptor, setLogoutInterceptor] = useState(null);
+  const [user, setUser, deleteUser] = useCookie<TUserToken>(CookieKeys.USER);
+  const pathname = usePathname();
   const router = useRouter();
 
+  const logout = useCallback((): void => {
+    deleteUser();
+    router.push('/auth');
+  }, [deleteUser, router]);
+
   const login = (auth: TUserToken): void => {
-    if (auth === null) return;
+    if (!auth) return;
 
     setUser(auth);
-
-    const currentSearchParams = new URLSearchParams(window.location.search);
-
-    if (currentSearchParams.has(REDIRECT_KEY)) {
-      const redirectUrl = currentSearchParams.get(REDIRECT_KEY);
-      router.push(redirectUrl);
-
-      return;
-    }
     router.push('/');
   };
 
-  const logout = (redirect: boolean = true): void => {
-    deleteUser();
-    if (redirect) {
-      const redirectUrl = encodeURIComponent(location.pathname + location.search);
+  useEffect(() => {
+    if (!user) return FitUpHttpClient.removeResponseInterceptor(logoutInterceptor);
 
-      return router.push(`/auth?${REDIRECT_KEY}=${redirectUrl}`);
-    }
+    const responseInterceptor = FitUpHttpClient.addResponseInterceptor((response: Response) => {
+      if (response?.status === HttpStatusEnum.UNAUTHORIZED) logout();
 
-    router.push('/auth');
-  };
+      return response;
+    });
+
+    setLogoutInterceptor(responseInterceptor);
+  }, [user, logout]);
 
   useEffect(() => {
     if (!user) return;
@@ -53,13 +53,15 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     const tokenExpires = user.expires - Date.now();
 
     const timeoutId = setTimeout(() => {
-      logout(true);
+      logout();
     }, tokenExpires);
 
     return () => clearTimeout(timeoutId);
-  }, [user?.expires, logout]);
+  }, [user, logout]);
 
-  if (user === null) logout();
+  useEffect(() => {
+    if (!user && !pathname.startsWith('/auth')) router.push('/auth');
+  }, [user, pathname, router]);
 
   return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
 }

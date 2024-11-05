@@ -1,9 +1,10 @@
 import { useCookies } from 'react-cookie';
 import { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
+import { TCookieKey } from '@/constants/CookieKeys';
 
 type CookieHookReturn<T> = [T, (value: T) => void, () => void];
 
-export function useCookie<T>(key: string, options?: CookieGetOptions): CookieHookReturn<T> {
+export function useCookie<T>(key: TCookieKey, options?: CookieGetOptions): CookieHookReturn<T> {
   const [cookies, setCookies, deleteCookies] = useCookies([key], options);
   const value: T = cookies[key];
 

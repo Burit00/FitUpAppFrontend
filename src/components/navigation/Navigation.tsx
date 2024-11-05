@@ -15,7 +15,7 @@ type NavigationProps = {} & PropsWithChildren;
 const navigationButtonClassName = 'flex justify-between gap-4 w-full text-md';
 
 function Navigation(props: NavigationProps) {
-  const location = usePathname();
+  const pathname = usePathname();
 
   return (
     <>
@@ -24,7 +24,7 @@ function Navigation(props: NavigationProps) {
         <nav
           className={cn(
             'hidden lg:flex flex-col gap-2 p-2 rounded bg-background2 h-[89.5vh] w-[20%] min-2-[220px] max-w-[350px] sticky top-5',
-            location === '/' || location === '/auth' ? 'lg:hidden' : '',
+            pathname === '/' || pathname === '/auth' ? 'lg:hidden' : '',
           )}
         >
           <div className={'flex flex-col gap-1 flex-grow'}>

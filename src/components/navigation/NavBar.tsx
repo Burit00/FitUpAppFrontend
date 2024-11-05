@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useContext } from 'react';
 import { FaRegUser } from 'react-icons/fa6';
 import Link from 'next/link';
 import { Button, Icon, Logo } from '@/components/ui';
-import { AuthContext } from '@/components/providers/AuthProvider';
+import { useAuth } from '@/hooks/useAuth';
+import { usePathname } from 'next/navigation';
 
 function NavBar() {
-  const authContext = useContext(AuthContext);
+  const auth = useAuth();
+  const pathname = usePathname();
 
   return (
     <header className={'w-full flex flex-row justify-between items-center px-4 py-2 bg-background2'}>
@@ -15,15 +16,17 @@ function NavBar() {
         <Logo className={'h-[24px]'} />
       </Link>
       <div className={'h-10'}>
-        <Button
-          size={'icon'}
-          variant={'ghost'}
-          onClick={() => {
-            if (authContext.user) authContext.logout(false);
-          }}
-        >
-          <Icon icon={FaRegUser} />
-        </Button>
+        {!pathname.startsWith('/auth') && (
+          <Button
+            size={'icon'}
+            variant={'ghost'}
+            onClick={() => {
+              auth.logout();
+            }}
+          >
+            <Icon icon={FaRegUser} />
+          </Button>
+        )}
       </div>
     </header>
   );
