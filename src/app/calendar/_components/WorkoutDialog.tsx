@@ -46,16 +46,16 @@ type WorkoutDialogProps = {
 const WorkoutDialog = ({ workout, ...props }: WorkoutDialogProps) => {
   const router = useRouter();
 
+  if (workout === null) return null;
+
   const isWorkoutExist = workout && workout.id;
 
   const handleAccept = async () => {
-    if (isWorkoutExist) {
-      router.push(`workout/${workout.id}`);
+    const date = new Date(workout.date);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    const [workoutDate] = date.toISOString().split('T');
 
-      return;
-    }
-
-    router.push(`workout?date=${workout.date.toISOString()}`);
+    router.push(`workout/${workoutDate}`);
   };
 
   return (

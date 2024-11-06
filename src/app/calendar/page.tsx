@@ -17,6 +17,7 @@ type CalendarPageProps = {
 export default function CalendarPage(props: CalendarPageProps) {
   const [workouts, setWorkouts] = useState<TWorkout[]>([]);
   const [workout, setWorkout] = useState<TWorkout>(null);
+  const [isWorkoutDialogOpen, setIsWorkoutDialogOpen] = useState<boolean>(false);
   const [today] = useState<Date>(new Date());
   const [year, setYear] = useState<number>(props.searchParams.year ?? today.getFullYear());
   const [scrollToToday, setScrollToToday] = useState<boolean>(true);
@@ -49,23 +50,20 @@ export default function CalendarPage(props: CalendarPageProps) {
         exercises: null,
       } satisfies TWorkout);
     else setWorkout(selectedWorkout);
+
+    setIsWorkoutDialogOpen(true);
   };
 
   const handleWorkoutDialogOpenChange = (value: boolean) => {
+    setIsWorkoutDialogOpen(value);
     if (!value) setWorkout(null);
   };
 
   return (
-    <div className={'w-full h-full flex flex-col items-center'}>
+    <div className={'w-full h-full flex flex-col items-center overflow-auto'}>
       <CalendarBar year={year} onScrollToToday={handleScrollToToday} onYearChange={setYear} />
-      <CalendarGrid
-        className={'w-full flex-grow'}
-        days={days}
-        year={year}
-        scrollToToday={scrollToToday}
-        onDaySelect={handleDaySelect}
-      />
-      {workout && <WorkoutDialog workout={workout} isOpen={true} onOpenChange={handleWorkoutDialogOpenChange} />}
+      <CalendarGrid days={days} year={year} scrollToToday={scrollToToday} onDaySelect={handleDaySelect} />
+      <WorkoutDialog workout={workout} isOpen={isWorkoutDialogOpen} onOpenChange={handleWorkoutDialogOpenChange} />
     </div>
   );
 }

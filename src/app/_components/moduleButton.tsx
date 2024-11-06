@@ -19,7 +19,7 @@ const ModuleButton: FC<ModuleButtonProps> = (props: ModuleButtonProps) => {
       <Button
         variant={'secondary'}
         disabled={props.disabled}
-        className={cn('w-full h-full flex-col justify-center items-center gap-1 md:gap-3 p-5 bg-background2')}
+        className={cn('w-full h-full flex-col justify-center items-center gap-1 md:gap-3 bg-background2')}
       >
         <Icon icon={props.icon} className={'text-primary text-[3rem] mt-[1rem]'} />
         <p className={'text-xl text-wrap'}>{props.name}</p>

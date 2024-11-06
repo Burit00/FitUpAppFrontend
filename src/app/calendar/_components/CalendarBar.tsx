@@ -2,10 +2,9 @@
 
 import React from 'react';
 import { Button } from '@/components/ui';
-import { useRouter } from 'next/navigation';
-import { FaArrowLeft } from 'react-icons/fa6';
 import { IoTodaySharp } from 'react-icons/io5';
 import CalendarBarYearCounter from '@/app/calendar/_components/CalendarBarYearCounter';
+import { PageBar } from '@/components/PageBar';
 
 type CalendarBarProps = {
   year: number;
@@ -14,21 +13,11 @@ type CalendarBarProps = {
 };
 
 function CalendarBar(props: CalendarBarProps) {
-  const router = useRouter();
-
   return (
-    <div className={'bg-background2 w-full p-2 flex justify-between sticky z-[50] top-5 rounded'}>
-      <Button
-        size={'icon'}
-        variant={'ghost'}
-        onClick={() => {
-          router.back();
-        }}
-      >
-        <FaArrowLeft />
-      </Button>
-      <CalendarBarYearCounter year={props.year} onYearChange={(value) => props.onYearChange(value)} />
-      <div className={'flex gap-1'}>
+    <PageBar
+      className={'sticky top-0 z-[100]'}
+      centerSlot={<CalendarBarYearCounter year={props.year} onYearChange={(value) => props.onYearChange(value)} />}
+      rightSlot={
         <Button
           size={'icon'}
           onClick={() => {
@@ -38,8 +27,8 @@ function CalendarBar(props: CalendarBarProps) {
         >
           <IoTodaySharp />
         </Button>
-      </div>
-    </div>
+      }
+    />
   );
 }
 

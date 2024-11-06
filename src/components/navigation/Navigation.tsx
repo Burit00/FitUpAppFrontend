@@ -1,6 +1,6 @@
 'use client';
 
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui';
@@ -14,32 +14,32 @@ type NavigationProps = {} & PropsWithChildren;
 
 const navigationButtonClassName = 'flex justify-between gap-4 w-full text-md';
 
+const links = appLinks.filter((link) => link !== settings);
+
 function Navigation(props: NavigationProps) {
   const pathname = usePathname();
 
   return (
     <>
       <NavBar />
-      <div className={'w-full flex-grow flex gap-5 p-5 relative overflow-hidden'}>
+      <div className={'w-full flex-grow flex gap-5 p-5 overflow-auto'}>
         <nav
           className={cn(
-            'hidden lg:flex flex-col gap-2 p-2 rounded bg-background2 w-[20%] min-2-[220px] max-w-[350px]',
+            'hidden lg:flex flex-col gap-2 p-2 rounded bg-background2 w-[20%] min-2-[220px] max-w-[350px] sticky top-0',
             pathname === '/' || pathname.startsWith('/auth') ? 'lg:hidden' : '',
           )}
         >
           <div className={'flex flex-col gap-1 flex-grow'}>
-            {appLinks
-              .filter((link) => link !== settings)
-              .map((link) => {
-                return (
-                  <Link key={link.name} href={link.link}>
-                    <Button variant={'secondary'} className={navigationButtonClassName}>
-                      <span>{link.name}</span>
-                      <link.icon />
-                    </Button>
-                  </Link>
-                );
-              })}
+            {links.map((link) => {
+              return (
+                <Link key={link.name} href={link.link}>
+                  <Button variant={'secondary'} className={navigationButtonClassName}>
+                    <span>{link.name}</span>
+                    <link.icon />
+                  </Button>
+                </Link>
+              );
+            })}
           </div>
           <div className={'flex flex-col gap-2 w-full'}>
             <Separator />
@@ -51,7 +51,7 @@ function Navigation(props: NavigationProps) {
             </Link>
           </div>
         </nav>
-        <div className={'flex justify-between gap-5 w-full'}>{props.children}</div>
+        <div className={'flex justify-between gap-5 h-full flex-grow'}>{props.children}</div>
       </div>
     </>
   );
