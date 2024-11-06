@@ -44,19 +44,19 @@
     "no-extra-boolean-cast": "warn",
     "no-extra-semi": "warn",
     "no-lone-blocks": "warn",
-    "no-magic-numbers": [
-      "warn",
-      {
-        "ignoreDefaultValues": true,
-        "ignoreClassFieldInitialValues": true,
-        "ignore": [
-          0,
-          1,
-          2,
-          3
-        ]
-      }
-    ],
+    "no-magic-numbers": "off",
+    "@typescript-eslint/no-magic-numbers": ["error", {
+      "ignoreDefaultValues": true,
+      "ignoreClassFieldInitialValues": true,
+      "ignoreEnums": true,
+      "ignore": [
+        -1,
+        0,
+        1,
+        2,
+        3
+      ]
+    }],
     "no-new": "warn",
     "no-new-func": "warn",
     "no-new-wrappers": "warn",
