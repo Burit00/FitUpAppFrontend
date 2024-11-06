@@ -56,10 +56,10 @@ export default function CalendarPage(props: CalendarPageProps) {
   };
 
   return (
-    <div className={'w-full h-full flex flex-col gap-4 items-center'}>
+    <div className={'w-full h-full flex flex-col items-center'}>
       <CalendarBar year={year} onScrollToToday={handleScrollToToday} onYearChange={setYear} />
       <CalendarGrid
-        className={'w-full'}
+        className={'w-full flex-grow'}
         days={days}
         year={year}
         scrollToToday={scrollToToday}
