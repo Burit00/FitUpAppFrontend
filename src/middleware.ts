@@ -1,9 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
-import { CookieKeys } from '@/constants/CookieKeys';
+import { COOKIE_KEYS } from '@/constants/CookieKeys';
 
 function isAuthenticated(cookies: RequestCookies): boolean {
-  return cookies.has(CookieKeys.USER);
+  return cookies.has(COOKIE_KEYS.USER);
 }
 
 export default function middleware(req: NextRequest): NextResponse {

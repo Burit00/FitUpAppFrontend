@@ -1,3 +1,3 @@
-export const LocalStorageKeys = {} as const;
+export const LOCAL_STORAGE_KEYS = {} as const;
 
-export type TLocalStorageKey = keyof typeof LocalStorageKeys;
+export type TLocalStorageKey = keyof typeof LOCAL_STORAGE_KEYS;

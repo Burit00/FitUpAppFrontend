@@ -6,7 +6,7 @@ import { TUserToken } from '@/api/types/auth/TUserToken';
 import FitUpHttpClient from '@/api/http/fit-up/fit-up-http-client';
 import { HttpStatusEnum } from '@/api/enums/HttpStatusEnum';
 import { useCookie } from '@/hooks/useCookie';
-import { CookieKeys } from '@/constants/CookieKeys';
+import { COOKIE_KEYS } from '@/constants/CookieKeys';
 
 export type TAuthContext = {
   user: TUserToken;
@@ -19,7 +19,7 @@ type AuthProviderProps = {} & PropsWithChildren;
 
 export default function AuthProvider({ children }: AuthProviderProps) {
   const [logoutInterceptor, setLogoutInterceptor] = useState(null);
-  const [user, setUser, deleteUser] = useCookie<TUserToken>(CookieKeys.USER);
+  const [user, setUser, deleteUser] = useCookie<TUserToken>(COOKIE_KEYS.USER);
   const pathname = usePathname();
   const router = useRouter();
 
