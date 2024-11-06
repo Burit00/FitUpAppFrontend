@@ -1,16 +1,20 @@
 'use client';
 
-import React from 'react';
+import { forwardRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa6';
-import { Button } from '@/components/ui';
+import { Button, ButtonProps } from '@/components/ui';
 
-export const BackButton = () => {
+const BackButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const router = useRouter();
 
   return (
-    <Button size={'icon'} variant={'ghost'} onClick={router.back}>
+    <Button ref={ref} size={'icon'} variant={'ghost'} onClick={router.back} {...props}>
       <FaArrowLeft />
     </Button>
   );
-};
+});
+
+BackButton.displayName = 'BackButton';
+
+export { BackButton };
