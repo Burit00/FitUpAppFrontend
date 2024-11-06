@@ -94,7 +94,7 @@ export class HttpClient {
       const queryString = this.convertObjectToQueryString(params);
       url += url.includes('?') ? `&${queryString}` : `?${queryString}`;
     }
-    const endpointUrl = new URL(url, this.config.baseUrl);
+    const endpointUrl = new URL(this.config.baseUrl + url);
 
     options.headers = {
       ...this.config.headers,

@@ -57,8 +57,10 @@ function SignUpForm({ className }: SignUpFormProps) {
   const loginPageLink = pathname + '?' + createQueryString(['auth', AuthSearchEnum.LOGIN]);
 
   const onSubmit = async (data: TSignUp) => {
-    await signUp(data);
-    router.push(loginPageLink);
+    const response = await signUp(data);
+    //TODO: show toaster on action
+    if (response.ok) router.push(loginPageLink);
+    else console.error(await response.json());
   };
 
   return (

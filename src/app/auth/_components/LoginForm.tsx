@@ -45,8 +45,10 @@ function LoginForm({ className }: LoginFormProps) {
   });
 
   const onSubmit = async (data: TSignIn) => {
-    const user = await signIn(data);
-    authContext.login(user);
+    const res = await signIn(data);
+    //TODO: show toaster on action
+    if (res.ok) authContext.login(await res.json());
+    else console.error(await res.json());
   };
 
   return (
