@@ -1,5 +1,4 @@
 import { TDateTimeISO } from '@/types/TISODate';
-import { TWorkout } from '@/api/types/workouts/workout.type';
 import FitUpHttpClient from '@/api/http/fit-up/fit-up-http-client';
 
 type TGetWorkoutsParams = {
@@ -8,8 +7,6 @@ type TGetWorkoutsParams = {
   categories?: string[];
 };
 
-export async function getWorkouts(params: TGetWorkoutsParams): Promise<TWorkout[]> {
-  const res = await FitUpHttpClient.get('workouts', { params });
-
-  return await res.json();
+export async function getWorkouts(params: TGetWorkoutsParams): Promise<Response> {
+  return FitUpHttpClient.get('workouts', { params });
 }

@@ -6,7 +6,8 @@ import CalendarBar from '@/app/calendar/_components/CalendarBar';
 import WorkoutDialog from '@/app/calendar/_components/WorkoutDialog';
 import { TDateTimeISO } from '@/types/TISODate';
 import { getWorkouts } from '@/api/actions/workouts/get-workouts';
-import { TWorkout } from '@/api/types/workouts/workout.type';
+import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
+import { BrowseWorkoutArraySchema } from '@features/workouts/schemas';
 
 type CalendarPageProps = {
   searchParams: {
@@ -15,8 +16,8 @@ type CalendarPageProps = {
 };
 
 export default function CalendarPage(props: CalendarPageProps) {
-  const [workouts, setWorkouts] = useState<TWorkout[]>([]);
-  const [workout, setWorkout] = useState<TWorkout>(null);
+  const [workouts, setWorkouts] = useState<TBrowseWorkout[]>([]);
+  const [workout, setWorkout] = useState<TBrowseWorkout>(null);
   const [isWorkoutDialogOpen, setIsWorkoutDialogOpen] = useState<boolean>(false);
   const [today] = useState<Date>(new Date());
   const [year, setYear] = useState<number>(props.searchParams.year ?? today.getFullYear());
@@ -26,11 +27,20 @@ export default function CalendarPage(props: CalendarPageProps) {
     const dateStart = new Date(year, 0, 0).toISOString() as TDateTimeISO;
     const dateEnd = new Date(year + 1, 0, -1).toISOString() as TDateTimeISO;
 
-    getWorkouts({ dateStart, dateEnd }).then(setWorkouts);
+    getWorkouts({ dateStart, dateEnd })
+      .then((res) => res.json())
+      .then((data) => {
+        try {
+          const parsedData = BrowseWorkoutArraySchema.parse(data);
+          setWorkouts(parsedData);
+        } catch (error) {
+          console.error(error);
+        }
+      });
   }, [year]);
 
   const days: Date[] = useMemo<Date[]>(() => {
-    return workouts?.map((workout: TWorkout) => new Date(workout.date));
+    return workouts?.map((workout: TBrowseWorkout) => new Date(workout.date));
   }, [workouts]);
 
   const handleScrollToToday = () => {
@@ -41,14 +51,21 @@ export default function CalendarPage(props: CalendarPageProps) {
   };
 
   const handleDaySelect = (selectedDay: Date) => {
-    const selectedWorkout = workouts.find((workout) => workout.date === selectedDay);
+    const selectedWorkout = workouts.find((workout) => {
+      const workoutDate = new Date(workout.date);
+
+      return (
+        workoutDate.getDate() === selectedDay.getDate() &&
+        workoutDate.getMonth() === selectedDay.getMonth() &&
+        workoutDate.getFullYear() === selectedDay.getFullYear()
+      );
+    });
 
     if (!selectedWorkout)
       setWorkout({
         id: null,
         date: selectedDay,
-        exercises: null,
-      } satisfies TWorkout);
+      });
     else setWorkout(selectedWorkout);
 
     setIsWorkoutDialogOpen(true);
