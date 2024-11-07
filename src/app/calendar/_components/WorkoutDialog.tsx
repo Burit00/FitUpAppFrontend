@@ -1,8 +1,10 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui';
 import { useRouter } from 'next/navigation';
-import { TWorkout } from '@/api/types/workouts/workout.type';
-import { TWorkoutExercise } from '@/api/types/workouts/workout-exercise.type';
+import { getWorkoutByDate } from '@/api/actions/workouts/get-workout';
+import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
+import { TWorkout, TWorkoutExercise } from '@features/workouts/types';
+import { WorkoutSchema } from '@features/workouts/schemas';
 
 type WorkoutDialogBaseProps = {
   workoutDate: Date;
@@ -11,13 +13,13 @@ type WorkoutDialogBaseProps = {
   onAccept: () => Promise<void>;
 } & PropsWithChildren;
 
-const WorkoutDialogBase = (props: WorkoutDialogBaseProps) => {
+const WorkoutDialogLayout = (props: WorkoutDialogBaseProps) => {
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onOpenChange}>
       <DialogContent className={'flex flex-col max-h-[80vh] w-full md:max-h-[80vh] md:w-[600px]'}>
         <DialogHeader>
           <DialogTitle className={'text-primary text-xl md:text-3xl'}>
-            {new Date(props.workoutDate).toLocaleDateString('pl-PL', {
+            {props.workoutDate.toLocaleDateString('pl-PL', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
@@ -38,17 +40,27 @@ const WorkoutDialogBase = (props: WorkoutDialogBaseProps) => {
 };
 
 type WorkoutDialogProps = {
-  workout: TWorkout;
+  workout: TBrowseWorkout;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-const WorkoutDialog = ({ workout, ...props }: WorkoutDialogProps) => {
+const WorkoutDialogMain = ({ workout, ...props }: WorkoutDialogProps) => {
   const router = useRouter();
+  const [workoutFromApi, setWorkoutFromApi] = useState<TWorkout>(null);
 
-  if (workout === null) return null;
+  useEffect(() => {
+    const fetchWorkout = async (): Promise<void> => {
+      const response = await getWorkoutByDate(new Date(workout.date));
+      if (!response.ok) return;
 
-  const isWorkoutExist = workout && workout.id;
+      const data: TWorkout = (await response.json())[0];
+      const parsedData = WorkoutSchema.parse(data);
+      setWorkoutFromApi(parsedData);
+    };
+
+    fetchWorkout();
+  }, [workout]);
 
   const handleAccept = async () => {
     const date = new Date(workout.date);
@@ -58,15 +70,32 @@ const WorkoutDialog = ({ workout, ...props }: WorkoutDialogProps) => {
     router.push(`workout/${workoutDate}`);
   };
 
-  return (
-    <WorkoutDialogBase {...props} onAccept={handleAccept} workoutDate={workout.date}>
-      {isWorkoutExist ? (
-        workout.exercises.map((exercise: TWorkoutExercise) => <p key={exercise.id}>{exercise.name}</p>)
-      ) : (
+  const isWorkoutExist = !!workout.id;
+
+  if (!isWorkoutExist)
+    return (
+      <WorkoutDialogLayout {...props} onAccept={handleAccept} workoutDate={workout.date}>
         <p>W tym dniu nie dodano żadnego ćwiczenia.</p>
-      )}
-    </WorkoutDialogBase>
+      </WorkoutDialogLayout>
+    );
+
+  return (
+    <WorkoutDialogLayout {...props} onAccept={handleAccept} workoutDate={workout.date}>
+      <ul>
+        {workoutFromApi?.exercises.map((exercise: TWorkoutExercise) => (
+          <li key={exercise.id} className={'marker:text-primary'}>
+            {exercise.name}
+          </li>
+        ))}
+      </ul>
+    </WorkoutDialogLayout>
   );
+};
+
+const WorkoutDialog = ({ workout, ...props }: WorkoutDialogProps) => {
+  if (!workout) return null;
+
+  return <WorkoutDialogMain {...props} workout={workout} />;
 };
 
 export default WorkoutDialog;
