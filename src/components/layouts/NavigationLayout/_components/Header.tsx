@@ -6,7 +6,7 @@ import { Button, Icon, Logo } from '@/components/ui';
 import { useAuth } from '@/hooks/useAuth';
 import { usePathname } from 'next/navigation';
 
-function NavBar() {
+function Header() {
   const auth = useAuth();
   const pathname = usePathname();
 
@@ -32,4 +32,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default Header;
