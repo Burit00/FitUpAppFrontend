@@ -4,8 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import CalendarGrid from '@/app/calendar/_components/CalendarGrid';
 import CalendarBar from '@/app/calendar/_components/CalendarBar';
 import WorkoutDialog from '@/app/calendar/_components/WorkoutDialog';
-import { TDateTimeISO } from '@/types/TISODate';
-import { getWorkouts } from '@/api/actions/workouts/get-workouts';
+import { getWorkouts } from '@features/workouts/actions/queries/get-workouts';
 import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
 import { BrowseWorkoutArraySchema } from '@features/workouts/schemas';
 
@@ -24,8 +23,8 @@ export default function CalendarPage(props: CalendarPageProps) {
   const [scrollToToday, setScrollToToday] = useState<boolean>(true);
 
   useEffect(() => {
-    const dateStart = new Date(year, 0, 0).toISOString() as TDateTimeISO;
-    const dateEnd = new Date(year + 1, 0, -1).toISOString() as TDateTimeISO;
+    const dateStart = new Date(year, 0, 0);
+    const dateEnd = new Date(year + 1, 0, -1);
 
     getWorkouts({ dateStart, dateEnd })
       .then((res) => res.json())

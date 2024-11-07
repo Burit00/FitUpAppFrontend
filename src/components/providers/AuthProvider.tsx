@@ -1,12 +1,12 @@
 'use client';
 
-import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { createContext, PropsWithChildren, useCallback, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { TUserToken } from '@/api/types/auth/TUserToken';
-import FitUpHttpClient from '@/api/http/fit-up/fit-up-http-client';
+import { FitUpHttpClient } from '@api';
 import { HttpStatusEnum } from '@/api/enums/HttpStatusEnum';
 import { useCookie } from '@/hooks/useCookie';
 import { COOKIE_KEYS } from '@/constants/CookieKeys';
+import { TUserToken } from '@features/auth/types';
 
 export type TAuthContext = {
   user: TUserToken;
@@ -18,7 +18,8 @@ export const AuthContext = createContext<TAuthContext>(null);
 type AuthProviderProps = {} & PropsWithChildren;
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const [logoutInterceptor, setLogoutInterceptor] = useState(null);
+  const authorizationInterceptor = useRef(null);
+  const logoutInterceptor = useRef(null);
   const [user, setUser, deleteUser] = useCookie<TUserToken>(COOKIE_KEYS.USER);
   const pathname = usePathname();
   const router = useRouter();
@@ -36,15 +37,27 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   };
 
   useEffect(() => {
-    if (!user) return FitUpHttpClient.removeResponseInterceptor(logoutInterceptor);
+    if (!user) {
+      FitUpHttpClient.removeRequestInterceptor(authorizationInterceptor.current);
+      FitUpHttpClient.removeResponseInterceptor(logoutInterceptor.current);
 
-    const responseInterceptor = FitUpHttpClient.addResponseInterceptor((response: Response) => {
+      return;
+    }
+
+    authorizationInterceptor.current = FitUpHttpClient.addRequestInterceptor((request: RequestInit) => {
+      request.headers = {
+        ...request?.headers,
+        Authorization: `Bearer ${user.accessToken}`,
+      };
+
+      return request;
+    });
+
+    logoutInterceptor.current = FitUpHttpClient.addResponseInterceptor((response: Response) => {
       if (response?.status === HttpStatusEnum.UNAUTHORIZED) logout();
 
       return response;
     });
-
-    setLogoutInterceptor(responseInterceptor);
   }, [user, logout]);
 
   useEffect(() => {

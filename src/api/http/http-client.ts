@@ -124,7 +124,7 @@ export class HttpClient {
     const urlParams = new URLSearchParams();
 
     for (const [key, value] of Object.entries(params)) {
-      urlParams.append(key, value.toString());
+      if (value) urlParams.append(key, value.toString());
     }
 
     return urlParams.toString();

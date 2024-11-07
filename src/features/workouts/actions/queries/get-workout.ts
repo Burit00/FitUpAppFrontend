@@ -1,4 +1,4 @@
-import FitUpHttpClient from '@/api/http/fit-up/fit-up-http-client';
+import { FitUpHttpClient } from '@api';
 
 export async function getWorkoutById(id: string): Promise<Response> {
   return FitUpHttpClient.get(`workouts/${id}`);

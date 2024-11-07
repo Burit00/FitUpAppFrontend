@@ -8,9 +8,10 @@ import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } fr
 import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
 import AuthForm from '@/app/auth/_components/AuthForm';
 import { usePathname, useRouter } from 'next/navigation';
-import { signUp } from '@/api/actions/auth/sign-up';
-import { SignUpSchema, TSignUp } from '@/api/types/auth/TSignUp';
+import { signUp } from '@features/auth/actions/commands/sign-up';
 import { useSearchParams } from '@/hooks/useSearchParams';
+import { TSignUp } from '@features/auth/types';
+import { SignUpSchema } from '@features/auth/schemas';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
   name: keyof TSignUp;

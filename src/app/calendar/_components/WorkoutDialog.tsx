@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui';
 import { useRouter } from 'next/navigation';
-import { getWorkoutByDate } from '@/api/actions/workouts/get-workout';
+import { getWorkoutByDate } from '@features/workouts/actions/queries/get-workout';
 import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
 import { TWorkout, TWorkoutExercise } from '@features/workouts/types';
 import { WorkoutSchema } from '@features/workouts/schemas';
@@ -54,7 +54,7 @@ const WorkoutDialogMain = ({ workout, ...props }: WorkoutDialogProps) => {
       const response = await getWorkoutByDate(new Date(workout.date));
       if (!response.ok) return;
 
-      const data: TWorkout = (await response.json())[0];
+      const data = await response.json();
       const parsedData = WorkoutSchema.parse(data);
       setWorkoutFromApi(parsedData);
     };

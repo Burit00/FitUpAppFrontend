@@ -19,8 +19,14 @@ export const SignUpSchema = z
     password: z
       .string()
       .min(1, 'Pole wymagane')
-      .min(PasswordRequirements.minLength, `Hasło powinno mieć co najmniej ${PasswordRequirements.minLength} znaków`)
-      .max(PasswordRequirements.maxLength, `Hasło powinno mieć co najwyżej ${PasswordRequirements.maxLength} znaków`)
+      .min(
+        PasswordRequirements.minLength,
+        `Hasło powinno mieć od ${PasswordRequirements.minLength} do ${PasswordRequirements.maxLength} znaków`,
+      )
+      .max(
+        PasswordRequirements.maxLength,
+        `Hasło powinno mieć od ${PasswordRequirements.minLength} do ${PasswordRequirements.maxLength} znaków`,
+      )
       .regex(
         PasswordRequirements.lowerCaseREGEX,
         `Wymagana ilość małych liter: ${PasswordRequirements.lowercaseAmount}.`,
@@ -39,5 +45,3 @@ export const SignUpSchema = z
       });
     }
   });
-
-export type TSignUp = z.infer<typeof SignUpSchema>;
