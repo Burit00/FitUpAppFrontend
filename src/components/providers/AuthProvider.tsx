@@ -18,7 +18,6 @@ export const AuthContext = createContext<TAuthContext>(null);
 type AuthProviderProps = {} & PropsWithChildren;
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const authorizationInterceptor = useRef(null);
   const logoutInterceptor = useRef(null);
   const [user, setUser, deleteUser] = useCookie<TUserToken>(COOKIE_KEYS.USER);
   const pathname = usePathname();
@@ -38,20 +37,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     if (!user) {
-      FitUpHttpClient.removeRequestInterceptor(authorizationInterceptor.current);
-      FitUpHttpClient.removeResponseInterceptor(logoutInterceptor.current);
-
-      return;
+      return FitUpHttpClient.removeResponseInterceptor(logoutInterceptor.current);
     }
-
-    authorizationInterceptor.current = FitUpHttpClient.addRequestInterceptor((request: RequestInit) => {
-      request.headers = {
-        ...request?.headers,
-        Authorization: `Bearer ${user.accessToken}`,
-      };
-
-      return request;
-    });
 
     logoutInterceptor.current = FitUpHttpClient.addResponseInterceptor((response: Response) => {
       if (response?.status === HttpStatusEnum.UNAUTHORIZED) logout();
