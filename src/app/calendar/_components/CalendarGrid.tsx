@@ -1,4 +1,4 @@
-import { Calendar } from '@/components/ui';
+import { Calendar } from '@components/ui';
 import React, { useEffect, useRef } from 'react';
 import { pl } from 'date-fns/locale/pl';
 
@@ -21,7 +21,7 @@ function CalendarGrid(props: CalendarGridProps) {
     todayRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [props.scrollToToday]);
 
-  const onDayClick = (days: Date[], selectedDay: Date) => {
+  const onDayClick = (_: Date[], selectedDay: Date) => {
     props.onDaySelect(selectedDay);
   };
 
@@ -31,7 +31,7 @@ function CalendarGrid(props: CalendarGridProps) {
         'w-full md:grid md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] lg:auto-cols-auto auto-rows-[22rem]'
       }
     >
-      {months.map((month, monthIndex) => (
+      {months.map((_, monthIndex) => (
         <div
           key={`${props.year}${monthIndex}`}
           ref={(ref) => {
