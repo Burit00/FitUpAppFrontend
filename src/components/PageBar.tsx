@@ -18,7 +18,7 @@ const PageBar = forwardRef<HTMLDivElement, PageBarProps>((props, ref) => {
       ref={ref}
       {...divProps}
       className={cn(
-        'sticky top-0 z-[100] w-full flex justify-between items-center rounded bg-background2 p-2',
+        'sticky top-0 z-20 w-full flex justify-between items-center rounded bg-background2 p-2',
         props.className,
       )}
     >
