@@ -7,3 +7,5 @@ export * from './icon';
 export * from './separator';
 export * from './logo';
 export * from './label';
+export * from './sheet';
+export * from './select';
