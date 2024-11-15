@@ -4,12 +4,13 @@ import { IconType } from 'react-icons';
 type IconProps = {
   icon: IconType;
   className?: string;
+  onClick?: () => void;
 };
 
 function Icon(props: IconProps) {
-  const { className, icon: Component } = props;
+  const { className, onClick: handleClick, icon: Component } = props;
 
-  return <Component className={className} />;
+  return <Component onClick={handleClick} className={className} />;
 }
 
 export { Icon };

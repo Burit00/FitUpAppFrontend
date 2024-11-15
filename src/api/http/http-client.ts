@@ -91,7 +91,7 @@ export class HttpClient {
     const { params } = options;
 
     if (params) {
-      const queryString = this.convertObjectToQueryString(params);
+      const queryString = HttpClient.convertObjectToQueryString(params);
       url += url.includes('?') ? `&${queryString}` : `?${queryString}`;
     }
     const endpointUrl = new URL(this.config.baseUrl + url);
@@ -120,7 +120,7 @@ export class HttpClient {
     return this._interceptors.response.reduce((acc, interceptor): Response => interceptor(acc), response);
   }
 
-  private convertObjectToQueryString(params: object): string {
+  private static convertObjectToQueryString(params: object): string {
     const urlParams = new URLSearchParams();
 
     for (const [key, value] of Object.entries(params)) {

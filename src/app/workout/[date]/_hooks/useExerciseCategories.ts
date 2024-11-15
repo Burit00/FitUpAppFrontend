@@ -1,7 +1,7 @@
 import { useEffect, useState, useTransition } from 'react';
-import { getExerciseCategories } from '@features/workouts/actions/queries/get-exercise-categories';
 import { TExerciseCategory } from '@features/workouts/types';
 import { useDebounceState } from '@/hooks/useDebounceState';
+import { getExerciseCategories } from '@features/workouts/actions/queries/get-exercise-categories.http';
 
 export function useExerciseCategories() {
   const [categorySearch, setCategorySearch] = useDebounceState<string>('');

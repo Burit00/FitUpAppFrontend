@@ -6,11 +6,10 @@ import Link from 'next/link';
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
 import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
 import AuthForm from '@/app/auth/_components/AuthForm';
-import { signIn } from '@features/auth/actions/commands/sign-in';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { TSignIn } from '@features/auth/types';
-import { SignInSchema, UserTokenSchema } from '@features/auth/schemas';
+import { SignInSchema } from '@features/auth/schemas';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
   name: keyof TSignIn;
@@ -45,16 +44,8 @@ function LoginForm({ className }: LoginFormProps) {
     },
   });
 
-  const onSubmit = async (data: TSignIn) => {
-    const res = await signIn(data);
-    //TODO: show toaster on action
-
-    const body = await res.json();
-
-    if (!res.ok) return console.error(body);
-
-    const auth = UserTokenSchema.parse(body);
-    authContext.login(auth);
+  const onSubmit = (data: TSignIn) => {
+    authContext.login(data);
   };
 
   return (

@@ -38,12 +38,14 @@ body {
     /*--muted: 0 0% 15%;*/
     --accent: 12 6.5% 15.1%;
     --accent-foreground: 0 0% 98%;
+    --warning: 37, 91%, 55%;
+    --warning-foreground: 0 85.7% 97.3%;
     --destructive: 0 86% 58%;
     --destructive-foreground: 0 85.7% 97.3%;
     --border: 240 3.7% 15.9%;
     /*--input: 240 3.7% 15.9%;*/
     --input: var(--surface);
-    --ring: 142.4 71.8% 29.2%;
+    --ring: var(--primary);
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;

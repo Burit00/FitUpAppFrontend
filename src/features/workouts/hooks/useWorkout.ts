@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { TWorkout } from '@features/workouts/types';
-import { getWorkoutByDate } from '@features/workouts/actions/queries/get-workout';
+import { getWorkoutByDate } from '@features/workouts/actions';
+import { WorkoutSchema } from '@features/workouts/schemas';
 
 type TUseWorkout = {
   workout: TWorkout;
@@ -12,7 +13,7 @@ type TUseWorkout = {
 
 export function useWorkout(date: Date): TUseWorkout {
   const [workout, setWorkout] = useState<TWorkout>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchWorkout = useCallback(async (): Promise<void> => {
     setIsLoading(true);
@@ -20,12 +21,13 @@ export function useWorkout(date: Date): TUseWorkout {
 
     setIsLoading(false);
     if (!response.ok) return;
-    setWorkout(await response.json());
+    const data = await response.json();
+    setWorkout(WorkoutSchema.parse(data));
   }, []);
 
   useEffect(() => {
     fetchWorkout();
-  }, []);
+  }, [fetchWorkout]);
 
   return {
     workout,

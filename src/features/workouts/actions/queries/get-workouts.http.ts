@@ -6,7 +6,7 @@ type TGetWorkoutsParams = {
   categories?: string[];
 };
 
-export async function getWorkouts(params: TGetWorkoutsParams): Promise<Response> {
+export async function getWorkoutsHttp(params: TGetWorkoutsParams): Promise<Response> {
   return FitUpHttpClient.get('workouts', {
     params: {
       dateStart: params.dateStart?.toISOString(),

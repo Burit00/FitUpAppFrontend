@@ -1,12 +1,15 @@
 'use client';
 
 import { createContext, PropsWithChildren, useCallback, useEffect, useRef } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FitUpHttpClient } from '@api';
 import { HttpStatusEnum } from '@/api/enums/HttpStatusEnum';
 import { useCookie } from '@/hooks/useCookie';
 import { COOKIE_KEYS } from '@/constants/CookieKeys';
-import { TUserToken } from '@features/auth/types';
+import { TSignIn, TUserToken } from '@features/auth/types';
+import { signIn } from '@features/auth/actions/commands/sign-in';
+import { UserTokenSchema } from '@features/auth/schemas';
+import { UserRoleEnum } from '@features/auth/enums/UserRoleEnum';
 
 export type TAuthContext = {
   user: TUserToken;
@@ -20,7 +23,6 @@ type AuthProviderProps = {} & PropsWithChildren;
 export default function AuthProvider({ children }: AuthProviderProps) {
   const logoutInterceptor = useRef(null);
   const [user, setUser, deleteUser] = useCookie<TUserToken>(COOKIE_KEYS.USER);
-  const pathname = usePathname();
   const router = useRouter();
 
   const logout = useCallback((): void => {
@@ -28,40 +30,39 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     router.push('/auth');
   }, [deleteUser, router]);
 
-  const login = (auth: TUserToken): void => {
+  const login = async (userCredentials: TSignIn): Promise<void> => {
+    const res = await signIn(userCredentials);
+    const body = await res.json();
+    //TODO: show toaster on action
+
+    if (!res.ok) return console.error(body);
+    const auth = UserTokenSchema.parse(body);
+
     if (!auth) return;
 
     setUser(auth);
-    router.push('/');
+
+    if (auth.roles.includes(UserRoleEnum.ADMIN)) router.push('/admin');
+    else router.push('/');
   };
 
   useEffect(() => {
-    if (!user) {
-      return FitUpHttpClient.removeResponseInterceptor(logoutInterceptor.current);
-    }
+    if (!user) return;
 
     logoutInterceptor.current = FitUpHttpClient.addResponseInterceptor((response: Response) => {
       if (response?.status === HttpStatusEnum.UNAUTHORIZED) logout();
 
       return response;
     });
-  }, [user, logout]);
-
-  useEffect(() => {
-    if (!user) return;
 
     const tokenExpires = user.expires - Date.now();
+    const timeoutId = setTimeout(logout, tokenExpires > 0 ? tokenExpires : 0);
 
-    const timeoutId = setTimeout(() => {
-      logout();
-    }, tokenExpires);
-
-    return () => clearTimeout(timeoutId);
+    return () => {
+      clearTimeout(timeoutId);
+      FitUpHttpClient.removeResponseInterceptor(logoutInterceptor.current);
+    };
   }, [user, logout]);
-
-  useEffect(() => {
-    if (!user && !pathname.startsWith('/auth')) router.push('/auth');
-  }, [user, pathname, router]);
 
   return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
 }

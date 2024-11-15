@@ -7,15 +7,18 @@
     /* modified built-in rules */
     "no-undef": "off",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error", {
-      "args": "all",
-      "argsIgnorePattern": "^_",
-      "caughtErrors": "all",
-      "caughtErrorsIgnorePattern": "^_",
-      "destructuredArrayIgnorePattern": "^_",
-      "varsIgnorePattern": "^_",
-      "ignoreRestSiblings": true
-    }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
     /* warnings */
     "no-compare-neg-zero": "warn",
     "no-constant-condition": "warn",
@@ -53,18 +56,21 @@
     "no-extra-semi": "warn",
     "no-lone-blocks": "warn",
     "no-magic-numbers": "off",
-    "@typescript-eslint/no-magic-numbers": ["error", {
-      "ignoreDefaultValues": true,
-      "ignoreClassFieldInitialValues": true,
-      "ignoreEnums": true,
-      "ignore": [
-        -1,
-        0,
-        1,
-        2,
-        3
-      ]
-    }],
+    "@typescript-eslint/no-magic-numbers": [
+      "error",
+      {
+        "ignoreDefaultValues": true,
+        "ignoreClassFieldInitialValues": true,
+        "ignoreEnums": true,
+        "ignore": [
+          -1,
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    ],
     "no-new": "warn",
     "no-new-func": "warn",
     "no-new-wrappers": "warn",
@@ -79,7 +85,10 @@
     "prefer-destructuring": "warn",
     "yoda": "warn",
     "space-in-parens": "warn",
-    "object-curly-spacing": ["warn", "always"],
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
     "arrow-parens": "warn",
     "arrow-spacing": "warn",
     "block-spacing": "warn",
@@ -93,10 +102,6 @@
     "comma-spacing": "warn",
     "comma-style": "warn",
     "func-call-spacing": "warn",
-    "implicit-arrow-linebreak": [
-      "warn",
-      "beside"
-    ],
     "indent": [
       "warn",
       2,
@@ -109,7 +114,13 @@
         "SwitchCase": 1
       }
     ],
-    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "quotes": [
+      "warn",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
     "keyword-spacing": "warn",
     "lines-between-class-members": [
       "warn",
@@ -175,6 +186,21 @@
       }
     ],
     "switch-colon-spacing": "warn",
+    "@typescript-eslint/no-inferrable-types": 0,
+    "@typescript-eslint/typedef": [
+      "warn",
+      {
+        "arrayDestructuring": false,
+        "arrowParameter": true,
+        "memberVariableDeclaration": true,
+        "objectDestructuring": false,
+        "parameter": true,
+        "propertyDeclaration": true,
+        "variableDeclaration": false,
+        "variableDeclarationIgnoreFunction": true
+      }
+    ],
+
     /* errors */
     "for-direction": "error",
     "no-cond-assign": "error",

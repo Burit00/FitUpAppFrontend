@@ -1,10 +1,11 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui';
 import { useRouter } from 'next/navigation';
-import { getWorkoutByDate } from '@features/workouts/actions/queries/get-workout';
+import { getWorkoutByDate } from '@features/workouts/actions';
 import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
 import { TWorkout, TWorkoutExercise } from '@features/workouts/types';
 import { WorkoutSchema } from '@features/workouts/schemas';
+import { toDateOnly } from '@/utils/date';
 
 type WorkoutDialogBaseProps = {
   workoutDate: Date;
@@ -45,7 +46,7 @@ type WorkoutDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-const WorkoutDialogMain = ({ workout, ...props }: WorkoutDialogProps) => {
+const WorkoutDialogBody = ({ workout, ...props }: WorkoutDialogProps) => {
   const router = useRouter();
   const [workoutFromApi, setWorkoutFromApi] = useState<TWorkout>(null);
 
@@ -63,9 +64,7 @@ const WorkoutDialogMain = ({ workout, ...props }: WorkoutDialogProps) => {
   }, [workout]);
 
   const handleAccept = async () => {
-    const date = new Date(workout.date);
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    const [workoutDate] = date.toISOString().split('T');
+    const workoutDate = toDateOnly(workout.date);
 
     router.push(`workout/${workoutDate}`);
   };
@@ -95,7 +94,7 @@ const WorkoutDialogMain = ({ workout, ...props }: WorkoutDialogProps) => {
 const WorkoutDialog = ({ workout, ...props }: WorkoutDialogProps) => {
   if (!workout) return null;
 
-  return <WorkoutDialogMain {...props} workout={workout} />;
+  return <WorkoutDialogBody {...props} workout={workout} />;
 };
 
 export default WorkoutDialog;

@@ -22,12 +22,15 @@ const ExerciseCategoriesSelect = (props: ExerciseCategoriesSelectProps) => {
         props.onCategorySelect(value);
       }}
     >
-      <SelectTrigger>
+      <SelectTrigger label={'Kategoria'}>
         <SelectValue placeholder={'Wszystkie'} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Kategorie</SelectLabel>
+          <SelectItem value={'all'} title={'Wszystkie'}>
+            {'Wszystkie'}
+          </SelectItem>
           {props.categories.map((category) => (
             <SelectItem key={category.id} value={category.id} title={category.name}>
               {category.name}
