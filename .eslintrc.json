@@ -187,19 +187,6 @@
     ],
     "switch-colon-spacing": "warn",
     "@typescript-eslint/no-inferrable-types": 0,
-    "@typescript-eslint/typedef": [
-      "warn",
-      {
-        "arrayDestructuring": false,
-        "arrowParameter": true,
-        "memberVariableDeclaration": true,
-        "objectDestructuring": false,
-        "parameter": true,
-        "propertyDeclaration": true,
-        "variableDeclaration": false,
-        "variableDeclarationIgnoreFunction": true
-      }
-    ],
 
     /* errors */
     "for-direction": "error",

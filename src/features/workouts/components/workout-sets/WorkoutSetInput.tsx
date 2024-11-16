@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { TSetParameterNameWithValue } from '@features/workouts/types';
 import { InputProps } from '@components/ui';
 import { InputWithStepButtons } from '@components/InputWithStepButtons';
-import { WorkoutSetTimeInput } from '@features/workouts/components/workout-sets/WorkoutSetTimeInput';
+import { WorkoutSetTimeInput } from '@features/workouts/components';
 
 type WorkoutSetInputProps = {
   parameter: TSetParameterNameWithValue;
@@ -11,6 +11,7 @@ type WorkoutSetInputProps = {
 
 export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props }: WorkoutSetInputProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    console.log(event);
     props.onChange(event.target.value);
   };
 

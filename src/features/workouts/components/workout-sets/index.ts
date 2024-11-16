@@ -1,2 +1,2 @@
 export * from './WorkoutSet';
-export * from './WorkoutSetInput';
+export * from './sheets';

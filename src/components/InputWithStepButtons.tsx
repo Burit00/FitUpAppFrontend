@@ -20,6 +20,7 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
     return (
       <div className={'flex items-end gap-3 w-full'}>
         <Button
+          type={'button'}
           variant={'secondary'}
           onClick={() => {
             inputRef.current.stepDown();
@@ -37,6 +38,7 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
           className={cn('flex-grow', props.className)}
         />
         <Button
+          type={'button'}
           variant={'secondary'}
           onClick={() => {
             inputRef.current.stepUp();

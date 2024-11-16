@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import { TimeSpan } from '@/types/TimeSpan';
 import { Input, InputProps } from '@components/ui';
 
@@ -35,37 +35,32 @@ type WorkoutSetTimeInputProps = {
 };
 
 export const WorkoutSetTimeInput: FC<WorkoutSetTimeInputProps> = ({ value, ...props }: WorkoutSetTimeInputProps) => {
-  const [hours, setHours] = useState<string | number>(value.hours ?? '');
-  const [minutes, setMinutes] = useState<string | number>(value.minutes ?? '');
-  const [seconds, setSeconds] = useState<string | number>(value.seconds ?? '');
-
-  useEffect(() => {
-    const timeSpan = new TimeSpan(Number(hours), Number(minutes), Number(seconds));
-    props.onChange(timeSpan.toString());
-  }, [hours, minutes, seconds]);
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    const time = new TimeSpan(value);
     switch (event.target.name) {
       case 'hours':
-        setHours(event.target.value);
+        time.hours = Number(inputValue || 0);
         break;
       case 'minutes':
-        setMinutes(event.target.value);
+        time.minutes = Number(inputValue || 0);
         break;
       case 'seconds':
-        setSeconds(event.target.value);
+        time.seconds = Number(inputValue || 0);
         break;
     }
+
+    props.onChange(time.toString());
   };
 
   const selectValue = (name: TTimeNames): string | number => {
     switch (name) {
       case 'hours':
-        return hours;
+        return value.hours || '';
       case 'minutes':
-        return minutes;
+        return value.minutes || '';
       case 'seconds':
-        return seconds;
+        return value.seconds || '';
     }
   };
 
@@ -79,7 +74,7 @@ export const WorkoutSetTimeInput: FC<WorkoutSetTimeInputProps> = ({ value, ...pr
           {...formElement}
           type={'number'}
           maxLength={2}
-          placeholder={'00'}
+          placeholder={'0'}
         />
       ))}
     </div>

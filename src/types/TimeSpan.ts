@@ -48,7 +48,7 @@ export class TimeSpan {
   }
 
   public set hours(hours: number) {
-    let value = hours ?? 0;
+    let value = isNaN(hours) ? 0 : hours;
     if (value < 0) value = 0;
     else if (value > maxHours) value = maxHours;
     this._hours = value;
@@ -63,12 +63,7 @@ export class TimeSpan {
   public set minutes(value: number) {
     let minutes = value ?? 0;
     if (minutes < 0) minutes = 0;
-    else if (minutes >= minutesInHour) {
-      const allMinutes = minutes;
-      minutes = minutes % minutesInHour;
-      this.hours = this.hours + (allMinutes - minutes) / minutesInHour;
-    }
-    this._minutes = minutes;
+    this._minutes = minutes % minutesInHour;
   }
 
   private _seconds: number = 0;
@@ -80,12 +75,7 @@ export class TimeSpan {
   public set seconds(value: number) {
     let seconds = value ?? 0;
     if (seconds < 0) seconds = 0;
-    else if (seconds >= secondsInMinute) {
-      const allSeconds = seconds;
-      seconds = seconds % minutesInHour;
-      this.minutes = this.minutes + (allSeconds - seconds) / secondsInMinute;
-    }
-    this._seconds = seconds;
+    this._seconds = seconds % secondsInMinute;
   }
 
   public toString(): string {

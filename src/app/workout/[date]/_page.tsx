@@ -7,7 +7,7 @@ import { cn } from '@/utils';
 import { WorkoutDetails } from '@features/workouts/components';
 import { useEffect, useState } from 'react';
 import { TCreateWorkoutSet, TSetParameterNameWithValue, TWorkoutExercise } from '@features/workouts/types';
-import { WorkoutSetSheet } from '@features/workouts/components/workout-sets/WorkoutSetSheet';
+import { WorkoutSetSheet } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetSheet';
 import { addWorkoutExercise, createWorkout, createWorkoutSet, deleteWorkoutExercise } from '@features/workouts/actions';
 
 type WorkoutPageProps = {

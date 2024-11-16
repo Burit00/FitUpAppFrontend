@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { TWorkout } from '@features/workouts/types';
 import { getWorkoutByDate } from '@features/workouts/actions';
 import { WorkoutSchema } from '@features/workouts/schemas';
+import { HttpStatusEnum } from '@api/enums/HttpStatusEnum';
 
 type TUseWorkout = {
   workout: TWorkout;
@@ -20,10 +21,13 @@ export function useWorkout(date: Date): TUseWorkout {
     const response = await getWorkoutByDate(date);
 
     setIsLoading(false);
-    if (!response.ok) return;
-    const data = await response.json();
-    setWorkout(WorkoutSchema.parse(data));
-  }, []);
+    if (response.ok) {
+      const data = await response.json();
+      setWorkout(WorkoutSchema.parse(data));
+    } else if (response.status === HttpStatusEnum.NOT_FOUND) {
+      setWorkout(null);
+    }
+  }, [date]);
 
   useEffect(() => {
     fetchWorkout();
