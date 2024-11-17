@@ -16,14 +16,24 @@ export const SetParameterNameSchema = z.object({
 export const SetParameterTimeWithValueSchema = z.object({
   id: z.string().uuid(),
   name: TimeParameterSchema,
-  value: z.string().transform((data: string): TimeSpan => new TimeSpan(data as TimeSpanString)),
+  value: z
+    .string()
+    .or(z.instanceof(TimeSpan))
+    .transform((data: string | TimeSpan): TimeSpan => {
+      if (data instanceof TimeSpan) return new TimeSpan(data);
+
+      return new TimeSpan(data as TimeSpanString);
+    }),
 });
 
 export const SetParameterNameWithValueSchema = z
   .object({
     id: z.string().uuid(),
     name: z.union([WeightParameterSchema, RepsParameterSchema, DistanceParameterSchema]),
-    value: z.string().transform((data: string): number => parseFloat(data.toString())),
+    value: z
+      .string()
+      .or(z.number())
+      .transform((data: string | number): number => parseFloat(data.toString())),
   })
   .or(SetParameterTimeWithValueSchema);
 

@@ -11,7 +11,6 @@ type WorkoutSetInputProps = {
 
 export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props }: WorkoutSetInputProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(event);
     props.onChange(event.target.value);
   };
 
@@ -22,14 +21,33 @@ export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props 
           name={parameter.name}
           step={2.5}
           label={'Ciężar'}
+          placeholder={'0'}
           value={parameter.value}
           onChange={handleChange}
         />
       );
     case 'reps':
-      return <InputWithStepButtons name={parameter.name} step={1} label={'Powtórzenia'} onChange={handleChange} />;
+      return (
+        <InputWithStepButtons
+          name={parameter.name}
+          step={1}
+          label={'Powtórzenia'}
+          placeholder={'0'}
+          value={parameter.value}
+          onChange={handleChange}
+        />
+      );
     case 'distance':
-      return <InputWithStepButtons name={parameter.name} step={100} label={'Dystans'} onChange={handleChange} />;
+      return (
+        <InputWithStepButtons
+          name={parameter.name}
+          step={100}
+          label={'Dystans'}
+          placeholder={'0'}
+          value={parameter.value}
+          onChange={handleChange}
+        />
+      );
     case 'time':
       return <WorkoutSetTimeInput value={parameter.value} onChange={props.onChange} />;
   }

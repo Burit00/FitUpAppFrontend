@@ -1,46 +1,27 @@
-import React, { FC, useState } from 'react';
-import {
-  TSetParameterName,
-  TSetParameterNameWithValue,
-  TSetParameterNameWithValueArray,
-  TWorkoutExercise,
-  TWorkoutSet,
-} from '@features/workouts/types';
-import { TimeSpan } from '@/types/TimeSpan';
+import React, { FC, useEffect, useState } from 'react';
+import { TWorkoutExercise, TWorkoutSet } from '@features/workouts/types';
 import { SheetContent, SheetFooter, SheetTitle } from '@components/ui';
 import { WorkoutSet } from '@features/workouts/components';
-import { deepCopy } from '@/utils/deepCopy';
 import { WorkoutSetForm } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetForm';
-
-function generateSetValuesWithInitialValues(workoutExercise: TWorkoutExercise): TSetParameterNameWithValueArray {
-  return workoutExercise.parameters.map<TSetParameterNameWithValue>(
-    (parameter: TSetParameterName): TSetParameterNameWithValue => {
-      switch (parameter.name) {
-        case 'time':
-          return { ...parameter, name: 'time', value: new TimeSpan() };
-        default:
-          return { ...parameter, name: parameter.name, value: 0 };
-      }
-    },
-  );
-}
+import { cn } from '@/utils';
 
 type WorkoutSetSheetBodyProps = {
   workoutExercise: TWorkoutExercise;
-  onCreateSet: (workoutSet: TSetParameterNameWithValueArray) => void;
+  requestRefresh: (mutation: () => Promise<void>) => void;
 };
 
 export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
   workoutExercise,
-  onCreateSet: handleCreateSet,
+  requestRefresh,
 }: WorkoutSetSheetBodyProps) => {
-  const [workoutSetParameters, setWorkoutSetParameters] = useState<TSetParameterNameWithValueArray>(() =>
-    generateSetValuesWithInitialValues(workoutExercise),
-  );
+  const [selectedWorkoutSet, setSelectedWorkoutSet] = useState<TWorkoutSet>(null);
 
-  const handleCreateWorkoutSet = () => {
-    handleCreateSet(workoutSetParameters);
-  };
+  useEffect(() => {
+    if (!selectedWorkoutSet) return;
+
+    const prevSelectedWorkoutSet = workoutExercise.sets.find((set) => set.id === selectedWorkoutSet.id);
+    setSelectedWorkoutSet(prevSelectedWorkoutSet);
+  }, [workoutExercise]);
 
   return (
     <SheetContent className={'flex flex-col'}>
@@ -50,16 +31,19 @@ export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
           <WorkoutSet
             key={set.id}
             set={set}
-            className={'w-full cursor-pointer'}
+            className={cn('w-full cursor-pointer', selectedWorkoutSet === set && 'bg-primary/30')}
             onClick={() => {
-              const newParameters: TSetParameterNameWithValueArray = deepCopy(set.parameters);
-              setWorkoutSetParameters(newParameters);
+              setSelectedWorkoutSet(selectedWorkoutSet === set ? null : set);
             }}
           />
         ))}
       </div>
-      <SheetFooter className={'gap-3'}>
-        <WorkoutSetForm workoutExercise={workoutExercise} onCreate={handleCreateWorkoutSet} />
+      <SheetFooter>
+        <WorkoutSetForm
+          workoutExercise={workoutExercise}
+          workoutSetToUpdate={selectedWorkoutSet}
+          requestRefresh={requestRefresh}
+        />
       </SheetFooter>
     </SheetContent>
   );

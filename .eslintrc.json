@@ -61,6 +61,7 @@
       {
         "ignoreDefaultValues": true,
         "ignoreClassFieldInitialValues": true,
+        "ignoreReadonlyClassProperties": true,
         "ignoreEnums": true,
         "ignore": [
           -1,

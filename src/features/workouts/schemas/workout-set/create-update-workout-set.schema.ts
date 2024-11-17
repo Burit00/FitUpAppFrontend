@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TimeSpan } from '@/types/TimeSpan';
 
-export const CreateWorkoutSetParameterValueSchema = z.object({
+export const CreateOrUpdateWorkoutSetParameterValueSchema = z.object({
   id: z.string().uuid(),
   value: z
     .string()
@@ -13,5 +13,11 @@ export const CreateWorkoutSetParameterValueSchema = z.object({
 export const CreateWorkoutSetSchema = z.object({
   workoutExerciseId: z.string().uuid(),
   orderIndex: z.number().optional(),
-  parameterValues: z.array(CreateWorkoutSetParameterValueSchema),
+  parameterValues: z.array(CreateOrUpdateWorkoutSetParameterValueSchema),
+});
+
+export const UpdateWorkoutSetSchema = z.object({
+  id: z.string().uuid(),
+  orderIndex: z.number().optional(),
+  parameterValues: z.array(CreateOrUpdateWorkoutSetParameterValueSchema),
 });

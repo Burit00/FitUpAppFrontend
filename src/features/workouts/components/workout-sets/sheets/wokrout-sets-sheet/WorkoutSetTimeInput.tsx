@@ -13,7 +13,7 @@ const formElements: TTimeInputProps[] = [
     name: 'hours',
     label: 'Godziny',
     min: 0,
-    max: 23,
+    max: 99,
   },
   {
     name: 'minutes',
@@ -38,14 +38,18 @@ export const WorkoutSetTimeInput: FC<WorkoutSetTimeInputProps> = ({ value, ...pr
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     const time = new TimeSpan(value);
+
     switch (event.target.name) {
       case 'hours':
+        if (Number(inputValue) > TimeSpan.MAX_HOURS) break;
         time.hours = Number(inputValue || 0);
         break;
       case 'minutes':
+        if (Number(inputValue) >= TimeSpan.MINUTES_IN_HOUR) break;
         time.minutes = Number(inputValue || 0);
         break;
       case 'seconds':
+        if (Number(inputValue) >= TimeSpan.SECONDS_IN_MINUTE) break;
         time.seconds = Number(inputValue || 0);
         break;
     }
@@ -75,6 +79,7 @@ export const WorkoutSetTimeInput: FC<WorkoutSetTimeInputProps> = ({ value, ...pr
           type={'number'}
           maxLength={2}
           placeholder={'0'}
+          autoComplete={'off'}
         />
       ))}
     </div>

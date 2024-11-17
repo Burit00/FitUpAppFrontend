@@ -1,5 +1,4 @@
 import {
-  TCreateWorkoutSet,
   TSetParameterName,
   TSetParameterNameArray,
   TSetParameterNameWithValue,
@@ -7,10 +6,12 @@ import {
   TWorkoutExercise,
   TWorkoutSet,
 } from '@features/workouts/types';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Button } from '@components/ui';
 import { TimeSpan, TimeSpanString } from '@/types/TimeSpan';
 import { WorkoutSetInput } from '@features/workouts/components/workout-sets/WorkoutSetInput';
+import { SetParameterNameWithValueArraySchema } from '@features/workouts/schemas';
+import { createWorkoutSet, deleteWorkoutSet, updateSetParameters } from '@features/workouts/actions';
 
 function generateSetParametersWithInitialValues(parameters: TSetParameterNameArray): TSetParameterNameWithValueArray {
   return parameters.map<TSetParameterNameWithValue>((parameter: TSetParameterName): TSetParameterNameWithValue => {
@@ -26,17 +27,22 @@ function generateSetParametersWithInitialValues(parameters: TSetParameterNameArr
 type WorkoutSetFormProps = {
   workoutExercise: TWorkoutExercise;
   workoutSetToUpdate?: TWorkoutSet;
-  onCreate: (newWorkout: TCreateWorkoutSet) => void;
+  requestRefresh: (mutation: () => Promise<void>) => void;
 };
 
-export const WorkoutSetForm = ({ workoutExercise, ...props }: WorkoutSetFormProps) => {
+export const WorkoutSetForm = ({ workoutExercise, workoutSetToUpdate, ...props }: WorkoutSetFormProps) => {
   const [parameters, setParameters] = useState<TSetParameterNameWithValueArray>(() =>
     generateSetParametersWithInitialValues(workoutExercise.parameters),
   );
 
+  useEffect(() => {
+    if (!workoutSetToUpdate) return;
+
+    setParameters(SetParameterNameWithValueArraySchema.parse(workoutSetToUpdate.parameters));
+  }, [workoutSetToUpdate]);
+
   const handleChangeValue = (parameter: TSetParameterNameWithValue): ((value: string | number) => void) => {
     return (value: string | number): void => {
-      console.log(value);
       setParameters((prev: TSetParameterNameWithValueArray): TSetParameterNameWithValueArray => {
         if (parameter.name === 'time') {
           parameter.value = new TimeSpan(value as TimeSpanString);
@@ -47,12 +53,28 @@ export const WorkoutSetForm = ({ workoutExercise, ...props }: WorkoutSetFormProp
     };
   };
 
+  const handleWorkoutSetDelete = async () => {
+    await deleteWorkoutSet(workoutSetToUpdate.id);
+  };
+
   const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    props.onCreate({
-      workoutExerciseId: workoutExercise.id,
-      orderIndex: -1,
-      parameterValues: parameters,
+
+    if (workoutSetToUpdate) {
+      return props.requestRefresh(async (): Promise<void> => {
+        await updateSetParameters({
+          workoutSetId: workoutSetToUpdate.id,
+          parameters,
+        });
+      });
+    }
+
+    props.requestRefresh(async () => {
+      await createWorkoutSet({
+        workoutExerciseId: workoutExercise.id,
+        orderIndex: -1,
+        parameterValues: parameters,
+      });
     });
   };
 
@@ -61,10 +83,27 @@ export const WorkoutSetForm = ({ workoutExercise, ...props }: WorkoutSetFormProp
       {parameters.map((parameter: TSetParameterNameWithValue) => (
         <WorkoutSetInput key={parameter.id} parameter={parameter} onChange={handleChangeValue(parameter)} />
       ))}
-      <Button type={'submit'}>Dodaj serię</Button>
-      <Button type={'reset'} variant={'outline'}>
-        Resetuj wartości
-      </Button>
+      {workoutSetToUpdate ? (
+        <>
+          <Button type={'submit'} variant={'warning'}>
+            Zapisz zmiany
+          </Button>
+          <Button type={'submit'} variant={'destructive'} onClick={() => props.requestRefresh(handleWorkoutSetDelete)}>
+            Usuń serię
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button type={'submit'}>Dodaj serię</Button>
+          <Button
+            type={'reset'}
+            variant={'outline'}
+            onClick={() => setParameters(generateSetParametersWithInitialValues(workoutExercise.parameters))}
+          >
+            Resetuj wartości
+          </Button>
+        </>
+      )}
     </form>
   );
 };

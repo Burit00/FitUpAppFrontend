@@ -1,10 +1,10 @@
 export type TimeSpanString = `${number}${number}:${number}${number}:${number}${number}`;
 
-const maxHours = 99;
-const minutesInHour = 60;
-const secondsInMinute = 60;
-
 export class TimeSpan {
+  public static readonly MAX_HOURS = 99;
+  public static readonly MINUTES_IN_HOUR = 60;
+  public static readonly SECONDS_IN_MINUTE = 60;
+
   constructor();
 
   constructor(date: Date);
@@ -50,7 +50,7 @@ export class TimeSpan {
   public set hours(hours: number) {
     let value = isNaN(hours) ? 0 : hours;
     if (value < 0) value = 0;
-    else if (value > maxHours) value = maxHours;
+    else if (value > TimeSpan.MAX_HOURS) value = TimeSpan.MAX_HOURS;
     this._hours = value;
   }
 
@@ -63,7 +63,8 @@ export class TimeSpan {
   public set minutes(value: number) {
     let minutes = value ?? 0;
     if (minutes < 0) minutes = 0;
-    this._minutes = minutes % minutesInHour;
+    else if (minutes >= TimeSpan.MINUTES_IN_HOUR) minutes = TimeSpan.MINUTES_IN_HOUR - 1;
+    this._minutes = minutes;
   }
 
   private _seconds: number = 0;
@@ -75,7 +76,8 @@ export class TimeSpan {
   public set seconds(value: number) {
     let seconds = value ?? 0;
     if (seconds < 0) seconds = 0;
-    this._seconds = seconds % secondsInMinute;
+    else if (seconds >= TimeSpan.SECONDS_IN_MINUTE) seconds = TimeSpan.SECONDS_IN_MINUTE - 1;
+    this._seconds = seconds;
   }
 
   public toString(): string {
