@@ -1,5 +1,5 @@
 import { PageBar } from '@/components/PageBar';
-import { AddWorkoutExerciseButton } from '@/app/workout/[date]/_components/AddWorkoutExerciseButton';
+import { AddWorkoutExerciseSheet } from '@/app/workout/[date]/_components/AddWorkoutExerciseSheet';
 
 type WorkoutBarProps = {
   date: Date;
@@ -21,7 +21,7 @@ export const WorkoutBar = (props: WorkoutBarProps) => {
   return (
     <PageBar
       centerSlot={<span className={'text-xl text-primary'}>{dateString}</span>}
-      rightSlot={<AddWorkoutExerciseButton className={'hidden md:flex'} onAddNewExercise={props.onAddNewExercise} />}
+      rightSlot={<AddWorkoutExerciseSheet className={'hidden md:flex'} onAddNewExercise={props.onAddNewExercise} />}
     />
   );
 };

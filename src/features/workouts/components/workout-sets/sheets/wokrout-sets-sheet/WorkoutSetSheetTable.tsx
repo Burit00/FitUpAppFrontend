@@ -28,7 +28,15 @@ export const WorkoutSetSheetTable: FC<WorkoutSetSheetTableProps> = ({ parameters
       </TableHeader>
       <TableBody>
         {sets.map((set) => (
-          <TableRow key={set.id} data-selected={set === activeSet} onClick={() => onRowClick(set)}>
+          <TableRow
+            key={set.id}
+            tabIndex={0}
+            data-selected={set === activeSet}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') onRowClick(set);
+            }}
+            onClick={() => onRowClick(set)}
+          >
             {set.parameters.map((parameter, index) => (
               <>
                 <TableCell key={parameter.id} className={'text-center'}>

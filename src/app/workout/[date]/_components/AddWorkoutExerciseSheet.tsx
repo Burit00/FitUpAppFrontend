@@ -8,14 +8,14 @@ import { getExercises } from '@features/workouts/actions';
 import { useExerciseCategories } from '@/app/workout/[date]/_hooks/useExerciseCategories';
 import { ExerciseCategoriesSelect } from '@/app/workout/[date]/_components/ExerciseCategoriesSelect';
 import { useDebounceState } from '@/hooks/useDebounceState';
-import { FaPlus } from 'react-icons/fa6';
+import { WorkoutExerciseRow } from '@/app/workout/[date]/_components/WorkoutExerciseRow';
 
 type AddWorkoutExerciseButtonProps<> = {
   className?: string;
   onAddNewExercise: (exerciseId: string) => void;
 };
 
-export const AddWorkoutExerciseButton: FC<AddWorkoutExerciseButtonProps> = (props) => {
+export const AddWorkoutExerciseSheet: FC<AddWorkoutExerciseButtonProps> = (props) => {
   const [exerciseSearch, setExerciseSearch] = useDebounceState('');
   const { selectedCategoryId, categories, setCategorySearch, handleSelectCategory } = useExerciseCategories();
   const [exercises, setExercises] = useState<TExercise[]>([]);
@@ -55,23 +55,16 @@ export const AddWorkoutExerciseButton: FC<AddWorkoutExerciseButtonProps> = (prop
             onChange={setCategorySearch}
             onCategorySelect={handleSelectCategory}
           />
-          {/* hard height value enforce scroll on element*/}
-          <div className={'w-full flex-grow h-0 overflow-auto'}>
+          {/* hard height value enforce show scroll on element*/}
+          <div className={'w-full flex-grow h-0 overflow-auto flex flex-col gap-2 p-1'}>
             {exercises.map((exercise) => (
-              <p
+              <WorkoutExerciseRow
                 key={exercise.id}
-                className={
-                  'flex flex-wrap items-center gap-1 transition duration-300 bg-background2/20 hover:bg-background2 px-3 py-2 rounded cursor-pointer text-wrap'
-                }
+                exercise={exercise}
                 onClick={() => {
                   props.onAddNewExercise(exercise.id);
                 }}
-              >
-                <FaPlus className={'text-primary'} />
-                {exercise.name.split(' ').map((word) => (
-                  <span key={word}>{word}</span>
-                ))}
-              </p>
+              />
             ))}
           </div>
         </div>

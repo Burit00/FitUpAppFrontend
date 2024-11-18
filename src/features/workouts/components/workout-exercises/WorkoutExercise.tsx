@@ -18,8 +18,15 @@ export const WorkoutExercise: FC<WorkoutSetProps> = ({ workoutExercise, ...props
   return (
     <div
       className={
-        'bg-background2/40 hover:bg-background2/80 [transition:background_0.3s] p-4 rounded flex flex-col gap-2 cursor-pointer relative'
+        'bg-background2/40 hover:bg-background2/80 focus-visible:bg-background2/80 [transition:background_0.3s] p-4 rounded flex flex-col gap-2 cursor-pointer'
       }
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          props.onExerciseClick(workoutExercise);
+        }
+      }}
       onClick={handleClick}
     >
       <div className={'flex justify-between items-center'}>

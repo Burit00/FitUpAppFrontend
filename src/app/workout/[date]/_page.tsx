@@ -7,7 +7,7 @@ import { useWorkout } from '@features/workouts/hooks/useWorkout';
 import { WorkoutDetails } from '@features/workouts/components';
 import { TWorkoutExercise } from '@features/workouts/types';
 import { WorkoutSetSheet } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetSheet';
-import { AddWorkoutExerciseButton } from './_components/AddWorkoutExerciseButton';
+import { AddWorkoutExerciseSheet } from './_components/AddWorkoutExerciseSheet';
 import { WorkoutBar } from './_components/WorkoutBar';
 
 type WorkoutPageProps = {
@@ -57,7 +57,7 @@ export default function WorkoutPage(props: WorkoutPageProps) {
           )}
         </div>
         <div className={'w-full flex justify-center md:hidden'}>
-          <AddWorkoutExerciseButton className={'w-full'} onAddNewExercise={createOrUpdateWorkout} />
+          <AddWorkoutExerciseSheet className={'w-full'} onAddNewExercise={createOrUpdateWorkout} />
         </div>
       </div>
       <WorkoutSetSheet

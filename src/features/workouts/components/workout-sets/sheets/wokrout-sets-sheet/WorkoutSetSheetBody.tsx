@@ -26,26 +26,18 @@ export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
     <SheetContent className={'flex flex-col'}>
       <SheetTitle>{workoutExercise.name}</SheetTitle>
       <div className={'flex-grow flex flex-col items-center gap-2 overflow-auto h-0'}>
-        {workoutExercise.sets.length === 0 && <p>Nie dodano żadnych serii do tego ćwiczenia.</p>}
-        <WorkoutSetSheetTable
-          parameters={workoutExercise.parameters}
-          sets={workoutExercise.sets}
-          activeSet={selectedWorkoutSet}
-          onRowClick={(workoutSet) => {
-            setSelectedWorkoutSet(selectedWorkoutSet === workoutSet ? null : workoutSet);
-          }}
-        />
-        {/*{workoutExercise.sets.map((set: TWorkoutSet) => (*/}
-        {/*  <WorkoutSet*/}
-        {/*    key={set.id}*/}
-        {/*    isActive={selectedWorkoutSet === set}*/}
-        {/*    set={set}*/}
-        {/*    className={'w-full'}*/}
-        {/*    onClick={() => {*/}
-        {/*      setSelectedWorkoutSet(selectedWorkoutSet === set ? null : set);*/}
-        {/*    }}*/}
-        {/*  />*/}
-        {/*))}*/}
+        {workoutExercise.sets.length === 0 ? (
+          <p>Nie dodano żadnych serii do tego ćwiczenia.</p>
+        ) : (
+          <WorkoutSetSheetTable
+            parameters={workoutExercise.parameters}
+            sets={workoutExercise.sets}
+            activeSet={selectedWorkoutSet}
+            onRowClick={(workoutSet) => {
+              setSelectedWorkoutSet(selectedWorkoutSet === workoutSet ? null : workoutSet);
+            }}
+          />
+        )}
       </div>
       <SheetFooter>
         <WorkoutSetForm

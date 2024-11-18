@@ -8,13 +8,13 @@ type WorkoutDetailsProps = {
   onExerciseDelete: (workoutExerciseId: string) => void;
 };
 
-export const WorkoutDetails: FC<WorkoutDetailsProps> = (props) => {
+export const WorkoutDetails: FC<WorkoutDetailsProps> = ({ workout, ...props }) => {
+  if (!workout || workout?.exercises.length === 0)
+    return <h2 className={'text-muted text-center'}>W tym dniu nie dodano żadnego ćwiczenia.</h2>;
+
   return (
     <div className={'flex flex-col w-full gap-4'}>
-      {props.workout?.exercises.length === 0 && (
-        <h2 className={'text-muted text-center'}>W tym dniu nie dodano żadnego ćwiczenia.</h2>
-      )}
-      {props.workout?.exercises.map((exercise) => (
+      {workout.exercises.map((exercise) => (
         <WorkoutExercise
           key={exercise.id}
           onExerciseClick={props.onExerciseClick}
