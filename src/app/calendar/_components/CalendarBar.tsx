@@ -5,23 +5,29 @@ import { Button } from '@/components/ui';
 import { IoTodaySharp } from 'react-icons/io5';
 import CalendarBarYearCounter from '@/app/calendar/_components/CalendarBarYearCounter';
 import { PageBar } from '@/components/PageBar';
+import { useRouter } from 'next/navigation';
 
 type CalendarBarProps = {
   year: number;
   onScrollToToday: () => void;
-  onYearChange: (year: number) => void;
 };
 
 function CalendarBar(props: CalendarBarProps) {
+  const router = useRouter();
+
+  const goToYear = (year: number) => {
+    router.push(`calendar?year=${year}`);
+  };
+
   return (
     <PageBar
-      className={'sticky top-0 z-[100]'}
-      centerSlot={<CalendarBarYearCounter year={props.year} onYearChange={(value) => props.onYearChange(value)} />}
+      className={'sticky top-0'}
+      centerSlot={<CalendarBarYearCounter year={props.year} onYearChange={(year) => goToYear(year)} />}
       rightSlot={
         <Button
           size={'icon'}
           onClick={() => {
-            props.onYearChange(new Date().getFullYear());
+            goToYear(new Date().getFullYear());
             props.onScrollToToday();
           }}
         >

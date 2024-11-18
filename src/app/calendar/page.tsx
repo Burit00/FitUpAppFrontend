@@ -1,85 +1,33 @@
-'use client';
+import React from 'react';
+import CalendarPage from '@/app/calendar/_page';
+import { redirect } from 'next/navigation';
+import { Metadata } from 'next';
 
-import React, { useEffect, useMemo, useState } from 'react';
-import CalendarGrid from '@/app/calendar/_components/CalendarGrid';
-import CalendarBar from '@/app/calendar/_components/CalendarBar';
-import WorkoutDialog from '@/app/calendar/_components/WorkoutDialog';
-import { getWorkoutsHttp } from '@features/workouts/actions';
-import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
-import { BrowseWorkoutArraySchema } from '@features/workouts/schemas';
+// export const metadata = {
+//   title: 'Calendar | FitUp',
+//   description: 'Overview of your workouts.',
+// };
 
-type CalendarPageProps = {
+type CalendarServerPageProps = {
   searchParams: {
-    year: number;
+    year: string;
   };
 };
 
-export default function CalendarPage(props: CalendarPageProps) {
-  const [workouts, setWorkouts] = useState<TBrowseWorkout[]>([]);
-  const [workout, setWorkout] = useState<TBrowseWorkout>(null);
-  const [isWorkoutDialogOpen, setIsWorkoutDialogOpen] = useState<boolean>(false);
-  const [today] = useState<Date>(new Date());
-  const [year, setYear] = useState<number>(props.searchParams.year ?? today.getFullYear());
-  const [scrollToToday, setScrollToToday] = useState<boolean>(true);
-
-  useEffect(() => {
-    const dateStart = new Date(year, 0, 0);
-    const dateEnd = new Date(year + 1, 0, -1);
-
-    getWorkoutsHttp({ dateStart, dateEnd })
-      .then((res) => res.json())
-      .then((data) => {
-        try {
-          const parsedData = BrowseWorkoutArraySchema.parse(data);
-          setWorkouts(parsedData);
-        } catch (error) {
-          console.error(error);
-        }
-      });
-  }, [year]);
-
-  const days: Date[] = useMemo<Date[]>(() => {
-    return workouts?.map((workout: TBrowseWorkout) => new Date(workout.date));
-  }, [workouts]);
-
-  const handleScrollToToday = () => {
-    setScrollToToday(false);
-    setTimeout(() => {
-      setScrollToToday(true);
-    }, 1);
+export async function generateMetadata({ searchParams }: CalendarServerPageProps): Promise<Metadata> {
+  return {
+    title: `Kalendarz roku ${searchParams.year} | FitUp`,
+    description:
+      'Strona prezentuje interaktywny kalendarz roczny, na którym zaznaczone są wszystkie dni, w których odbyły się twoje treningi. Umożliwia szybki wgląd w regularność i postępy w treningach w ujęciu całorocznym, a także pozwala użytkownikowi na analizę swoich aktywności i wyciąganie wniosków na temat konsekwencji w realizacji celów fitness.',
   };
+}
 
-  const handleDaySelect = (selectedDay: Date) => {
-    const selectedWorkout = workouts.find((workout) => {
-      const workoutDate = new Date(workout.date);
+export default function CalendarServerPage(props: CalendarServerPageProps) {
+  const yearAsNumber = Number(props.searchParams.year);
 
-      return (
-        workoutDate.getDate() === selectedDay.getDate() &&
-        workoutDate.getMonth() === selectedDay.getMonth() &&
-        workoutDate.getFullYear() === selectedDay.getFullYear()
-      );
-    });
+  if (!props.searchParams.year || isNaN(yearAsNumber)) {
+    return redirect('calendar?year=' + new Date().getFullYear());
+  }
 
-    if (!selectedWorkout)
-      setWorkout({
-        id: null,
-        date: selectedDay,
-      });
-    else setWorkout(selectedWorkout);
-
-    setIsWorkoutDialogOpen(true);
-  };
-
-  const handleWorkoutDialogOpenChange = (value: boolean) => {
-    setIsWorkoutDialogOpen(value);
-    if (!value) setWorkout(null);
-  };
-
-  return (
-    <div className={'w-full h-full flex flex-col items-center overflow-auto'}>
-      <CalendarBar year={year} onScrollToToday={handleScrollToToday} onYearChange={setYear} />
-      <CalendarGrid days={days} year={year} scrollToToday={scrollToToday} onDaySelect={handleDaySelect} />
-      <WorkoutDialog workout={workout} isOpen={isWorkoutDialogOpen} onOpenChange={handleWorkoutDialogOpenChange} />
-    </div>
-  );
+  return <CalendarPage year={yearAsNumber} />;
 }

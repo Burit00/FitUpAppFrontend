@@ -11,11 +11,11 @@ type CalendarBarYearCounterProps = {
 function CalendarBarYearCounter({ year, onYearChange }: CalendarBarYearCounterProps) {
   return (
     <div className={'flex gap-4 items-center'}>
-      <Button size={'icon'} variant={'secondary'} onClick={() => onYearChange(year - 1)}>
+      <Button size={'icon'} variant={'secondary'} onClick={() => onYearChange(+year - 1)}>
         <FaChevronDown />
       </Button>
       <AnimatedCounter value={year} className={'text-2xl font-bold'} />
-      <Button size={'icon'} variant={'secondary'} onClick={() => onYearChange(year + 1)}>
+      <Button size={'icon'} variant={'secondary'} onClick={() => onYearChange(+year + 1)}>
         <FaChevronUp />
       </Button>
     </div>

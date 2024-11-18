@@ -6,12 +6,13 @@ type TGetWorkoutsParams = {
   categories?: string[];
 };
 
-export async function getWorkoutsHttp(params: TGetWorkoutsParams): Promise<Response> {
+export async function getWorkouts(params: TGetWorkoutsParams, signal?: AbortSignal): Promise<Response> {
   return FitUpHttpClient.get('workouts', {
     params: {
       dateStart: params.dateStart?.toISOString(),
       dateEnd: params.dateEnd?.toISOString(),
       categories: params?.categories,
     },
+    signal,
   });
 }
