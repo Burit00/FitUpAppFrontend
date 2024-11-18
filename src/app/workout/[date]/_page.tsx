@@ -1,14 +1,14 @@
 'use client';
 
-import { WorkoutBar } from '@/app/workout/[date]/_components/WorkoutBar';
-import { AddWorkoutExerciseButton } from '@/app/workout/[date]/_components/AddWorkoutExerciseButton';
-import { useWorkout } from '@features/workouts/hooks/useWorkout';
-import { cn } from '@/utils';
-import { WorkoutDetails } from '@features/workouts/components';
 import { useEffect, useState } from 'react';
+import { cn } from '@/utils';
+import { addWorkoutExercise, createWorkout, deleteWorkoutExercise } from '@features/workouts/actions';
+import { useWorkout } from '@features/workouts/hooks/useWorkout';
+import { WorkoutDetails } from '@features/workouts/components';
 import { TWorkoutExercise } from '@features/workouts/types';
 import { WorkoutSetSheet } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetSheet';
-import { addWorkoutExercise, createWorkout, deleteWorkoutExercise } from '@features/workouts/actions';
+import { AddWorkoutExerciseButton } from './_components/AddWorkoutExerciseButton';
+import { WorkoutBar } from './_components/WorkoutBar';
 
 type WorkoutPageProps = {
   date: Date;
@@ -25,34 +25,16 @@ export default function WorkoutPage(props: WorkoutPageProps) {
     setSelectedExercise(workoutExercise);
   }, [workout]);
 
-  const requestRefresh = async (mutation: () => Promise<void>) => {
-    await mutation();
+  const createOrUpdateWorkout = async (exerciseId: string) => {
+    if (!workout) await createWorkout({ date: props.date, exerciseIds: [exerciseId] });
+    else await addWorkoutExercise({ workoutId: workout.id, exerciseId });
     fetchWorkout();
   };
 
-  const createOrUpdateWorkout = async (exerciseId: string) => {
-    requestRefresh(async () => {
-      if (!workout) await createWorkout({ date: props.date, exerciseIds: [exerciseId] });
-      else await addWorkoutExercise({ workoutId: workout.id, exerciseId });
-    });
-  };
-
   const handleWorkoutExerciseDelete = async (workoutExerciseId: string) => {
-    requestRefresh(async () => {
-      await deleteWorkoutExercise(workoutExerciseId);
-    });
+    await deleteWorkoutExercise(workoutExerciseId);
+    fetchWorkout();
   };
-
-  let WorkoutExercises = <h2 className={'text-muted text-center'}>W tym dniu nie dodano żadnego ćwiczenia.</h2>;
-  if (workout?.exercises.length > 0) {
-    WorkoutExercises = (
-      <WorkoutDetails
-        workout={workout}
-        onExerciseClick={setSelectedExercise}
-        onExerciseDelete={handleWorkoutExerciseDelete}
-      />
-    );
-  }
 
   return (
     <>
@@ -64,7 +46,15 @@ export default function WorkoutPage(props: WorkoutPageProps) {
             workout?.exercises.length > 0 && 'justify-start',
           )}
         >
-          {isLoading ? <p>Loading..</p> : <>{WorkoutExercises}</>}
+          {isLoading ? (
+            <p>Loading..</p>
+          ) : (
+            <WorkoutDetails
+              workout={workout}
+              onExerciseClick={setSelectedExercise}
+              onExerciseDelete={handleWorkoutExerciseDelete}
+            />
+          )}
         </div>
         <div className={'w-full flex justify-center md:hidden'}>
           <AddWorkoutExerciseButton className={'w-full'} onAddNewExercise={createOrUpdateWorkout} />
@@ -72,9 +62,9 @@ export default function WorkoutPage(props: WorkoutPageProps) {
       </div>
       <WorkoutSetSheet
         open={!!selectedExercise}
-        onOpenChange={(open: boolean) => setSelectedExercise(open ? selectedExercise : null)}
+        onOpenChange={(open: boolean) => !open && setSelectedExercise(null)}
         workoutExercise={selectedExercise}
-        requestRefresh={requestRefresh}
+        requestRefresh={fetchWorkout}
       />
     </>
   );

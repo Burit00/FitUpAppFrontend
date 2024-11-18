@@ -1,4 +1,4 @@
-import { ModuleButton, ModuleButtonProps } from '@/app/_components/moduleButton';
+import { ModuleButton, ModuleButtonProps } from '@/app/_components/ModuleButton';
 import { appLinks, quickStart } from '@/roots/links';
 
 export default function Home() {

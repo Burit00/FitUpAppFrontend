@@ -7,7 +7,7 @@ type WorkoutSetSheetProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   workoutExercise: TWorkoutExercise;
-  requestRefresh: (mutation: () => Promise<void>) => void;
+  requestRefresh: () => void;
 };
 
 export const WorkoutSetSheet: FC<WorkoutSetSheetProps> = ({ open, onOpenChange, ...props }: WorkoutSetSheetProps) => {

@@ -11,6 +11,9 @@ type WorkoutDetailsProps = {
 export const WorkoutDetails: FC<WorkoutDetailsProps> = (props) => {
   return (
     <div className={'flex flex-col w-full gap-4'}>
+      {props.workout?.exercises.length === 0 && (
+        <h2 className={'text-muted text-center'}>W tym dniu nie dodano żadnego ćwiczenia.</h2>
+      )}
       {props.workout?.exercises.map((exercise) => (
         <WorkoutExercise
           key={exercise.id}

@@ -1,13 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { TWorkoutExercise, TWorkoutSet } from '@features/workouts/types';
 import { SheetContent, SheetFooter, SheetTitle } from '@components/ui';
-import { WorkoutSet } from '@features/workouts/components';
 import { WorkoutSetForm } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetForm';
-import { cn } from '@/utils';
+import { WorkoutSetSheetTable } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetSheetTable';
 
 type WorkoutSetSheetBodyProps = {
   workoutExercise: TWorkoutExercise;
-  requestRefresh: (mutation: () => Promise<void>) => void;
+  requestRefresh: () => void;
 };
 
 export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
@@ -27,16 +26,26 @@ export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
     <SheetContent className={'flex flex-col'}>
       <SheetTitle>{workoutExercise.name}</SheetTitle>
       <div className={'flex-grow flex flex-col items-center gap-2 overflow-auto h-0'}>
-        {workoutExercise.sets.map((set: TWorkoutSet) => (
-          <WorkoutSet
-            key={set.id}
-            set={set}
-            className={cn('w-full cursor-pointer', selectedWorkoutSet === set && 'bg-primary/30')}
-            onClick={() => {
-              setSelectedWorkoutSet(selectedWorkoutSet === set ? null : set);
-            }}
-          />
-        ))}
+        {workoutExercise.sets.length === 0 && <p>Nie dodano żadnych serii do tego ćwiczenia.</p>}
+        <WorkoutSetSheetTable
+          parameters={workoutExercise.parameters}
+          sets={workoutExercise.sets}
+          activeSet={selectedWorkoutSet}
+          onRowClick={(workoutSet) => {
+            setSelectedWorkoutSet(selectedWorkoutSet === workoutSet ? null : workoutSet);
+          }}
+        />
+        {/*{workoutExercise.sets.map((set: TWorkoutSet) => (*/}
+        {/*  <WorkoutSet*/}
+        {/*    key={set.id}*/}
+        {/*    isActive={selectedWorkoutSet === set}*/}
+        {/*    set={set}*/}
+        {/*    className={'w-full'}*/}
+        {/*    onClick={() => {*/}
+        {/*      setSelectedWorkoutSet(selectedWorkoutSet === set ? null : set);*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*))}*/}
       </div>
       <SheetFooter>
         <WorkoutSetForm

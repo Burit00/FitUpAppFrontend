@@ -23,14 +23,20 @@ export const WorkoutExercise: FC<WorkoutSetProps> = ({ workoutExercise, ...props
       onClick={handleClick}
     >
       <div className={'flex justify-between items-center'}>
-        <h4 className={'w-[90%]'}>{workoutExercise.name}</h4>
-        <DeleteWorkoutExerciseButton
-          workoutExercise={workoutExercise}
-          onDelete={() => props.onExerciseDelete(workoutExercise.id)}
-        />
+        <h3 className={'w-[90%]'}>
+          {workoutExercise.name} <span className={'text-muted-foreground text-wrap'}>({workoutExercise.category})</span>
+        </h3>
+        <div className={'h-full flex flex-col'}>
+          <DeleteWorkoutExerciseButton
+            workoutExercise={workoutExercise}
+            onDelete={() => props.onExerciseDelete(workoutExercise.id)}
+          />
+        </div>
       </div>
-      <div className={'flex flex-col sm:flex-row flex-wrap gap-2'}>
-        {workoutExercise?.sets.map((set: TWorkoutSet) => <WorkoutSet key={set.id} set={set} />)}
+      <div className={'flex flex-row flex-wrap gap-2'}>
+        {workoutExercise.sets.map((set: TWorkoutSet) => (
+          <WorkoutSet key={set.id} set={set} />
+        ))}
       </div>
     </div>
   );

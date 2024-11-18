@@ -1,6 +1,6 @@
 export const MEASURES_MAP = new Map<string, string>([
   ['distance', 'm'],
-  ['time', 's'],
+  ['time', ''],
   ['weight', 'kg'],
-  ['reps', 'reps'],
+  ['reps', ''],
 ]);

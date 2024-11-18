@@ -1,1 +1,1 @@
-export * from './set-parameter-name.schema';
+export * from './set-parameter-name-with-id.schema';
