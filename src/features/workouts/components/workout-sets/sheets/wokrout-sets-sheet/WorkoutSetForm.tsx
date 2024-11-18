@@ -8,7 +8,7 @@ import {
 } from '@features/workouts/types';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { TimeSpan, TimeSpanString } from '@/types/TimeSpan';
-import { WorkoutSetInput } from '@features/workouts/components/workout-sets/WorkoutSetInput';
+import { WorkoutSetInput } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetInput';
 import { SetParameterNameWithValueArraySchema } from '@features/workouts/schemas';
 import { createWorkoutSet, deleteWorkoutSet, updateSetParameters } from '@features/workouts/actions';
 import { WorkoutSetFormButtons } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetFormButtons';

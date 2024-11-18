@@ -8,7 +8,7 @@ type InputWithStepButtonsProps = Omit<InputProps, 'step'> & {
 };
 
 const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInputElement, InputWithStepButtonsProps>(
-  (props: InputWithStepButtonsProps, ref: ForwardedRef<HTMLInputElement>) => {
+  ({ step, ...props }: InputWithStepButtonsProps, ref: ForwardedRef<HTMLInputElement>) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => inputRef.current);
@@ -23,7 +23,7 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
           type={'button'}
           variant={'dark'}
           onClick={() => {
-            inputRef.current.stepDown();
+            inputRef.current.valueAsNumber -= +step;
             triggerOnChangeCall();
           }}
         >
@@ -41,7 +41,7 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
           type={'button'}
           variant={'dark'}
           onClick={() => {
-            inputRef.current.stepUp();
+            inputRef.current.valueAsNumber += +step;
             triggerOnChangeCall();
           }}
         >

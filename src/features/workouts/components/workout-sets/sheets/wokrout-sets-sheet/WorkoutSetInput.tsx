@@ -3,6 +3,7 @@ import { TSetParameterNameWithValue } from '@features/workouts/types';
 import { InputProps } from '@components/ui';
 import { InputWithStepButtons } from '@components/InputWithStepButtons';
 import { WorkoutSetTimeInput } from '@features/workouts/components';
+import { MEASURES_MAP, SET_PARAMETER_NAMES_TRANSLATION_MAP } from '@features/workouts/maps';
 
 type WorkoutSetInputProps = {
   parameter: TSetParameterNameWithValue;
@@ -14,13 +15,16 @@ export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props 
     props.onChange(event.target.value);
   };
 
+  let label = SET_PARAMETER_NAMES_TRANSLATION_MAP.get(parameter.name);
+  if (MEASURES_MAP.get(parameter.name) !== '') label += ` (${MEASURES_MAP.get(parameter.name)})`;
+
   switch (parameter.name) {
     case 'weight':
       return (
         <InputWithStepButtons
           name={parameter.name}
           step={2.5}
-          label={'Ciężar'}
+          label={label}
           placeholder={'0'}
           value={parameter.value}
           onChange={handleChange}
@@ -31,7 +35,7 @@ export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props 
         <InputWithStepButtons
           name={parameter.name}
           step={1}
-          label={'Powtórzenia'}
+          label={label}
           placeholder={'0'}
           value={parameter.value}
           onChange={handleChange}
@@ -42,7 +46,7 @@ export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props 
         <InputWithStepButtons
           name={parameter.name}
           step={100}
-          label={'Dystans'}
+          label={label}
           placeholder={'0'}
           value={parameter.value}
           onChange={handleChange}

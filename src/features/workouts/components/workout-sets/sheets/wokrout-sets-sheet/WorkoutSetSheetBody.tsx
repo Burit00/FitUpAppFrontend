@@ -23,7 +23,7 @@ export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
   }, [workoutExercise]);
 
   return (
-    <SheetContent className={'flex flex-col'}>
+    <SheetContent className={'flex flex-col sm:max-w-[450px] sm:w-[450px]'}>
       <SheetTitle>{workoutExercise.name}</SheetTitle>
       <div className={'flex-grow flex flex-col items-center gap-2 overflow-auto h-0'}>
         {workoutExercise.sets.length === 0 ? (
