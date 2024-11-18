@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { cn } from '@/utils';
-import Link from 'next/link';
-import { Button, Separator } from '@/components/ui';
+import { Separator } from '@/components/ui';
 import { appLinks, settings } from '@/roots/links';
 import { usePathname } from 'next/navigation';
-
-const navigationButtonClassName = 'flex justify-between gap-4 w-full text-md';
-
-const links = appLinks.filter((link) => link !== settings);
+import { NavigationButton } from '@components/layouts/NavigationLayout/_components/NavigationButton';
 
 const Navigation = () => {
   const pathname = usePathname();
+  const links = useMemo(() => {
+    return appLinks.filter((link) => link !== settings);
+  }, []);
 
   if (pathname === '/' || pathname.startsWith('/auth')) return null;
 
@@ -22,24 +21,12 @@ const Navigation = () => {
     >
       <div className={'flex flex-col gap-1 flex-grow'}>
         {links.map((link) => {
-          return (
-            <Link key={link.name} href={link.link}>
-              <Button variant={'secondary'} className={navigationButtonClassName}>
-                <span>{link.name}</span>
-                <link.icon />
-              </Button>
-            </Link>
-          );
+          return <NavigationButton key={link.name} link={link} />;
         })}
       </div>
       <div className={'flex flex-col gap-2 w-full'}>
         <Separator />
-        <Link href={settings.link}>
-          <Button variant={'secondary'} className={navigationButtonClassName}>
-            {settings.name}
-            <settings.icon />
-          </Button>
-        </Link>
+        <NavigationButton key={settings.name} link={settings} />
       </div>
     </nav>
   );

@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { cn } from '@/utils';
-import { BackButton } from '@/components/BackButton';
+import { HomeButton } from '@components/HomeButton';
 
 type PageBarProps = {
   leftSlot?: React.ReactNode;
@@ -11,7 +11,7 @@ type PageBarProps = {
 const PageBar = forwardRef<HTMLDivElement, PageBarProps>((props, ref) => {
   const { leftSlot, rightSlot, centerSlot, ...divProps } = props;
 
-  const slots = [leftSlot ?? <BackButton />, centerSlot, rightSlot];
+  const slots = [leftSlot ?? <HomeButton />, centerSlot, rightSlot];
 
   return (
     <div

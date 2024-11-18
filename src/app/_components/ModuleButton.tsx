@@ -15,16 +15,20 @@ export type ModuleButtonProps = {
 
 const ModuleButton: FC<ModuleButtonProps> = (props: ModuleButtonProps) => {
   return (
-    <Link href={props.disabled ? '' : props.link} className={cn('lg:aspect-square', props.className)}>
-      <Button
-        variant={'secondary'}
-        disabled={props.disabled}
-        className={cn('w-full h-full flex-col justify-center items-center gap-1 md:gap-3 bg-background2')}
-      >
+    <Button
+      variant={'dark'}
+      disabled={props.disabled}
+      className={cn(
+        'w-full h-full flex-col justify-center items-center gap-1 md:gap-3 lg:aspect-square',
+        props.className,
+      )}
+      asChild
+    >
+      <Link href={props.disabled ? '' : props.link} aria-disabled={props.disabled}>
         <Icon icon={props.icon} className={'text-primary text-[3rem] mt-[1rem]'} />
         <p className={'text-xl text-wrap'}>{props.name}</p>
-      </Button>
-    </Link>
+      </Link>
+    </Button>
   );
 };
 
