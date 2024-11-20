@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui';
+import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/ui';
 import { useRouter } from 'next/navigation';
 import { getWorkoutByDate } from '@features/workouts/actions';
 import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';

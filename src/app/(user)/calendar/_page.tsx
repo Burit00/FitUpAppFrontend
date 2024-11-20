@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import CalendarGrid from '@/app/calendar/_components/CalendarGrid';
-import CalendarBar from '@/app/calendar/_components/CalendarBar';
-import WorkoutDialog from '@/app/calendar/_components/WorkoutDialog';
+import CalendarGrid from '@/app/(user)/calendar/_components/CalendarGrid';
+import CalendarBar from '@/app/(user)/calendar/_components/CalendarBar';
+import WorkoutDialog from '@/app/(user)/calendar/_components/WorkoutDialog';
 import { getWorkouts } from '@features/workouts/actions';
 import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
 import { BrowseWorkoutArraySchema } from '@features/workouts/schemas';

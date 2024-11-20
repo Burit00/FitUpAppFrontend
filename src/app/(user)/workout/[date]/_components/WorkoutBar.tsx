@@ -1,5 +1,5 @@
-import { PageBar } from '@/components/PageBar';
-import { AddWorkoutExerciseSheet } from '@/app/workout/[date]/_components/AddWorkoutExerciseSheet';
+import { PageBar } from '@components/PageBar';
+import { AddWorkoutExerciseSheet } from '@/app/(user)/workout/[date]/_components/AddWorkoutExerciseSheet';
 
 type WorkoutBarProps = {
   date: Date;

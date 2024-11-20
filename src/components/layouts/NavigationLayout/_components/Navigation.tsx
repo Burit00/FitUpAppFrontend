@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { cn } from '@/utils';
 import { Separator } from '@/components/ui';
 import { appLinks, settings } from '@/roots/links';

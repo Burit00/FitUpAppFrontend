@@ -1,6 +1,6 @@
 import { cn } from '@/utils';
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
+import { Button } from '@components/ui/button';
+import { Icon } from '@components/ui/icon';
 import Link from 'next/link';
 import { IconType } from 'react-icons';
 import { FC } from 'react';

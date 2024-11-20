@@ -5,10 +5,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@com
 import { Button, Input } from '@components/ui';
 import { TExercise } from '@features/workouts/types';
 import { getExercises } from '@features/workouts/actions';
-import { useExerciseCategories } from '@/app/workout/[date]/_hooks/useExerciseCategories';
-import { ExerciseCategoriesSelect } from '@/app/workout/[date]/_components/ExerciseCategoriesSelect';
+import { useExerciseCategories } from '@/app/(user)/workout/[date]/_hooks/useExerciseCategories';
+import { ExerciseCategoriesSelect } from '@/app/(user)/workout/[date]/_components/ExerciseCategoriesSelect';
 import { useDebounceState } from '@/hooks/useDebounceState';
-import { WorkoutExerciseRow } from '@/app/workout/[date]/_components/WorkoutExerciseRow';
+import { WorkoutExerciseRow } from '@/app/(user)/workout/[date]/_components/WorkoutExerciseRow';
 
 type AddWorkoutExerciseButtonProps<> = {
   className?: string;

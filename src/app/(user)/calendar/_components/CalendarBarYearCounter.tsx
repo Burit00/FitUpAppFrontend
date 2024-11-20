@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from '@/components/ui';
+import { Button } from '@components/ui';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
-import AnimatedCounter from '@/components/AnimatedCounter';
+import AnimatedCounter from '@components/AnimatedCounter';
 
 type CalendarBarYearCounterProps = {
   year: number;

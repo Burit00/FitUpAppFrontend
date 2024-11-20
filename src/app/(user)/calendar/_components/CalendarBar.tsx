@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui';
+import { Button } from '@components/ui';
 import { IoTodaySharp } from 'react-icons/io5';
-import CalendarBarYearCounter from '@/app/calendar/_components/CalendarBarYearCounter';
-import { PageBar } from '@/components/PageBar';
+import CalendarBarYearCounter from '@/app/(user)/calendar/_components/CalendarBarYearCounter';
+import { PageBar } from '@components/PageBar';
 import { useRouter } from 'next/navigation';
 
 type CalendarBarProps = {

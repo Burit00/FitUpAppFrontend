@@ -1,5 +1,5 @@
 import React from 'react';
-import CalendarPage from '@/app/calendar/_page';
+import CalendarPage from '@/app/(user)/calendar/_page';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
 
