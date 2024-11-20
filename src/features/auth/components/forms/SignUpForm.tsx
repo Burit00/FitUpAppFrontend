@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
 import { AuthForm } from './AuthForm';
-import { useRouter } from 'next/navigation';
 import { signUp } from '@features/auth/actions/commands/sign-up';
 import { TSignUp } from '@features/auth/types';
 import { SignUpSchema } from '@features/auth/schemas';
@@ -40,8 +39,6 @@ type SignUpFormProps = {
 };
 
 export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) => {
-  const router = useRouter();
-
   const form = useForm<TSignUp>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -54,7 +51,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) 
   const onSubmit = async (data: TSignUp) => {
     const response = await signUp(data);
     //TODO: show toaster on action
-    if (response.ok) router.push('/login');
+    if (response.ok) console.log('zarejestrowano pomyslnie');
     else console.error(await response.json());
   };
 
