@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { UserRoleEnum } from '@features/auth/enums/UserRoleEnum';
+import { UserRoleEnum } from '@features/auth/enums';
 
 const userRoleEnum = z.nativeEnum(UserRoleEnum);
 

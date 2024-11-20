@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { TWorkout } from '@features/workouts/types';
 import { getWorkoutByDate } from '@features/workouts/actions';
 import { WorkoutSchema } from '@features/workouts/schemas';
-import { HttpStatusEnum } from '@api/enums/HttpStatusEnum';
+import { HttpStatusEnum } from '@api/enums';
 
 type TUseWorkout = {
   workout: TWorkout;

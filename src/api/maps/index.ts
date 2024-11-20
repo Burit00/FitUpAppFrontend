@@ -1,1 +1,1 @@
-export * from './error-api.map';
+export * from '@features/auth/maps/auth-action-result.map';

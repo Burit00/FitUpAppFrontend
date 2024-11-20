@@ -1,8 +1,14 @@
 import * as React from 'react';
+import { FC } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/utils';
+import { TbLoader2 } from 'react-icons/tb';
+
+const ButtonLoader: FC = () => {
+  return <TbLoader2 className={'animate-spin repeat-infinite'} />;
+};
 
 const buttonVariants = cva(
   'gap-2 inline-flex items-center justify-center whitespace-nowrap rounded text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-[1px] focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50',
@@ -37,14 +43,25 @@ const buttonVariants = cva(
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  isLoading?: boolean;
   asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
+  ({ className, variant, size, isLoading, asChild = false, ...props }, ref) => {
+    if (asChild) return <Slot className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
 
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    return (
+      <button
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+        disabled={props.disabled || isLoading}
+      >
+        {isLoading && <ButtonLoader />}
+        {props.children}
+      </button>
+    );
   },
 );
 

@@ -3,17 +3,17 @@
 import { createContext, PropsWithChildren, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { FitUpHttpClient } from '@api';
-import { HttpStatusEnum } from '@/api/enums/HttpStatusEnum';
+import { HttpStatusEnum } from '@/api/enums';
 import { useCookie } from '@/hooks/useCookie';
 import { COOKIE_KEYS } from '@/constants/CookieKeys';
 import { TSignIn, TUserToken } from '@features/auth/types';
 import { signIn } from '@features/auth/actions/commands/sign-in';
 import { UserTokenSchema } from '@features/auth/schemas';
-import { UserRoleEnum } from '@features/auth/enums/UserRoleEnum';
+import { AuthActionResultEnum, UserRoleEnum } from '@features/auth/enums';
 
 export type TAuthContext = {
   user: TUserToken;
-  login: (auth: TUserToken) => void;
+  login: (auth: TUserToken) => Promise<void>;
   logout: (redirect?: boolean) => void;
 };
 
@@ -27,7 +27,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = useCallback((): void => {
     deleteUser();
-    router.push('/auth');
+    router.push('/login');
   }, [deleteUser, router]);
 
   const login = async (userCredentials: TSignIn): Promise<void> => {
@@ -35,10 +35,10 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     const body = await res.json();
     //TODO: show toaster on action
 
-    if (!res.ok) return console.error(body);
+    if (!res.ok) throw new Error(AuthActionResultEnum.BAD_USER_CREDENTIALS);
     const auth = UserTokenSchema.parse(body);
 
-    if (!auth) return;
+    if (!auth) throw new Error(AuthActionResultEnum.SOMETHING_WENT_WRONG);
 
     setUser(auth);
 

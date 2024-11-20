@@ -13,4 +13,4 @@ const AuthForm = forwardRef<HTMLFormElement, HTMLAttributes<HTMLFormElement>>((p
 
 AuthForm.displayName = 'AuthForm';
 
-export default AuthForm;
+export { AuthForm };

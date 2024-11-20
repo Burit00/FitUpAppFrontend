@@ -1,15 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
-import { AuthSearchEnum } from '@/app/auth/enums/AuthSearchEnum';
-import AuthForm from '@/app/auth/_components/AuthForm';
-import { usePathname, useRouter } from 'next/navigation';
+import { AuthForm } from './AuthForm';
+import { useRouter } from 'next/navigation';
 import { signUp } from '@features/auth/actions/commands/sign-up';
-import { useSearchParams } from '@/hooks/useSearchParams';
 import { TSignUp } from '@features/auth/types';
 import { SignUpSchema } from '@features/auth/schemas';
 
@@ -41,10 +39,8 @@ type SignUpFormProps = {
   className?: string;
 };
 
-function SignUpForm({ className }: SignUpFormProps) {
+export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) => {
   const router = useRouter();
-  const pathname = usePathname();
-  const { createQueryString } = useSearchParams();
 
   const form = useForm<TSignUp>({
     resolver: zodResolver(SignUpSchema),
@@ -55,12 +51,10 @@ function SignUpForm({ className }: SignUpFormProps) {
     },
   });
 
-  const loginPageLink = pathname + '?' + createQueryString(['auth', AuthSearchEnum.LOGIN]);
-
   const onSubmit = async (data: TSignUp) => {
     const response = await signUp(data);
     //TODO: show toaster on action
-    if (response.ok) router.push(loginPageLink);
+    if (response.ok) router.push('/login');
     else console.error(await response.json());
   };
 
@@ -88,13 +82,11 @@ function SignUpForm({ className }: SignUpFormProps) {
         </Button>
         <p>
           Masz już konto?{' '}
-          <Link href={loginPageLink} className={'text-primary underline'}>
+          <Link href={'/login'} className={'text-primary underline text-nowrap'}>
             Zaloguj się
           </Link>
         </p>
       </AuthForm>
     </Form>
   );
-}
-
-export default SignUpForm;
+};

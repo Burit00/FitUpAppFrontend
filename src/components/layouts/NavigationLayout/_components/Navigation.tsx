@@ -11,7 +11,7 @@ const Navigation = () => {
     return appLinks.filter((link) => link !== settings);
   }, []);
 
-  if (pathname === '/' || pathname.startsWith('/auth')) return null;
+  if (['/', '/login', '/signup'].includes(pathname)) return null;
 
   return (
     <nav
