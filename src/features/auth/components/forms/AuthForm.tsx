@@ -1,7 +1,7 @@
-import { forwardRef, HTMLAttributes } from 'react';
+import { FormHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/utils';
 
-const AuthForm = forwardRef<HTMLFormElement, HTMLAttributes<HTMLFormElement>>((props, ref) => {
+const AuthForm = forwardRef<HTMLFormElement, FormHTMLAttributes<HTMLFormElement>>((props, ref) => {
   return (
     <form
       {...props}

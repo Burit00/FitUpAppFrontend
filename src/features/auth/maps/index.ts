@@ -1,1 +1,1 @@
-export * from './auth-action-result.map';
+export * from './auth-action-error-result.map';

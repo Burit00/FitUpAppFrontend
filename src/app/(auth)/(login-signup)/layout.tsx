@@ -1,4 +1,4 @@
-import LogoSlider from '@/app/(auth)/(authentication)/_components/LogoSlider';
+import LogoSlider from './_components/LogoSlider';
 import React from 'react';
 
 type AuthLayoutProps = {

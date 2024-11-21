@@ -1,7 +1,7 @@
 import { cn } from '@/utils';
 
 type LogoProps = {
-  className: string;
+  className?: string;
 };
 
 const Logo = (props: LogoProps) => {

@@ -8,8 +8,8 @@ import { AuthForm } from './AuthForm';
 import { useAuth } from '@/hooks/useAuth';
 import { TSignIn } from '@features/auth/types';
 import { SignInSchema } from '@features/auth/schemas';
-import { useState } from 'react';
-import { AuthActionResultMap } from '@features/auth/maps';
+import React, { useState } from 'react';
+import { AuthActionErrorResultMap } from '@features/auth/maps';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
   name: keyof TSignIn;
@@ -49,7 +49,7 @@ export const LoginForm = ({ className }: LoginFormProps) => {
     setIsLoading(true);
     authContext
       .login(data)
-      .catch((err) => setError(AuthActionResultMap.get(err.message)))
+      .catch((err) => setError(AuthActionErrorResultMap.get(err.message)))
       .finally(() => setIsLoading(false));
   };
 
@@ -77,14 +77,16 @@ export const LoginForm = ({ className }: LoginFormProps) => {
           );
         })}
         <div className={'w-full text-right'}>
-          <Link href={'/'} className={'underline'}>
+          <Link href={'/reset-password-request'} className={'underline'}>
             Zapomniałeś hasła?
           </Link>
         </div>
-        <Button isLoading={isLoading} type={'submit'} className={'w-full mt-10'}>
-          Zaloguj
-        </Button>
-        <p className={'text-destructive h-3'}>{error}</p>
+        <div className={'w-full'}>
+          <Button isLoading={isLoading} type={'submit'} className={'w-full mt-10'}>
+            Zaloguj
+          </Button>
+          {error && <p className={'text-destructive text-center'}>{error}</p>}
+        </div>
         <p>
           Nie posiadasz jeszcze konta?{' '}
           <Link href={'/signup'} className={'text-primary underline text-nowrap'}>

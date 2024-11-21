@@ -63,7 +63,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, className
           type={'button'}
           variant={'ghost'}
           size={'icon'}
-          className={'text-xl absolute right-0 bottom-0 hover:bg-primary/20 rounded-l-none'}
+          className={'text-xl absolute right-0 bottom-0 hover:bg-muted/20 rounded-l-none'}
           onClick={toggleInputType}
         >
           <Icon icon={inputIcon} />

@@ -1,8 +1,8 @@
 import { HttpClient } from '@/api/http/http-client';
 import { env } from '@/environment/env';
 import { getCookie } from '@/utils/cookies';
-import { TUserToken } from '@/api/types/auth/TUserToken';
 import { COOKIE_KEYS } from '@/constants/CookieKeys';
+import { UserTokenSchema } from '@features/auth/schemas';
 
 const FitUpHttpClient = new HttpClient({
   baseUrl: env.API_URL,
@@ -14,7 +14,7 @@ const FitUpHttpClient = new HttpClient({
 FitUpHttpClient.addRequestInterceptor((request: RequestInit) => {
   const userString = getCookie(COOKIE_KEYS.USER);
   if (!userString) return request;
-  const user = JSON.parse(userString) satisfies TUserToken as TUserToken;
+  const user = UserTokenSchema.parse(JSON.parse(userString));
 
   request.headers = {
     ...request?.headers,

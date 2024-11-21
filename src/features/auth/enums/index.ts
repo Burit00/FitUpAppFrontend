@@ -1,2 +1,2 @@
-export * from './auth-action-result.enum';
+export * from './auth-action-error-result.enum';
 export * from './user-role.enum';

@@ -1,11 +1,11 @@
 import NavigationLayout from '@components/layouts/NavigationLayout/NavigationLayout';
 import { AuthHeader } from '@features/auth/components/common/AuthHeader';
 
-type UserLayoutProps = Readonly<{
+type AdminLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-export default function UserLayout({ children }: UserLayoutProps) {
+export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <>
       <AuthHeader />
