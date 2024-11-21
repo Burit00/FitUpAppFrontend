@@ -16,9 +16,9 @@ const AnimatedCounter = forwardRef<HTMLDivElement, AnimatedCounterProps>(
             <div
               key={index}
               style={{ translate: `0 -${digit}00%` }}
-              className={'relative transition-all ease-in-out duration-200 transform-gpu'}
+              className={'relative transition-all ease-in-out duration-200 transform-gpu select-none'}
             >
-              <span className={'opacity-0'}>{digit}</span>
+              <span className={'opacity-0 select-text'}>{digit}</span>
               {Array.from({ length: 10 }).map((_, index) => {
                 return (
                   <div key={index} style={{ top: `${index}00%` }} className={'absolute'}>
