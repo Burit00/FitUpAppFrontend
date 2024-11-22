@@ -35,14 +35,13 @@ export default function EmailVerificationPage(props: EmailVerificationPageProps)
 
   useEffect(() => {
     const controller = new AbortController();
-
     verifyEmail(controller.signal);
 
     return () => controller.abort({});
   }, []);
 
   return (
-    <>
+    <div>
       <h3>Weryfikacja adresu e-mail</h3>
       {isLoading ? (
         <>
@@ -57,6 +56,6 @@ export default function EmailVerificationPage(props: EmailVerificationPageProps)
           {error && <p className={'text-destructive'}>{error}</p>}
         </>
       )}
-    </>
+    </div>
   );
 }

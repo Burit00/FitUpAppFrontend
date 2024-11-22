@@ -53,6 +53,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) 
 
   const form = useForm<TSignUp>({
     resolver: zodResolver(SignUpSchema),
+    mode: 'onBlur',
     defaultValues: {
       email: '',
       password: '',

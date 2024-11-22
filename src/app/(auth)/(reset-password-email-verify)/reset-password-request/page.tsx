@@ -21,6 +21,7 @@ export default function ResetPasswordRequestPage() {
 
   const form = useForm({
     resolver: zodResolver(ResetPasswordRequestSchema),
+    mode: 'onBlur',
     defaultValues: {
       email: '',
     },
@@ -45,16 +46,21 @@ export default function ResetPasswordRequestPage() {
 
   return (
     <>
-      {successMessage ? (
-        <p className={'text-primary '}>{successMessage}</p>
-      ) : (
+      <div>
+        <h3>Resetuj hasło</h3>
+        {!successMessage ? (
+          <p>
+            Wpisz adres email powiązany z twoim kontem, następnie wyślemy Ci wiadomoć e- mail z linkiem do resetowania
+            hasła.
+          </p>
+        ) : (
+          <p className={'text-primary '}>{successMessage}</p>
+        )}
+      </div>
+      {!successMessage && (
         <Form {...form}>
           <AuthForm
             onSubmit={form.handleSubmit(onSubmit)}
-            title={'Resetuj hasło'}
-            description={
-              'Wpisz adres email powiązany z twoim kontem, następnie wyślemy Ci mail z linkiem do resetowania hasła.'
-            }
             submitText={'Zresetuj hasło'}
             errorMessage={errorMessage}
             isLoading={isLoading}

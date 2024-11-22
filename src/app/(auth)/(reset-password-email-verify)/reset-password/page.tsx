@@ -11,6 +11,8 @@ import { ResetPasswordSchema } from '@features/auth/schemas';
 import { AuthErrorResultMap } from '@features/auth/maps';
 import { AuthErrorResultEnum } from '@features/auth/enums';
 import { AuthForm } from '@/app/(auth)/(reset-password-email-verify)/_components/AuthForm';
+import { AuthSuccessResultMap } from '@features/auth/maps/auth-success-result.map';
+import { AuthSuccessResultEnum } from '@features/auth/enums/auth-success-result.enum';
 
 const FormElements: (InputProps & {
   name: keyof TResetPassword;
@@ -38,11 +40,13 @@ type ResetPasswordPageProps = {
 };
 
 export default function ResetPasswordPage({ searchParams }: ResetPasswordPageProps) {
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm({
     resolver: zodResolver(ResetPasswordSchema),
+    mode: 'onBlur',
     defaultValues: {
       password: '',
       confirmPassword: '',
@@ -53,6 +57,7 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
 
   const onSubmit = async (data: TResetPassword) => {
     setError('');
+    setSuccessMessage('');
     setIsLoading(true);
     const response = await resetPassword(data);
     setIsLoading(false);
@@ -60,35 +65,50 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
     if (!response.ok) {
       const error: TApiError = await response.json();
       setError(AuthErrorResultMap.get(error.code as AuthErrorResultEnum));
+
+      return;
     }
+    const message = AuthSuccessResultMap.get(AuthSuccessResultEnum.RESET_PASSWORD);
+    setSuccessMessage(message);
   };
 
   return (
-    <Form {...form}>
-      <AuthForm
-        onSubmit={form.handleSubmit(onSubmit)}
-        title={'Resetuj hasło'}
-        submitText={'Zresetuj hasło'}
-        errorMessage={error}
-        isLoading={isLoading}
-        className={'w-full flex flex-col gap-4'}
-      >
-        {FormElements.map((element) => (
-          <FormField
-            key={element.name}
-            name={element.name}
-            control={form.control}
-            render={({ field }) => (
-              <FormItem {...field}>
-                <FormControl>
-                  <Input {...element} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        ))}
-      </AuthForm>
-    </Form>
+    <>
+      <div>
+        <h3>Resetuj hasło</h3>
+        {!successMessage ? (
+          <p>Proszę podać nowe hasło i potwierdzić je, wpisując je ponownie.</p>
+        ) : (
+          <p className={'text-primary '}>{successMessage}</p>
+        )}
+      </div>
+      {!successMessage && (
+        <Form {...form}>
+          <AuthForm
+            onSubmit={form.handleSubmit(onSubmit)}
+            submitText={'Resetuj hasło'}
+            errorMessage={error}
+            isLoading={isLoading}
+            className={'w-full flex flex-col gap-4'}
+          >
+            {FormElements.map((element) => (
+              <FormField
+                key={element.name}
+                name={element.name}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem {...field}>
+                    <FormControl>
+                      <Input {...element} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
+          </AuthForm>
+        </Form>
+      )}
+    </>
   );
 }

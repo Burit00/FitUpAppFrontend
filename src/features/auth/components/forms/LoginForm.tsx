@@ -40,6 +40,7 @@ export const LoginForm = ({ className }: LoginFormProps) => {
   const authContext = useAuth();
   const form = useForm<TSignIn>({
     resolver: zodResolver(SignInSchema),
+    mode: 'onBlur',
     defaultValues: {
       email: '',
       password: '',
@@ -51,7 +52,6 @@ export const LoginForm = ({ className }: LoginFormProps) => {
     authContext
       .login(data)
       .catch((err: Error) => {
-        console.error(err.message);
         setErrorMessage(AuthErrorResultMap.get(err.message as AuthErrorResultEnum));
       })
       .finally(() => setIsLoading(false));

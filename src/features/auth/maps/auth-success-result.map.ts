@@ -7,5 +7,5 @@ export const AuthSuccessResultMap = new Map<AuthSuccessResultEnum, string>([
   ],
   [AuthSuccessResultEnum.EMAIL_VERIFICATION, 'Twój adres e-mail został pomyślnie zweryfikowany!'],
   [AuthSuccessResultEnum.RESET_PASSWORD, 'Twoje hasło zostało pomyślnie zresetowane!'],
-  [AuthSuccessResultEnum.RESET_PASSWORD_REQUEST, 'Wysłalimy link do resetowania hasła na podany adres e-mail.'],
+  [AuthSuccessResultEnum.RESET_PASSWORD_REQUEST, 'Niedługo otrzymasz e-mail z linkiem do resetowania hasła.'],
 ]);
