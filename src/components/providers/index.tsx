@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import AuthProvider from '@/components/providers/AuthProvider';
+import AuthProvider from '@features/auth/contexts/AuthProvider';
 import CookieProvider from '@/components/providers/CookieProvider';
 
 type ProvidersProps = PropsWithChildren;

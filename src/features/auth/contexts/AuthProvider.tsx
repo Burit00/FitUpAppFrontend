@@ -3,7 +3,7 @@
 import { createContext, PropsWithChildren, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { FitUpHttpClient } from '@api';
-import { HttpStatusEnum } from '@/api/enums';
+import { HttpStatusEnum } from '@api/enums';
 import { useCookie } from '@/hooks/useCookie';
 import { COOKIE_KEYS } from '@/constants/CookieKeys';
 import { TSignIn, TUserToken } from '@features/auth/types';
@@ -15,7 +15,7 @@ import { TApiError } from '@api/types/api-error';
 export type TAuthContext = {
   user: TUserToken;
   login: (auth: TUserToken) => Promise<void>;
-  logout: (redirect?: boolean) => void;
+  logout: () => void;
 };
 
 export const AuthContext = createContext<TAuthContext>(null);
