@@ -1,15 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResetPasswordSchema } from '@features/auth/schemas';
-import { TResetPassword } from '@features/auth/types';
 import { Form, FormControl, FormField, FormItem, FormMessage, Input, InputProps } from '@components/ui';
-import { useState } from 'react';
-import { resetPassword } from '@features/auth/actions/commands/reset-pasword.http';
-import { AuthActionErrorResultMap } from '@features/auth/maps';
-import { TApiError } from '@api/types/common/api-error';
-import { AuthActionErrorResultEnum } from '@features/auth/enums';
+import { TApiError } from '@api/types/api-error';
+import { TResetPassword } from '@features/auth/types';
+import { resetPassword } from '@features/auth/actions';
+import { ResetPasswordSchema } from '@features/auth/schemas';
+import { AuthErrorResultMap } from '@features/auth/maps';
+import { AuthErrorResultEnum } from '@features/auth/enums';
 import { AuthForm } from '@/app/(auth)/(reset-password-email-verify)/_components/AuthForm';
 
 const FormElements: (InputProps & {
@@ -59,7 +59,7 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
 
     if (!response.ok) {
       const error: TApiError = await response.json();
-      setError(AuthActionErrorResultMap.get(error.code as AuthActionErrorResultEnum));
+      setError(AuthErrorResultMap.get(error.code as AuthErrorResultEnum));
     }
   };
 

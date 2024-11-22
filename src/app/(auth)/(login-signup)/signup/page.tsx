@@ -1,11 +1,12 @@
-import React from 'react';
 import { SignUpForm } from '@features/auth/components';
+import { FormWrapper } from '../_components/FormWrapper';
+import { LoginPageLink } from '../_components/LoginPageLink';
 
 export default function LoginPage() {
   return (
-    <>
-      <div className={'hidden lg:block w-full max-w-[450px] lg:w-2/5'}></div>
-      <SignUpForm className={'w-full max-w-[400px] lg:w-2/5'} />
-    </>
+    <FormWrapper direction={'reverse'}>
+      <SignUpForm />
+      <LoginPageLink />
+    </FormWrapper>
   );
 }

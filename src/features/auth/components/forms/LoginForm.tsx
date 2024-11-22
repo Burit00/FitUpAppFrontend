@@ -3,13 +3,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
+import { Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
 import { AuthForm } from './AuthForm';
 import { useAuth } from '@/hooks/useAuth';
 import { TSignIn } from '@features/auth/types';
 import { SignInSchema } from '@features/auth/schemas';
 import React, { useState } from 'react';
-import { AuthActionErrorResultMap } from '@features/auth/maps';
+import { AuthErrorResultMap } from '@features/auth/maps';
+import { AuthErrorResultEnum } from '@features/auth/enums';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
   name: keyof TSignIn;
@@ -35,7 +36,7 @@ type LoginFormProps = {
 
 export const LoginForm = ({ className }: LoginFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const authContext = useAuth();
   const form = useForm<TSignIn>({
     resolver: zodResolver(SignInSchema),
@@ -49,14 +50,23 @@ export const LoginForm = ({ className }: LoginFormProps) => {
     setIsLoading(true);
     authContext
       .login(data)
-      .catch((err) => setError(AuthActionErrorResultMap.get(err.message)))
+      .catch((err: Error) => {
+        console.error(err.message);
+        setErrorMessage(AuthErrorResultMap.get(err.message as AuthErrorResultEnum));
+      })
       .finally(() => setIsLoading(false));
   };
 
   return (
     <Form {...form}>
-      <AuthForm onSubmit={form.handleSubmit(onSubmit)} className={className}>
-        <h1 className={'text-primary text-center'}>Witaj z powrotem!</h1>
+      <AuthForm
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={className}
+        title={'Witaj z powrotem!'}
+        submitText={'Zaloguj się'}
+        errorMessage={errorMessage}
+        isLoading={isLoading}
+      >
         {formElements.map((element) => {
           return (
             <FormField
@@ -81,18 +91,6 @@ export const LoginForm = ({ className }: LoginFormProps) => {
             Zapomniałeś hasła?
           </Link>
         </div>
-        <div className={'w-full'}>
-          <Button isLoading={isLoading} type={'submit'} className={'w-full mt-10'}>
-            Zaloguj
-          </Button>
-          {error && <p className={'text-destructive text-center'}>{error}</p>}
-        </div>
-        <p>
-          Nie posiadasz jeszcze konta?{' '}
-          <Link href={'/signup'} className={'text-primary underline text-nowrap'}>
-            Zarejestruj się
-          </Link>
-        </p>
       </AuthForm>
     </Form>
   );

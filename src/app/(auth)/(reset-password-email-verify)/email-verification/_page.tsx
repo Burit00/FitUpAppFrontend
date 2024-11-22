@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { emailVerification } from '@features/auth/actions/commands/email-verification.http';
-import { TApiError } from '@api/types/common/api-error';
-import { AuthActionErrorResultMap } from '@features/auth/maps';
-import { AuthActionErrorResultEnum } from '@features/auth/enums';
+import { TApiError } from '@api/types/api-error';
+import { AuthErrorResultMap } from '@features/auth/maps';
+import { AuthErrorResultEnum } from '@features/auth/enums';
 import { TbLoader2 } from 'react-icons/tb';
 
 type EmailVerificationPageProps = {
@@ -25,7 +25,7 @@ export default function EmailVerificationPage(props: EmailVerificationPageProps)
 
     if (!response.ok) {
       const error: TApiError = await response.json();
-      setError(AuthActionErrorResultMap.get(error.code as AuthActionErrorResultEnum));
+      setError(AuthErrorResultMap.get(error.code as AuthErrorResultEnum));
 
       return;
     }

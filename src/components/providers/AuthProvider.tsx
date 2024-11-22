@@ -9,7 +9,8 @@ import { COOKIE_KEYS } from '@/constants/CookieKeys';
 import { TSignIn, TUserToken } from '@features/auth/types';
 import { signIn } from '@features/auth/actions/commands/sign-in';
 import { UserTokenSchema } from '@features/auth/schemas';
-import { AuthActionErrorResultEnum, UserRoleEnum } from '@features/auth/enums';
+import { AuthErrorResultEnum, UserRoleEnum } from '@features/auth/enums';
+import { TApiError } from '@api/types/api-error';
 
 export type TAuthContext = {
   user: TUserToken;
@@ -35,10 +36,13 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     const body = await res.json();
     //TODO: show toaster on action
 
-    if (!res.ok) throw new Error(AuthActionErrorResultEnum.BAD_USER_CREDENTIALS);
+    if (!res.ok) {
+      const error: TApiError<AuthErrorResultEnum> = body;
+      throw new Error(error.code);
+    }
     const auth = UserTokenSchema.parse(body);
 
-    if (!auth) throw new Error(AuthActionErrorResultEnum.SOMETHING_WENT_WRONG);
+    if (!auth) throw new Error(AuthErrorResultEnum.SOMETHING_WENT_WRONG);
 
     setUser(auth);
 
