@@ -1,12 +1,6 @@
-import React from 'react';
-import CalendarPage from '@/app/(user)/calendar/_page';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
-
-// export const metadata = {
-//   title: 'Calendar | FitUp',
-//   description: 'Overview of your workouts.',
-// };
+import CalendarPage from '@/app/(user)/calendar/_page';
 
 type CalendarServerPageProps = {
   searchParams: {

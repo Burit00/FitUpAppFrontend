@@ -13,8 +13,8 @@ type WorkoutSetSheetTableProps = {
 
 export const WorkoutSetSheetTable: FC<WorkoutSetSheetTableProps> = ({ parameters, sets, activeSet, onRowClick }) => {
   return (
-    <Table className={'table-fixed w-full'}>
-      <TableHeader>
+    <Table className={'table-fixed w-full relative'}>
+      <TableHeader className={'sticky top-0 z-[50] bg-background'}>
         <TableRow>
           {parameters.map((parameter, index) => (
             <>
@@ -35,6 +35,7 @@ export const WorkoutSetSheetTable: FC<WorkoutSetSheetTableProps> = ({ parameters
             onKeyDown={(e) => {
               if (e.key === 'Enter') onRowClick(set);
             }}
+            className={'hover:cursor-pointer'}
             onClick={() => onRowClick(set)}
           >
             {set.parameters.map((parameter, index) => (
@@ -52,31 +53,5 @@ export const WorkoutSetSheetTable: FC<WorkoutSetSheetTableProps> = ({ parameters
         ))}
       </TableBody>
     </Table>
-    // <table>
-    //   <thead>
-    //     <tr>
-    //       {parameters.map((parameter, index) => (
-    //         <>
-    //           <th key={parameter.name}>{parameter.name}</th>
-    //           {parameters.length - 1 !== index && <th></th>}
-    //         </>
-    //       ))}
-    //     </tr>
-    //   </thead>
-    //   <tbody>
-    //     {sets.map((set) => (
-    //       <tr key={set.id} className={'rounded border border-primary border-solid px-2 py-2'}>
-    //         {set.parameters.map((setParameter, index) => (
-    //           <>
-    //             <td key={setParameter.id}>
-    //               {setParameter.value.toString()} {MEASURES_MAP.get(setParameter.name)}
-    //             </td>
-    //             {set.parameters.length - 1 !== index && <th>x</th>}
-    //           </>
-    //         ))}
-    //       </tr>
-    //     ))}
-    //   </tbody>
-    // </table>
   );
 };

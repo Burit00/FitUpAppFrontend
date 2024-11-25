@@ -23,7 +23,8 @@ export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props 
       return (
         <InputWithStepButtons
           name={parameter.name}
-          step={2.5}
+          buttonStepValue={2.5}
+          step={0.05}
           label={label}
           placeholder={'0'}
           value={parameter.value}
@@ -34,6 +35,7 @@ export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props 
       return (
         <InputWithStepButtons
           name={parameter.name}
+          buttonStepValue={1}
           step={1}
           label={label}
           placeholder={'0'}
@@ -45,7 +47,8 @@ export const WorkoutSetInput: FC<WorkoutSetInputProps> = ({ parameter, ...props 
       return (
         <InputWithStepButtons
           name={parameter.name}
-          step={100}
+          buttonStepValue={100}
+          step={0.5}
           label={label}
           placeholder={'0'}
           value={parameter.value}

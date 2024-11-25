@@ -31,10 +31,11 @@ function generateSetParametersWithInitialValues(
 type WorkoutSetFormProps = {
   workoutExercise: TWorkoutExercise;
   workoutSetToUpdate?: TWorkoutSet;
-  requestRefresh: () => void;
+  onRequestRefresh: () => Promise<void>;
 };
 
 export const WorkoutSetForm = ({ workoutExercise, workoutSetToUpdate, ...props }: WorkoutSetFormProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [parameters, setParameters] = useState<TSetParameterNameWithValueArray>(() =>
     generateSetParametersWithInitialValues(workoutExercise.parameters),
   );
@@ -58,26 +59,30 @@ export const WorkoutSetForm = ({ workoutExercise, workoutSetToUpdate, ...props }
   };
 
   const handleWorkoutSetDelete = async () => {
+    setIsLoading(true);
     await deleteWorkoutSet(workoutSetToUpdate.id);
+    await props.onRequestRefresh();
+    setIsLoading(false);
   };
 
   const onSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
 
+    setIsLoading(true);
     if (workoutSetToUpdate) {
       await updateSetParameters({
         workoutSetId: workoutSetToUpdate.id,
         parameters,
       });
-
-      return props.requestRefresh();
+    } else {
+      await createWorkoutSet({
+        workoutExerciseId: workoutExercise.id,
+        orderIndex: -1,
+        parameterValues: parameters,
+      });
     }
-    await createWorkoutSet({
-      workoutExerciseId: workoutExercise.id,
-      orderIndex: -1,
-      parameterValues: parameters,
-    });
-    props.requestRefresh();
+    await props.onRequestRefresh();
+    setIsLoading(false);
   };
 
   return (
@@ -86,12 +91,10 @@ export const WorkoutSetForm = ({ workoutExercise, workoutSetToUpdate, ...props }
         <WorkoutSetInput key={parameter.id} parameter={parameter} onChange={handleChangeValue(parameter)} />
       ))}
       <WorkoutSetFormButtons
+        isLoading={isLoading}
         type={workoutSetToUpdate ? 'update' : 'create'}
         onResetForm={() => setParameters(generateSetParametersWithInitialValues(workoutExercise.parameters))}
-        onRemoveSet={async () => {
-          await handleWorkoutSetDelete();
-          props.requestRefresh();
-        }}
+        onRemoveSet={handleWorkoutSetDelete}
       />
     </form>
   );

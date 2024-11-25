@@ -1,16 +1,18 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@components/ui/sheet';
 import { Button, Input } from '@components/ui';
-import { TExercise } from '@features/workouts/types';
+import { TExercise, TWorkoutExercise } from '@features/workouts/types';
 import { getExercises } from '@features/workouts/actions';
 import { useExerciseCategories } from '@/app/(user)/workout/[date]/_hooks/useExerciseCategories';
 import { ExerciseCategoriesSelect } from '@/app/(user)/workout/[date]/_components/ExerciseCategoriesSelect';
 import { useDebounceState } from '@/hooks/useDebounceState';
 import { WorkoutExerciseRow } from '@/app/(user)/workout/[date]/_components/WorkoutExerciseRow';
+import { Loader } from '@components/Loader';
 
 type AddWorkoutExerciseButtonProps<> = {
+  exercisesToFilter?: TWorkoutExercise[];
   className?: string;
   onAddNewExercise: (exerciseId: string) => void;
 };
@@ -18,16 +20,27 @@ type AddWorkoutExerciseButtonProps<> = {
 export const AddWorkoutExerciseSheet: FC<AddWorkoutExerciseButtonProps> = (props) => {
   const [exerciseSearch, setExerciseSearch] = useDebounceState('');
   const { selectedCategoryId, categories, setCategorySearch, handleSelectCategory } = useExerciseCategories();
-  const [exercises, setExercises] = useState<TExercise[]>([]);
+  const [exercisesFromApi, setExercisesFromApi] = useState<TExercise[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const exercises: TExercise[] = useMemo(() => {
+    if (!props.exercisesToFilter) return exercisesFromApi;
+
+    return exercisesFromApi.filter(
+      (exercise) => !props.exercisesToFilter?.some((exerciseToFilter) => exercise.name === exerciseToFilter.name),
+    );
+  }, [exercisesFromApi, props.exercisesToFilter]);
 
   useEffect(() => {
     const getExercisesFromApi = async (params: { search?: string; categoryId?: string }): Promise<void> => {
+      setIsLoading(true);
       const response = await getExercises(params);
+      setIsLoading(false);
 
       if (!response.ok) return;
 
       const data = await response.json();
-      setExercises(data);
+      setExercisesFromApi(data);
     };
     const categoryId = selectedCategoryId !== 'all' ? selectedCategoryId : '';
     getExercisesFromApi({ search: exerciseSearch, categoryId });
@@ -57,6 +70,8 @@ export const AddWorkoutExerciseSheet: FC<AddWorkoutExerciseButtonProps> = (props
           />
           {/* hard height value enforce show scroll on element*/}
           <div className={'w-full flex-grow h-0 overflow-auto flex flex-col gap-2 p-1'}>
+            <Loader isLoading={isLoading} />
+            {exercises.length === 0 && <p>Nie znaleziono ćwiczeń spełniających podane kryteria.</p>}
             {exercises.map((exercise) => (
               <WorkoutExerciseRow
                 key={exercise.id}

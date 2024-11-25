@@ -3,16 +3,17 @@ import { Button, Input, InputProps } from '@components/ui';
 import { FaMinus, FaPlus } from 'react-icons/fa6';
 import { cn } from '@/utils';
 
-type InputWithStepButtonsProps = Omit<InputProps, 'step'> & {
-  step: number | string;
+type InputWithStepButtonsProps = InputProps & {
+  buttonStepValue: number;
 };
 
 const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInputElement, InputWithStepButtonsProps>(
-  ({ step, ...props }: InputWithStepButtonsProps, ref: ForwardedRef<HTMLInputElement>) => {
+  ({ buttonStepValue, ...props }: InputWithStepButtonsProps, ref: ForwardedRef<HTMLInputElement>) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => inputRef.current);
     const triggerOnChangeCall = () => {
+      inputRef.current.focus();
       const event = new Event('change', { bubbles: true });
       inputRef.current.dispatchEvent(event);
     };
@@ -23,7 +24,14 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
           type={'button'}
           variant={'dark'}
           onClick={() => {
-            inputRef.current.valueAsNumber -= +step;
+            if (inputRef.current.min === '') {
+              inputRef.current.valueAsNumber -= buttonStepValue;
+            } else {
+              const min = Number(inputRef.current.min);
+              const newValue = inputRef.current.valueAsNumber - buttonStepValue;
+              inputRef.current.valueAsNumber = newValue <= min ? min : newValue;
+            }
+
             triggerOnChangeCall();
           }}
         >
@@ -41,7 +49,14 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
           type={'button'}
           variant={'dark'}
           onClick={() => {
-            inputRef.current.valueAsNumber += +step;
+            if (inputRef.current.max === '') {
+              inputRef.current.valueAsNumber += buttonStepValue;
+            } else {
+              const max = Number(inputRef.current.max);
+              const newValue = inputRef.current.valueAsNumber + buttonStepValue;
+              inputRef.current.valueAsNumber = newValue >= max ? max : newValue;
+            }
+
             triggerOnChangeCall();
           }}
         >

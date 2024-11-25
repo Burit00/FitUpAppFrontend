@@ -1,5 +1,14 @@
 import React, { FC, useState } from 'react';
-import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from '@components/ui';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@components/ui';
 import { FaTrash } from 'react-icons/fa6';
 import { TWorkoutExercise } from '@features/workouts/types';
 
@@ -31,15 +40,24 @@ const DeleteWorkoutExerciseButton: FC<DeleteWorkoutExerciseButtonProps> = ({
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>Usuń ćwiczenie</DialogHeader>
-        <p>
-          Czy na pewno chcesz usunąć ćwiczenie <b className={'text-primary'}>{workoutExercise.name}</b> z tego treningu?
-        </p>
+        <DialogHeader>
+          <DialogTitle>Usuń ćwiczenie</DialogTitle>
+          <DialogDescription>
+            Czy na pewno chcesz usunąć ćwiczenie <b className={'text-primary'}>{workoutExercise.name}</b> z tego
+            treningu?
+          </DialogDescription>
+        </DialogHeader>
         <DialogFooter>
           <Button variant={'ghost'} onClick={() => setOpen(false)}>
             Anuluj
           </Button>
-          <Button variant={'destructive'} onClick={onDelete}>
+          <Button
+            variant={'destructive'}
+            onClick={() => {
+              onDelete();
+              setOpen(false);
+            }}
+          >
             Usuń
           </Button>
         </DialogFooter>

@@ -15,7 +15,10 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttribut
   ({ className, ...props }, ref) => (
     <thead
       ref={ref}
-      className={cn('[&_tr]:border-b [&_tr:hover]:bg-inherit border-b-2 border-b-primary border-solid', className)}
+      className={cn(
+        '[&_tr:hover]:bg-inherit relative after:absolute after:bottom-0 after:w-full after:h-[2px] after:bg-primary',
+        className,
+      )}
       {...props}
     />
   ),
@@ -23,16 +26,12 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttribut
 TableHeader.displayName = 'TableHeader';
 
 const TableBody = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
-  ({ className, ...props }, ref) => (
-    <tbody ref={ref} className={cn('[&_tr:last-child]:border-0', className)} {...props} />
-  ),
+  ({ className, ...props }, ref) => <tbody ref={ref} className={cn('', className)} {...props} />,
 );
 TableBody.displayName = 'TableBody';
 
 const TableFooter = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
-  ({ className, ...props }, ref) => (
-    <tfoot ref={ref} className={cn('border-t bg-muted/50 font-medium [&>tr]:last:border-b-0', className)} {...props} />
-  ),
+  ({ className, ...props }, ref) => <tfoot ref={ref} className={cn('bg-muted/50 font-medium', className)} {...props} />,
 );
 TableFooter.displayName = 'TableFooter';
 
@@ -41,10 +40,16 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
     <tr
       ref={ref}
       className={cn(
-        'border-b transition-colors even:bg-muted/10 data-[selected=true]:bg-muted/30 hover:bg-muted/20 focus-visible:bg-muted/20 outline-none',
+        'transition-colors duration-300 even:bg-muted/10 data-[selected=true]:bg-muted/40 data-[selected=true]:text-primary hover:bg-muted/30 focus-visible:bg-muted/20 outline-none',
         className,
       )}
       {...props}
+      onClick={(e) => {
+        if (props.onClick) {
+          e.stopPropagation();
+          props.onClick(e);
+        }
+      }}
     />
   ),
 );

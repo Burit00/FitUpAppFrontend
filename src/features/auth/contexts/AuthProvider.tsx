@@ -44,7 +44,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
     if (!auth) throw new Error(AuthErrorResultEnum.SOMETHING_WENT_WRONG);
 
-    setUser(auth);
+    setUser(auth, { expires: new Date(auth.expires) });
 
     if (auth.roles.includes(UserRoleEnum.ADMIN)) router.push('/admin');
     else router.push('/');

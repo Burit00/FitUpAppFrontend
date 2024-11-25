@@ -3,12 +3,14 @@ import { Button } from '@components/ui';
 
 type WorkoutSetFormButtonsProps = {
   type: 'create' | 'update';
+  isLoading: boolean;
   onResetForm: () => void;
   onRemoveSet: () => void;
 };
 
 export const WorkoutSetFormButtons: FC<WorkoutSetFormButtonsProps> = ({
   type,
+  isLoading,
   onResetForm,
   onRemoveSet,
 }: WorkoutSetFormButtonsProps) => {
@@ -16,7 +18,9 @@ export const WorkoutSetFormButtons: FC<WorkoutSetFormButtonsProps> = ({
     case 'create':
       return (
         <>
-          <Button type={'submit'}>Dodaj serię</Button>
+          <Button type={'submit'} isLoading={isLoading}>
+            Dodaj serię
+          </Button>
           <Button type={'reset'} variant={'outline'} onClick={onResetForm}>
             Resetuj wartości
           </Button>
@@ -25,8 +29,10 @@ export const WorkoutSetFormButtons: FC<WorkoutSetFormButtonsProps> = ({
     case 'update':
       return (
         <>
-          <Button type={'submit'}>Zapisz zmiany</Button>
-          <Button variant={'destructive'} onClick={onRemoveSet}>
+          <Button type={'submit'} isLoading={isLoading}>
+            Zapisz zmiany
+          </Button>
+          <Button variant={'destructive'} isLoading={isLoading} onClick={onRemoveSet}>
             Usuń serię
           </Button>
         </>

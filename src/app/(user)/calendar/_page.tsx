@@ -7,7 +7,7 @@ import { getWorkouts } from '@features/workouts/actions';
 import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
 import { BrowseWorkoutArraySchema } from '@features/workouts/schemas';
 import dynamic from 'next/dynamic';
-import { TbLoader2 } from 'react-icons/tb';
+import { Loader } from '@components/Loader';
 
 const DynamicCalendarGrid = dynamic(() => import('./_components/CalendarGrid'));
 
@@ -18,7 +18,6 @@ type CalendarPageProps = {
 export default function CalendarPage({ year }: CalendarPageProps) {
   const [workouts, setWorkouts] = useState<TBrowseWorkout[]>([]);
   const [workout, setWorkout] = useState<TBrowseWorkout>(null);
-  const [isWorkoutDialogOpen, setIsWorkoutDialogOpen] = useState<boolean>(false);
   const [scrollToToday, setScrollToToday] = useState<boolean>(true);
 
   useEffect(() => {
@@ -68,22 +67,19 @@ export default function CalendarPage({ year }: CalendarPageProps) {
         date: selectedDay,
       });
     else setWorkout(selectedWorkout);
-
-    setIsWorkoutDialogOpen(true);
   };
 
   const handleWorkoutDialogOpenChange = (value: boolean) => {
-    setIsWorkoutDialogOpen(value);
     if (!value) setWorkout(null);
   };
 
   return (
     <div className={'w-full h-full flex flex-col items-center overflow-auto'}>
       <CalendarBar year={year} onScrollToToday={() => setScrollToToday(true)} />
-      <Suspense fallback={<TbLoader2 className={'animate-spin repeat-infinite h-20 w-20'} />}>
+      <Suspense fallback={<Loader />}>
         <DynamicCalendarGrid days={days} year={year} scrollToToday={scrollToToday} onDaySelect={handleDaySelect} />
       </Suspense>
-      <WorkoutDialog workout={workout} isOpen={isWorkoutDialogOpen} onOpenChange={handleWorkoutDialogOpenChange} />
+      <WorkoutDialog workout={workout} isOpen={!!workout} onOpenChange={handleWorkoutDialogOpenChange} />
     </div>
   );
 }

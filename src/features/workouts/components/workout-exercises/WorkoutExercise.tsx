@@ -41,6 +41,7 @@ export const WorkoutExercise: FC<WorkoutSetProps> = ({ workoutExercise, ...props
         </div>
       </div>
       <div className={'flex flex-row flex-wrap gap-2'}>
+        {workoutExercise.sets.length === 0 && <p>Nie dodano żadnej serii do tego ćwiczenia.</p>}
         {workoutExercise.sets.map((set: TWorkoutSet) => (
           <WorkoutSet key={set.id} set={set} />
         ))}

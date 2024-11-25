@@ -9,6 +9,7 @@ import { TWorkoutExercise } from '@features/workouts/types';
 import { WorkoutSetSheet } from '@features/workouts/components/workout-sets/sheets/wokrout-sets-sheet/WorkoutSetSheet';
 import { AddWorkoutExerciseSheet } from './_components/AddWorkoutExerciseSheet';
 import { WorkoutBar } from './_components/WorkoutBar';
+import { Loader } from '@components/Loader';
 
 type WorkoutPageProps = {
   date: Date;
@@ -39,32 +40,35 @@ export default function WorkoutPage(props: WorkoutPageProps) {
   return (
     <>
       <div className={'w-full flex flex-col justify-between gap-5'}>
-        <WorkoutBar date={props.date} onAddNewExercise={createOrUpdateWorkout} />
-        <div
-          className={cn(
-            'w-full flex-grow flex flex-col justify-center items-center overflow-auto',
-            workout?.exercises.length > 0 && 'justify-start',
-          )}
-        >
-          {isLoading ? (
-            <p>Loading..</p>
-          ) : (
+        <WorkoutBar date={props.date} exercisesToFilter={workout?.exercises} onAddNewExercise={createOrUpdateWorkout} />
+        <div className={'relative flex-grow overflow-hidden'}>
+          <div
+            className={cn(
+              'w-full h-full flex flex-col justify-center items-center overflow-auto',
+              workout?.exercises.length > 0 && 'justify-start',
+            )}
+          >
+            <Loader isLoading={isLoading} />
             <WorkoutDetails
               workout={workout}
               onExerciseClick={setSelectedExercise}
               onExerciseDelete={handleWorkoutExerciseDelete}
             />
-          )}
+          </div>
         </div>
         <div className={'w-full flex justify-center md:hidden'}>
-          <AddWorkoutExerciseSheet className={'w-full'} onAddNewExercise={createOrUpdateWorkout} />
+          <AddWorkoutExerciseSheet
+            className={'w-full'}
+            exercisesToFilter={workout?.exercises}
+            onAddNewExercise={createOrUpdateWorkout}
+          />
         </div>
       </div>
       <WorkoutSetSheet
         open={!!selectedExercise}
         onOpenChange={(open: boolean) => !open && setSelectedExercise(null)}
         workoutExercise={selectedExercise}
-        requestRefresh={fetchWorkout}
+        onRequestRefresh={fetchWorkout}
       />
     </>
   );
