@@ -10,7 +10,7 @@ import { resetPassword } from '@features/auth/actions';
 import { ResetPasswordSchema } from '@features/auth/schemas';
 import { AuthErrorResultMap } from '@features/auth/maps';
 import { AuthErrorResultEnum } from '@features/auth/enums';
-import { AuthForm } from '@/app/(auth)/(reset-password-email-verify)/_components/AuthForm';
+import { AuthForm } from '@/app/(auth)/(account-actions)/_components/AuthForm';
 import { AuthSuccessResultMap } from '@features/auth/maps/auth-success-result.map';
 import { AuthSuccessResultEnum } from '@features/auth/enums/auth-success-result.enum';
 
@@ -18,6 +18,13 @@ const FormElements: (InputProps & {
   name: keyof TResetPassword;
   label: string;
 })[] = [
+  {
+    type: 'email',
+    label: 'Email',
+    name: 'email',
+    placeholder: 'Email',
+    disabled: true,
+  },
   {
     type: 'password',
     label: 'Hasło',
@@ -35,7 +42,7 @@ const FormElements: (InputProps & {
 type ResetPasswordPageProps = {
   searchParams: {
     token: string;
-    userId: string;
+    email: string;
   };
 };
 
@@ -51,7 +58,7 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
       password: '',
       confirmPassword: '',
       token: searchParams.token,
-      userId: searchParams.userId,
+      email: searchParams.email,
     },
   });
 

@@ -11,8 +11,7 @@ import { SignUpSchema } from '@features/auth/schemas';
 import { AuthErrorResultMap } from '@features/auth/maps';
 import { TApiError } from '@api/types/api-error';
 import { AuthErrorResultEnum } from '@features/auth/enums';
-import { AuthSuccessResultMap } from '@features/auth/maps/auth-success-result.map';
-import { AuthSuccessResultEnum } from '@features/auth/enums/auth-success-result.enum';
+import { useRouter } from 'next/navigation';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
   name: keyof TSignUp;
@@ -48,8 +47,9 @@ type SignUpFormProps = {
 
 export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string>('');
   const [error, setError] = useState<string>('');
+
+  const router = useRouter();
 
   const form = useForm<TSignUp>({
     resolver: zodResolver(SignUpSchema),
@@ -63,7 +63,6 @@ export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) 
 
   const onSubmit = async (data: TSignUp): Promise<void> => {
     setError('');
-    setSuccessMessage('');
     setIsLoading(true);
     const response = await signUp(data).finally(() => setIsLoading(false));
 
@@ -73,8 +72,8 @@ export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) 
 
       return;
     }
-    const success = AuthSuccessResultMap.get(AuthSuccessResultEnum.SIGN_UP);
-    setSuccessMessage(success);
+
+    router.push('signup-confirmation');
   };
 
   return (
@@ -86,7 +85,6 @@ export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) 
         title={'Utwórz konto!'}
         submitText={'Zarejestruj się'}
         isLoading={isLoading}
-        successMessage={successMessage}
         errorMessage={error}
       >
         {formElements.map((element) => (

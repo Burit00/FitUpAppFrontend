@@ -4,7 +4,7 @@ import { comparePasswords, ConfirmPasswordSchema, PasswordSchema } from '@featur
 export const ResetPasswordSchema = z
   .object({
     token: z.string(),
-    userId: z.string().uuid(),
+    email: z.string().email(),
     password: PasswordSchema,
     confirmPassword: ConfirmPasswordSchema,
   })

@@ -3,7 +3,7 @@ import EmailVerificationPage from './_page';
 type EmailVerificationServerPageProps = {
   searchParams: {
     token: string;
-    userId: string;
+    email: string;
   };
 };
 

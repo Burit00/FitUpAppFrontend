@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { emailVerification } from '@features/auth/actions/commands/email-verification.http';
+import { emailConfirmation } from '@features/auth/actions/commands/email-verification.http';
 import { TApiError } from '@api/types/api-error';
 import { AuthErrorResultMap } from '@features/auth/maps';
 import { AuthErrorResultEnum } from '@features/auth/enums';
@@ -9,18 +9,18 @@ import { TbLoader2 } from 'react-icons/tb';
 
 type EmailVerificationPageProps = {
   token: string;
-  userId: string;
+  email: string;
 };
 
 export default function EmailVerificationPage(props: EmailVerificationPageProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
 
-  const verifyEmail = async (signal: AbortSignal) => {
+  const confirmEmail = async (signal: AbortSignal) => {
     setError('');
     setIsLoading(true);
-    const response = await emailVerification({ ...props }, signal);
+    const response = await emailConfirmation({ ...props }, signal);
     setIsLoading(false);
 
     if (!response.ok) {
@@ -35,7 +35,7 @@ export default function EmailVerificationPage(props: EmailVerificationPageProps)
 
   useEffect(() => {
     const controller = new AbortController();
-    verifyEmail(controller.signal);
+    confirmEmail(controller.signal);
 
     return () => controller.abort({});
   }, []);
