@@ -28,7 +28,7 @@ function CalendarGrid(props: CalendarGridProps) {
   return (
     <div
       className={
-        'w-full md:grid md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] lg:auto-cols-auto auto-rows-[22rem]'
+        'w-full md:grid md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] lg:auto-cols-auto auto-rows-[22rem] overflow-auto'
       }
     >
       {months.map((_, monthIndex) => (

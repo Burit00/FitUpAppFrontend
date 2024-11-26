@@ -1,15 +1,15 @@
 'use client';
 
-import React, { Suspense, useEffect, useMemo, useState } from 'react';
-import CalendarBar from '@/app/(user)/calendar/_components/CalendarBar';
-import WorkoutDialog from '@/app/(user)/calendar/_components/WorkoutDialog';
-import { getWorkouts } from '@features/workouts/actions';
-import { TBrowseWorkout } from '@features/workouts/types/workout/browse-workout.type';
-import { BrowseWorkoutArraySchema } from '@features/workouts/schemas';
+import React, { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { getWorkouts } from '@features/workouts/actions';
+import { TBrowseWorkout } from '@features/workouts/types/workout';
+import { BrowseWorkoutArraySchema } from '@features/workouts/schemas';
+import CalendarBar from './_components/CalendarBar';
 import { Loader } from '@components/Loader';
 
 const DynamicCalendarGrid = dynamic(() => import('./_components/CalendarGrid'));
+const DynamicWorkoutDialog = dynamic(() => import('./_components/WorkoutDialog'));
 
 type CalendarPageProps = {
   year: number;
@@ -17,6 +17,7 @@ type CalendarPageProps = {
 
 export default function CalendarPage({ year }: CalendarPageProps) {
   const [workouts, setWorkouts] = useState<TBrowseWorkout[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [workout, setWorkout] = useState<TBrowseWorkout>(null);
   const [scrollToToday, setScrollToToday] = useState<boolean>(true);
 
@@ -26,6 +27,7 @@ export default function CalendarPage({ year }: CalendarPageProps) {
 
     const controller = new AbortController();
 
+    setIsLoading(true);
     getWorkouts({ dateStart, dateEnd }, controller.signal)
       .then((res) => res.json())
       .then((data) => {
@@ -43,6 +45,8 @@ export default function CalendarPage({ year }: CalendarPageProps) {
   }, [year]);
 
   const days: Date[] = useMemo<Date[]>(() => {
+    setIsLoading(false);
+
     return workouts?.map((workout: TBrowseWorkout) => workout.date);
   }, [workouts]);
 
@@ -74,12 +78,17 @@ export default function CalendarPage({ year }: CalendarPageProps) {
   };
 
   return (
-    <div className={'w-full h-full flex flex-col items-center overflow-auto'}>
+    <div className={'w-full h-full flex flex-col items-center relative'}>
       <CalendarBar year={year} onScrollToToday={() => setScrollToToday(true)} />
-      <Suspense fallback={<Loader />}>
-        <DynamicCalendarGrid days={days} year={year} scrollToToday={scrollToToday} onDaySelect={handleDaySelect} />
-      </Suspense>
-      <WorkoutDialog workout={workout} isOpen={!!workout} onOpenChange={handleWorkoutDialogOpenChange} />
+      <DynamicCalendarGrid days={days} year={year} scrollToToday={scrollToToday} onDaySelect={handleDaySelect} />
+      <DynamicWorkoutDialog workout={workout} isOpen={!!workout} onOpenChange={handleWorkoutDialogOpenChange} />
+      {isLoading && (
+        <div
+          className={'absolute top-[5rem] left-[50%] -translate-x-1/2 rounded-full p-1 bg-background2 shadow-primary'}
+        >
+          <Loader fullSpace={false} color={'primary'} />
+        </div>
+      )}
     </div>
   );
 }
