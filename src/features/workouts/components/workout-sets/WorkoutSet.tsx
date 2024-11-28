@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { MEASURES_MAP } from '@features/workouts/maps/measures.map';
 import { TWorkoutSet } from '@features/workouts/types';
 import { cn } from '@/utils';
@@ -24,17 +24,13 @@ export const WorkoutSet: FC<WorkoutSetProps> = (props: WorkoutSetProps) => {
       )}
     >
       {props.set.parameters.map((parameter, index) => (
-        <>
-          <span key={parameter.id}>
+        <React.Fragment key={index}>
+          <span>
             {parameter.value.toString()}
             {MEASURES_MAP.get(parameter.name)}
           </span>
-          {props.set.parameters.length - 1 !== index && (
-            <span key={props.set.parameters.length + index} className={'text-muted-foreground'}>
-              x
-            </span>
-          )}
-        </>
+          {props.set.parameters.length - 1 !== index && <span className={'text-muted-foreground'}>x</span>}
+        </React.Fragment>
       ))}
     </div>
   );

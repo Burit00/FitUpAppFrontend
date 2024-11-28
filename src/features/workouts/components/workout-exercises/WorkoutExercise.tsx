@@ -18,7 +18,7 @@ export const WorkoutExercise: FC<WorkoutSetProps> = ({ workoutExercise, ...props
   return (
     <div
       className={
-        'bg-background2/40 hover:bg-background2/80 focus-visible:bg-background2/80 [transition:background_0.3s] p-4 rounded flex flex-col gap-2 cursor-pointer'
+        'bg-background2/40 hover:bg-background2/80 focus-visible:bg-background2/80 [transition:background_0.3s] p-4 rounded flex flex-col gap-2 cursor-pointer w-full'
       }
       tabIndex={0}
       onKeyDown={(e) => {
@@ -33,7 +33,7 @@ export const WorkoutExercise: FC<WorkoutSetProps> = ({ workoutExercise, ...props
         <h3 className={'w-[90%]'}>
           {workoutExercise.name} <span className={'text-muted-foreground text-wrap'}>({workoutExercise.category})</span>
         </h3>
-        <div className={'h-full flex flex-col'}>
+        <div className={'h-full flex flex-col'} onClick={(e) => e.preventDefault()}>
           <DeleteWorkoutExerciseButton
             workoutExercise={workoutExercise}
             onDelete={() => props.onExerciseDelete(workoutExercise.id)}

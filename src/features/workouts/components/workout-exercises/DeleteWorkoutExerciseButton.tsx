@@ -32,6 +32,7 @@ const DeleteWorkoutExerciseButton: FC<DeleteWorkoutExerciseButtonProps> = ({
           variant={'destructive'}
           size={'icon'}
           className={props.className}
+          onPointerDown={(e) => e.preventDefault()}
           onClick={(e) => {
             e.stopPropagation();
           }}

@@ -3,7 +3,7 @@ import { WorkoutSetSchema } from '@features/workouts/schemas/workout-set/workout
 import { SetParameterNameWithIdArraySchema } from '@features/workouts/schemas';
 
 export const WorkoutExerciseSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
   name: z.string(),
   category: z.string(),
   orderIndex: z.number(),

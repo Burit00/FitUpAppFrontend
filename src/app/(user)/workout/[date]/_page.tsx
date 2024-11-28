@@ -17,13 +17,13 @@ type WorkoutPageProps = {
 
 export default function WorkoutPage(props: WorkoutPageProps) {
   const { workout, isLoading, fetchWorkout } = useWorkout(props.date);
-  const [selectedExercise, setSelectedExercise] = useState<TWorkoutExercise>(null);
+  const [selectedExercise, setSelectedExercise] = useState<TWorkoutExercise | null>(null);
 
   useEffect(() => {
     if (!selectedExercise) return;
 
     const workoutExercise = workout.exercises.find((e) => e.id === selectedExercise.id);
-    setSelectedExercise(workoutExercise);
+    if (workoutExercise) setSelectedExercise(workoutExercise);
   }, [workout]);
 
   const createOrUpdateWorkout = async (exerciseId: string) => {
@@ -51,6 +51,7 @@ export default function WorkoutPage(props: WorkoutPageProps) {
             <Loader isLoading={isLoading} />
             <WorkoutDetails
               workout={workout}
+              onRequestRefresh={fetchWorkout}
               onExerciseClick={setSelectedExercise}
               onExerciseDelete={handleWorkoutExerciseDelete}
             />
