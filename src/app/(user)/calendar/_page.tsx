@@ -78,14 +78,12 @@ export default function CalendarPage({ year }: CalendarPageProps) {
   };
 
   return (
-    <div className={'w-full h-full flex flex-col items-center relative'}>
+    <div className={'w-full h-full flex flex-col gap-5 items-center relative'}>
       <CalendarBar year={year} onScrollToToday={() => setScrollToToday(true)} />
       <DynamicCalendarGrid days={days} year={year} scrollToToday={scrollToToday} onDaySelect={handleDaySelect} />
       <DynamicWorkoutDialog workout={workout} isOpen={!!workout} onOpenChange={handleWorkoutDialogOpenChange} />
       {isLoading && (
-        <div
-          className={'absolute top-[5rem] left-[50%] -translate-x-1/2 rounded-full p-1 bg-background2 shadow-primary'}
-        >
+        <div className={'absolute top-[5rem] left-[50%] -translate-x-1/2 rounded-full p-1 bg-background2'}>
           <Loader fullSpace={false} color={'primary'} />
         </div>
       )}

@@ -30,7 +30,12 @@ export default function SortableList<T extends ObjectWithUniqueIdentifier>({
   const [active, setActive] = useState<Active | null>(null);
   const activeItem = useMemo(() => items.find((item) => item.id === active?.id), [active, items]);
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 300,
+        tolerance: 10,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),

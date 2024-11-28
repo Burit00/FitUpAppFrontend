@@ -1,5 +1,5 @@
 import { TWorkout, TWorkoutExercise } from '@features/workouts/types';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import SortableList from '@components/D&D/Sortable/SortableList';
 import { WorkoutExercise } from '@features/workouts/components';
 import { updateWorkoutExerciseOrderIndex } from '@features/workouts/actions/commands/workout-exercises/update-workout-exercise-order-index.http';
@@ -19,13 +19,10 @@ export const WorkoutDetails: FC<WorkoutDetailsProps> = ({ workout, ...props }) =
     if (workout) setExercises(workout.exercises);
   }, [workout, workout?.exercises]);
 
-  const handleOrderChange = useCallback(
-    async ({ active, over }: { active: TWorkoutExercise; over: TWorkoutExercise }) => {
-      await updateWorkoutExerciseOrderIndex(active.id, over.id);
-      props.onRequestRefresh();
-    },
-    [],
-  );
+  const handleOrderChange = async ({ active, over }: { active: TWorkoutExercise; over: TWorkoutExercise }) => {
+    await updateWorkoutExerciseOrderIndex(active.id, over.id);
+    props.onRequestRefresh();
+  };
 
   if (!workout || workout?.exercises.length === 0)
     return <h2 className={'text-muted text-center'}>W tym dniu nie dodano żadnego ćwiczenia.</h2>;
@@ -46,7 +43,7 @@ export const WorkoutDetails: FC<WorkoutDetailsProps> = ({ workout, ...props }) =
           };
 
           return (
-            <div ref={setNodeRef} style={style} className={'flex gap-2 overflow-hidden touch-none'}>
+            <div ref={setNodeRef} style={style} className={'flex gap-2 bg-background overflow-hidden rounded'}>
               <SortableList.DragHandle className={'h-[calc-size(100%)] p-1 bg-background2/40 transition-colors'} />
               <WorkoutExercise
                 workoutExercise={exercise}

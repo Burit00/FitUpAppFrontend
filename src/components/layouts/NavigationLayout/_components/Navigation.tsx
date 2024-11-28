@@ -11,12 +11,12 @@ const Navigation = () => {
     return appLinks.filter((link) => link !== settings);
   }, []);
 
-  if (['/', '/login', '/signup'].includes(pathname)) return null;
+  if (['/'].includes(pathname)) return null;
 
   return (
     <nav
       className={cn(
-        'hidden lg:flex flex-col gap-2 p-2 rounded bg-background2 w-[20%] min-2-[220px] max-w-[350px] sticky top-0',
+        'hidden lg:flex flex-col gap-2 p-2 rounded bg-background2 w-[20%] min-w-[220px] max-w-[350px] sticky top-0',
       )}
     >
       <div className={'flex flex-col gap-1 flex-grow'}>
