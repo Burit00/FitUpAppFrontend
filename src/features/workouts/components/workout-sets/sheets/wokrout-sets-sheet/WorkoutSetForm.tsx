@@ -59,6 +59,8 @@ export const WorkoutSetForm = ({ workoutExercise, workoutSetToUpdate, ...props }
   };
 
   const handleWorkoutSetDelete = async () => {
+    if (!workoutSetToUpdate) return;
+
     setIsLoading(true);
     await deleteWorkoutSet(workoutSetToUpdate.id);
     await props.onRequestRefresh();

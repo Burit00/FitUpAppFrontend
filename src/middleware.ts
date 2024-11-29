@@ -13,16 +13,23 @@ export const WorkoutPage = '/workout';
 export const WorkoutDatePage = '/workout/:date';
 
 function isAuthenticated(cookies: RequestCookies): boolean {
-  return cookies.has(COOKIE_KEYS.USER);
+  if (!cookies.has(COOKIE_KEYS.USER)) return false;
+
+  const userCookie = cookies.get(COOKIE_KEYS.USER)?.value || '';
+  const user = JSON.parse(userCookie) as TUserToken;
+
+  return user.expires > Date.now();
 }
 
 function getUser(cookies: RequestCookies): TUserToken {
-  return JSON.parse(cookies.get(COOKIE_KEYS.USER)?.value) as TUserToken;
+  const userCookie = cookies.get(COOKIE_KEYS.USER)?.value || '';
+
+  return JSON.parse(userCookie) as TUserToken;
 }
 
 export default function middleware(req: NextRequest): NextResponse {
   const nextPathname = req.nextUrl.pathname;
-  const isLoggedIn = !!isAuthenticated(req.cookies);
+  const isLoggedIn = isAuthenticated(req.cookies);
 
   if (!isLoggedIn) {
     if (nextPathname !== LoginPage && nextPathname !== SignUpPage) {
@@ -62,6 +69,6 @@ export const config = {
     '/',
     '/admin',
     '/calendar',
-    '/workout/:date',
+    '/workout/:path?',
   ],
 };

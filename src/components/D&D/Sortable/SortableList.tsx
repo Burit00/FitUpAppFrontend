@@ -1,5 +1,5 @@
 import React, { ReactNode, useMemo, useState } from 'react';
-import { Active, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { Active, DndContext, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
@@ -30,7 +30,8 @@ export default function SortableList<T extends ObjectWithUniqueIdentifier>({
   const [active, setActive] = useState<Active | null>(null);
   const activeItem = useMemo(() => items.find((item) => item.id === active?.id), [active, items]);
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(PointerSensor),
+    useSensor(TouchSensor, {
       activationConstraint: {
         delay: 300,
         tolerance: 10,

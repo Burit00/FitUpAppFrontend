@@ -5,12 +5,12 @@ import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { Form, FormControl, FormField, FormItem, FormMessage, Input } from '@/components/ui';
 import { AuthForm } from './AuthForm';
-import { useAuth } from '@/hooks/useAuth';
 import { TSignIn } from '@features/auth/types';
 import { SignInSchema } from '@features/auth/schemas';
 import React, { useState } from 'react';
 import { AuthErrorResultMap } from '@features/auth/maps';
 import { AuthErrorResultEnum } from '@features/auth/enums';
+import { useAuth } from '@features/auth/contexts/AuthProvider';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
   name: keyof TSignIn;
@@ -52,7 +52,7 @@ export const LoginForm = ({ className }: LoginFormProps) => {
     authContext
       .login(data)
       .catch((err: Error) => {
-        setErrorMessage(AuthErrorResultMap.get(err.message as AuthErrorResultEnum));
+        setErrorMessage(AuthErrorResultMap.get(err.message as AuthErrorResultEnum) || '');
       })
       .finally(() => setIsLoading(false));
   };

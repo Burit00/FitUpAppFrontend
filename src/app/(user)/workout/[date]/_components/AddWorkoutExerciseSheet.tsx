@@ -8,7 +8,7 @@ import { getExercises } from '@features/workouts/actions';
 import { useExerciseCategories } from '@/app/(user)/workout/[date]/_hooks/useExerciseCategories';
 import { ExerciseCategoriesSelect } from '@/app/(user)/workout/[date]/_components/ExerciseCategoriesSelect';
 import { useDebounceState } from '@/hooks/useDebounceState';
-import { WorkoutExerciseRow } from '@/app/(user)/workout/[date]/_components/WorkoutExerciseRow';
+import { ExerciseRow } from '@/app/(user)/workout/[date]/_components/ExerciseRow';
 import { Loader } from '@components/Loader';
 
 type AddWorkoutExerciseButtonProps<> = {
@@ -73,7 +73,7 @@ export const AddWorkoutExerciseSheet: FC<AddWorkoutExerciseButtonProps> = (props
             <Loader isLoading={isLoading} />
             {exercises.length === 0 && <p>Nie znaleziono ćwiczeń spełniających podane kryteria.</p>}
             {exercises.map((exercise) => (
-              <WorkoutExerciseRow
+              <ExerciseRow
                 key={exercise.id}
                 exercise={exercise}
                 onClick={() => {

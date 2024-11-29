@@ -68,7 +68,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({ className }: SignUpFormProps) 
 
     if (!response.ok) {
       const error: TApiError<AuthErrorResultEnum> = await response.json();
-      setError(AuthErrorResultMap.get(error.code));
+      setError(AuthErrorResultMap.get(error.code) || '');
 
       return;
     }

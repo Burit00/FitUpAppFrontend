@@ -7,7 +7,7 @@ const envSchema = z.object({
 type TEnvironment = z.infer<typeof envSchema>;
 
 const publicEnv: TEnvironment = {
-  API_URL: process.env.NEXT_PUBLIC_API_URL,
+  API_URL: process.env.NEXT_PUBLIC_API_URL || '',
 };
 
 export const env: TEnvironment = envSchema.parse(publicEnv);

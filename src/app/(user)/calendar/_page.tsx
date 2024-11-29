@@ -17,26 +17,25 @@ type CalendarPageProps = {
 
 export default function CalendarPage({ year }: CalendarPageProps) {
   const [workouts, setWorkouts] = useState<TBrowseWorkout[]>([]);
+  const [selectedWorkout, setSelectedWorkout] = useState<TBrowseWorkout | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [workout, setWorkout] = useState<TBrowseWorkout>(null);
   const [scrollToToday, setScrollToToday] = useState<boolean>(true);
 
   useEffect(() => {
     const dateStart = new Date(year, 0, 0);
-    const dateEnd = new Date(year + 1, 0, -1);
+    const dateEnd = new Date(year + 1, 0, 0);
 
     const controller = new AbortController();
 
     setIsLoading(true);
     getWorkouts({ dateStart, dateEnd }, controller.signal)
+      .catch((err) => err)
       .then((res) => res.json())
       .then((data) => {
         try {
           const parsedData = BrowseWorkoutArraySchema.parse(data);
           setWorkouts(parsedData);
-        } catch (error) {
-          console.error(error);
-        }
+        } catch {}
       });
 
     return () => {
@@ -66,27 +65,25 @@ export default function CalendarPage({ year }: CalendarPageProps) {
     });
 
     if (!selectedWorkout)
-      setWorkout({
-        id: null,
+      setSelectedWorkout({
+        id: '',
         date: selectedDay,
       });
-    else setWorkout(selectedWorkout);
+    else setSelectedWorkout(selectedWorkout);
   };
 
   const handleWorkoutDialogOpenChange = (value: boolean) => {
-    if (!value) setWorkout(null);
+    if (!value) setSelectedWorkout(undefined);
   };
 
   return (
-    <div className={'w-full h-full flex flex-col gap-5 items-center relative'}>
+    <div className={'w-full h-full flex flex-col gap-5 items-center'}>
       <CalendarBar year={year} onScrollToToday={() => setScrollToToday(true)} />
-      <DynamicCalendarGrid days={days} year={year} scrollToToday={scrollToToday} onDaySelect={handleDaySelect} />
-      <DynamicWorkoutDialog workout={workout} isOpen={!!workout} onOpenChange={handleWorkoutDialogOpenChange} />
-      {isLoading && (
-        <div className={'absolute top-[5rem] left-[50%] -translate-x-1/2 rounded-full p-1 bg-background2'}>
-          <Loader fullSpace={false} color={'primary'} />
-        </div>
-      )}
+      <div className={'w-full flex-grow flex flex-col overflow-hidden relative'}>
+        <DynamicCalendarGrid days={days} year={year} scrollToToday={scrollToToday} onDaySelect={handleDaySelect} />
+        <Loader isLoading={isLoading} />
+      </div>
+      <DynamicWorkoutDialog workout={selectedWorkout} onOpenChange={handleWorkoutDialogOpenChange} />
     </div>
   );
 }

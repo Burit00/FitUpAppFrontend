@@ -24,8 +24,8 @@ export default function EmailVerificationPage(props: EmailVerificationPageProps)
     setIsLoading(false);
 
     if (!response.ok) {
-      const error: TApiError = await response.json();
-      setError(AuthErrorResultMap.get(error.code as AuthErrorResultEnum));
+      const error: TApiError<AuthErrorResultEnum> = await response.json();
+      setError(AuthErrorResultMap.get(error.code) || '');
 
       return;
     }

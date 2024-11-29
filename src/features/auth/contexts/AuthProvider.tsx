@@ -1,9 +1,7 @@
 'use client';
 
-import { createContext, PropsWithChildren, useCallback, useEffect, useRef } from 'react';
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FitUpHttpClient } from '@api';
-import { HttpStatusEnum } from '@api/enums';
 import { useCookie } from '@/hooks/useCookie';
 import { COOKIE_KEYS } from '@/constants/CookieKeys';
 import { TSignIn, TUserToken } from '@features/auth/types';
@@ -14,15 +12,23 @@ import { TApiError } from '@api/types/api-error';
 
 export type TAuthContext = {
   user: TUserToken;
-  login: (auth: TUserToken) => Promise<void>;
+  login: (auth: TSignIn) => Promise<void>;
   logout: () => void;
 };
 
-export const AuthContext = createContext<TAuthContext>(null);
+export const AuthContext = createContext<TAuthContext | null>(null);
+
+export function useAuth(): TAuthContext {
+  const context = useContext(AuthContext);
+
+  if (!context) throw new Error('useAuth must be used within a AuthProvider');
+
+  return context;
+}
+
 type AuthProviderProps = {} & PropsWithChildren;
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const logoutInterceptor = useRef(null);
   const [user, setUser, deleteUser] = useCookie<TUserToken>(COOKIE_KEYS.USER);
   const router = useRouter();
 
@@ -34,7 +40,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const login = async (userCredentials: TSignIn): Promise<void> => {
     const res = await signIn(userCredentials);
     const body = await res.json();
-    //TODO: show toaster on action
 
     if (!res.ok) {
       const error: TApiError<AuthErrorResultEnum> = body;
@@ -53,18 +58,16 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     if (!user) return;
 
-    logoutInterceptor.current = FitUpHttpClient.addResponseInterceptor((response: Response) => {
-      if (response?.status === HttpStatusEnum.UNAUTHORIZED) logout();
-
-      return response;
-    });
+    const sessionExpired = () => {
+      deleteUser();
+      router.push('/session-expired');
+    };
 
     const tokenExpires = user.expires - Date.now();
-    const timeoutId = setTimeout(logout, tokenExpires > 0 ? tokenExpires : 0);
+    const timeoutId = setTimeout(sessionExpired, tokenExpires > 0 ? tokenExpires : 0);
 
     return () => {
       clearTimeout(timeoutId);
-      FitUpHttpClient.removeResponseInterceptor(logoutInterceptor.current);
     };
   }, [user, logout]);
 

@@ -47,10 +47,12 @@ export const SetParameterNameWithValueSchema = z
 function orderParameters(
   parameters: TSetParameterNameWithId[] | TSetParameterNameWithValue[],
 ): TSetParameterNameWithId[] | TSetParameterNameWithValue[] {
-  return parameters.sort(
-    (parameterA: TSetParameterNameWithValue, parameterB: TSetParameterNameWithValue): number =>
-      SET_PARAMETER_NAMES_ORDER_MAP.get(parameterA.name) - SET_PARAMETER_NAMES_ORDER_MAP.get(parameterB.name),
-  );
+  return parameters.sort((parameterA, parameterB): number => {
+    const parameterAOrder = SET_PARAMETER_NAMES_ORDER_MAP.get(parameterA.name) as number;
+    const parameterBOrder = SET_PARAMETER_NAMES_ORDER_MAP.get(parameterB.name) as number;
+
+    return parameterAOrder - parameterBOrder;
+  });
 }
 
 export const SetParameterNameWithIdArraySchema = z

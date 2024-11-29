@@ -13,7 +13,7 @@ export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
   workoutExercise,
   onRequestRefresh,
 }: WorkoutSetSheetBodyProps) => {
-  const [selectedWorkoutSet, setSelectedWorkoutSet] = useState<TWorkoutSet>(null);
+  const [selectedWorkoutSet, setSelectedWorkoutSet] = useState<TWorkoutSet | undefined>(undefined);
 
   useEffect(() => {
     if (!selectedWorkoutSet) return;
@@ -23,7 +23,7 @@ export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
   }, [workoutExercise]);
 
   const cancelSelectedWorkoutSet = () => {
-    setSelectedWorkoutSet(null);
+    setSelectedWorkoutSet(undefined);
   };
 
   return (
@@ -43,7 +43,7 @@ export const WorkoutSetSheetBody: FC<WorkoutSetSheetBodyProps> = ({
             sets={workoutExercise.sets}
             activeSet={selectedWorkoutSet}
             onRowClick={(workoutSet) => {
-              setSelectedWorkoutSet(selectedWorkoutSet === workoutSet ? null : workoutSet);
+              setSelectedWorkoutSet(selectedWorkoutSet === workoutSet ? undefined : workoutSet);
             }}
           />
         )}

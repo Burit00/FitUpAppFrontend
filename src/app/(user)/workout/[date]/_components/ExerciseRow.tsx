@@ -7,7 +7,7 @@ type WorkoutExerciseRowProps = {
   onClick?: () => void;
 };
 
-export const WorkoutExerciseRow: FC<WorkoutExerciseRowProps> = ({ exercise, ...props }: WorkoutExerciseRowProps) => {
+export const ExerciseRow: FC<WorkoutExerciseRowProps> = ({ exercise, ...props }: WorkoutExerciseRowProps) => {
   return (
     <div
       tabIndex={0}
@@ -16,8 +16,10 @@ export const WorkoutExerciseRow: FC<WorkoutExerciseRowProps> = ({ exercise, ...p
       }
       onClick={props.onClick}
       onKeyDown={(e) => {
+        if (!props || !props.onClick) return;
+
         if (e.key === 'Enter') {
-          props?.onClick();
+          props.onClick();
         }
       }}
     >

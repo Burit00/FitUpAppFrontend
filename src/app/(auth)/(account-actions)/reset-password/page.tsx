@@ -70,12 +70,12 @@ export default function ResetPasswordPage({ searchParams }: ResetPasswordPagePro
     setIsLoading(false);
 
     if (!response.ok) {
-      const error: TApiError = await response.json();
-      setError(AuthErrorResultMap.get(error.code as AuthErrorResultEnum));
+      const error: TApiError<AuthErrorResultEnum> = await response.json();
+      setError(AuthErrorResultMap.get(error.code) || '');
 
       return;
     }
-    const message = AuthSuccessResultMap.get(AuthSuccessResultEnum.RESET_PASSWORD);
+    const message = AuthSuccessResultMap.get(AuthSuccessResultEnum.RESET_PASSWORD) || '';
     setSuccessMessage(message);
   };
 

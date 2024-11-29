@@ -1,9 +1,9 @@
-import { Button, Icon } from '@components/ui';
-import { FaRegUser } from 'react-icons/fa6';
-import { useAuth } from '@/hooks/useAuth';
-import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover';
-import { LuLogOut } from 'react-icons/lu';
 import { useState } from 'react';
+import { FaRegUser } from 'react-icons/fa6';
+import { LuLogOut } from 'react-icons/lu';
+import { Button, Icon } from '@components/ui';
+import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover';
+import { useAuth } from '@features/auth/contexts/AuthProvider';
 
 export const UserInfoButton = () => {
   const [isOpen, setIsOpen] = useState(false);

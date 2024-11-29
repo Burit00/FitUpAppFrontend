@@ -17,12 +17,12 @@ type WorkoutPageProps = {
 
 export default function WorkoutPage(props: WorkoutPageProps) {
   const { workout, isLoading, fetchWorkout } = useWorkout(props.date);
-  const [selectedExercise, setSelectedExercise] = useState<TWorkoutExercise | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<TWorkoutExercise | undefined>(undefined);
 
   useEffect(() => {
     if (!selectedExercise) return;
 
-    const workoutExercise = workout.exercises.find((e) => e.id === selectedExercise.id);
+    const workoutExercise = workout?.exercises.find((e) => e.id === selectedExercise.id);
     if (workoutExercise) setSelectedExercise(workoutExercise);
   }, [workout]);
 
@@ -40,21 +40,27 @@ export default function WorkoutPage(props: WorkoutPageProps) {
   return (
     <>
       <div className={'w-full flex flex-col justify-between gap-5'}>
-        <WorkoutBar date={props.date} exercisesToFilter={workout?.exercises} onAddNewExercise={createOrUpdateWorkout} />
+        <WorkoutBar
+          date={props.date}
+          exercisesToFilter={workout?.exercises || []}
+          onAddNewExercise={createOrUpdateWorkout}
+        />
         <div className={'relative flex-grow overflow-hidden'}>
           <div
             className={cn(
               'w-full h-full flex flex-col justify-center items-center overflow-auto',
-              workout?.exercises.length > 0 && 'justify-start',
+              workout && workout.exercises.length > 0 && 'justify-start',
             )}
           >
             <Loader isLoading={isLoading} />
-            <WorkoutDetails
-              workout={workout}
-              onRequestRefresh={fetchWorkout}
-              onExerciseClick={setSelectedExercise}
-              onExerciseDelete={handleWorkoutExerciseDelete}
-            />
+            {workout && (
+              <WorkoutDetails
+                workout={workout}
+                onRequestRefresh={fetchWorkout}
+                onExerciseClick={setSelectedExercise}
+                onExerciseDelete={handleWorkoutExerciseDelete}
+              />
+            )}
           </div>
         </div>
         <div className={'w-full flex justify-center md:hidden'}>
@@ -67,7 +73,7 @@ export default function WorkoutPage(props: WorkoutPageProps) {
       </div>
       <WorkoutSetSheet
         open={!!selectedExercise}
-        onOpenChange={(open: boolean) => !open && setSelectedExercise(null)}
+        onOpenChange={(open: boolean) => !open && setSelectedExercise(undefined)}
         workoutExercise={selectedExercise}
         onRequestRefresh={fetchWorkout}
       />

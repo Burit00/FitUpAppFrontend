@@ -44,7 +44,7 @@ export const WorkoutDetails: FC<WorkoutDetailsProps> = ({ workout, ...props }) =
 
           return (
             <div ref={setNodeRef} style={style} className={'flex gap-2 bg-background overflow-hidden rounded'}>
-              <SortableList.DragHandle className={'h-[calc-size(100%)] p-1 bg-background2/40 transition-colors'} />
+              <SortableList.DragHandle className={'h-[calc-size(100%)] p-1'} />
               <WorkoutExercise
                 workoutExercise={exercise}
                 onExerciseClick={props.onExerciseClick}

@@ -4,8 +4,8 @@ import { TWorkoutExercise } from '@features/workouts/types';
 
 type WorkoutBarProps = {
   date: Date;
-  exercisesToFilter?: TWorkoutExercise[];
-  onAddNewExercise?: (exerciseId: string) => void;
+  exercisesToFilter: TWorkoutExercise[];
+  onAddNewExercise: (exerciseId: string) => void;
 };
 
 export const WorkoutBar = (props: WorkoutBarProps) => {

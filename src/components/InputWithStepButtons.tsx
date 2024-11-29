@@ -1,4 +1,4 @@
-import React, { FC, ForwardedRef, forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { FC, ForwardedRef, forwardRef, LegacyRef, useImperativeHandle, useRef } from 'react';
 import { Button, Input, InputProps } from '@components/ui';
 import { FaMinus, FaPlus } from 'react-icons/fa6';
 import { cn } from '@/utils';
@@ -9,13 +9,13 @@ type InputWithStepButtonsProps = InputProps & {
 
 const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInputElement, InputWithStepButtonsProps>(
   ({ buttonStepValue, ...props }: InputWithStepButtonsProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>();
 
-    useImperativeHandle(ref, () => inputRef.current);
+    useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
     const triggerOnChangeCall = () => {
-      inputRef.current.focus();
+      inputRef.current?.focus();
       const event = new Event('change', { bubbles: true });
-      inputRef.current.dispatchEvent(event);
+      inputRef.current?.dispatchEvent(event);
     };
 
     return (
@@ -24,6 +24,8 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
           type={'button'}
           variant={'dark'}
           onClick={() => {
+            if (!inputRef.current) return;
+
             if (inputRef.current.min === '') {
               inputRef.current.valueAsNumber -= buttonStepValue;
             } else {
@@ -38,7 +40,7 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
           <FaMinus />
         </Button>
         <Input
-          ref={inputRef}
+          ref={inputRef as LegacyRef<HTMLInputElement>}
           type={'number'}
           inputMode={'numeric'}
           min={0}
@@ -49,6 +51,8 @@ const InputWithStepButtons: FC<InputWithStepButtonsProps> = forwardRef<HTMLInput
           type={'button'}
           variant={'dark'}
           onClick={() => {
+            if (!inputRef.current) return;
+
             if (inputRef.current.max === '') {
               inputRef.current.valueAsNumber += buttonStepValue;
             } else {

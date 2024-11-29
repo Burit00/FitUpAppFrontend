@@ -21,7 +21,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, className
 
   useEffect(() => {
     if (!isMounted.current) return;
-    inputRef.current.focus();
+
+    inputRef.current?.focus();
   }, [inputType]);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, className
     };
   }, []);
 
-  useImperativeHandle(ref, () => inputRef.current);
+  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
   const inputIcon = inputType === 'password' ? HiEye : HiEyeSlash;
 

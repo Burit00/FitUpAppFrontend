@@ -13,7 +13,7 @@ const months = Array.from({ length: 12 });
 
 function CalendarGrid(props: CalendarGridProps) {
   const today = new Date();
-  const todayRef = useRef<HTMLDivElement>(null);
+  const todayRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
     if (!props.scrollToToday) return;
@@ -21,7 +21,7 @@ function CalendarGrid(props: CalendarGridProps) {
     todayRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [props.scrollToToday]);
 
-  const onDayClick = (_: Date[], selectedDay: Date) => {
+  const onDayClick = (_: Date[] | undefined, selectedDay: Date) => {
     props.onDaySelect(selectedDay);
   };
 
@@ -34,7 +34,7 @@ function CalendarGrid(props: CalendarGridProps) {
       {months.map((_, monthIndex) => (
         <div
           key={`${props.year}${monthIndex}`}
-          ref={(ref) => {
+          ref={(ref: HTMLDivElement) => {
             if (props.year !== today.getFullYear()) return;
             if (monthIndex !== today.getMonth()) return;
             todayRef.current = ref;

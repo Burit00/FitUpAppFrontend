@@ -7,13 +7,13 @@ import { WorkoutSchema } from '@features/workouts/schemas';
 import { HttpStatusEnum } from '@api/enums';
 
 type TUseWorkout = {
-  workout: TWorkout;
+  workout?: TWorkout;
   fetchWorkout: () => Promise<void>;
   isLoading: boolean;
 };
 
 export function useWorkout(date: Date): TUseWorkout {
-  const [workout, setWorkout] = useState<TWorkout>(null);
+  const [workout, setWorkout] = useState<TWorkout | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchWorkout = useCallback(async (): Promise<void> => {
@@ -25,7 +25,7 @@ export function useWorkout(date: Date): TUseWorkout {
       const data = await response.json();
       setWorkout(WorkoutSchema.parse(data));
     } else if (response.status === HttpStatusEnum.NOT_FOUND) {
-      setWorkout(null);
+      setWorkout(undefined);
     }
   }, [date]);
 

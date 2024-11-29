@@ -6,14 +6,21 @@ import { WorkoutSetSheetBody } from '@features/workouts/components/workout-sets/
 type WorkoutSetSheetProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  workoutExercise: TWorkoutExercise;
+  workoutExercise?: TWorkoutExercise;
   onRequestRefresh: () => Promise<void>;
 };
 
-export const WorkoutSetSheet: FC<WorkoutSetSheetProps> = ({ open, onOpenChange, ...props }: WorkoutSetSheetProps) => {
+export const WorkoutSetSheet: FC<WorkoutSetSheetProps> = ({
+  open,
+  onOpenChange,
+  workoutExercise,
+  onRequestRefresh: handleRequestRefresh,
+}: WorkoutSetSheetProps) => {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      {props.workoutExercise && <WorkoutSetSheetBody {...props} />}
+      {workoutExercise && (
+        <WorkoutSetSheetBody onRequestRefresh={handleRequestRefresh} workoutExercise={workoutExercise} />
+      )}
     </Sheet>
   );
 };

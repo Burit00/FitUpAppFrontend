@@ -2,8 +2,8 @@ type TRequestInit = {
   params?: object;
 } & Omit<RequestInit, 'body' & 'method'>;
 
-type TRequestInterceptor = (request: RequestInit) => RequestInit;
-type TResponseInterceptor = (request: Response) => Response;
+export type TRequestInterceptor = (request: RequestInit) => RequestInit;
+export type TResponseInterceptor = (request: Response) => Response;
 type TInterceptors = {
   request: TRequestInterceptor[];
   response: TResponseInterceptor[];
@@ -19,6 +19,7 @@ export class HttpClient {
     baseUrl: '',
     headers: {
       'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
   };
   private _interceptors: TInterceptors = {
@@ -35,6 +36,19 @@ export class HttpClient {
         ...userConfig.headers,
       },
     };
+  }
+
+  private static convertObjectToQueryString(params: object): string {
+    const urlParams = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(params)) {
+      if (!value) continue;
+      if (Array.isArray(value)) {
+        for (const v of value) urlParams.append(key, v.toString());
+      } else urlParams.append(key, value.toString());
+    }
+
+    return urlParams.toString();
   }
 
   public addRequestInterceptor(interceptor: TRequestInterceptor): TRequestInterceptor {
@@ -88,22 +102,22 @@ export class HttpClient {
   }
 
   public async fetch(url: string, options?: TRequestInit): Promise<Response> {
-    const { params } = options;
+    if (options) {
+      if (options.params) {
+        const queryString = HttpClient.convertObjectToQueryString(options.params);
+        url += url.includes('?') ? `&${queryString}` : `?${queryString}`;
+      }
 
-    if (params) {
-      const queryString = HttpClient.convertObjectToQueryString(params);
-      url += url.includes('?') ? `&${queryString}` : `?${queryString}`;
+      options.headers = {
+        ...this.config.headers,
+        ...options.headers,
+      };
     }
+
+    const optionsFromInterceptors = this.requestMiddleware(options ?? {});
+
     const endpointUrl = new URL(this.config.baseUrl + url);
-
-    options.headers = {
-      ...this.config.headers,
-      ...options.headers,
-    };
-
-    const optionsFromInterceptors = this.requestMiddleware(options);
-
-    const response = await fetch(endpointUrl, optionsFromInterceptors);
+    const response = await fetch(endpointUrl, optionsFromInterceptors).catch((res) => res);
 
     return this.responseMiddleware(response);
   }
@@ -118,18 +132,5 @@ export class HttpClient {
     if (this._interceptors.response.length === 0) return response;
 
     return this._interceptors.response.reduce((acc, interceptor): Response => interceptor(acc), response);
-  }
-
-  private static convertObjectToQueryString(params: object): string {
-    const urlParams = new URLSearchParams();
-
-    for (const [key, value] of Object.entries(params)) {
-      if (!value) continue;
-      if (Array.isArray(value)) {
-        for (const v of value) urlParams.append(key, v.toString());
-      } else urlParams.append(key, value.toString());
-    }
-
-    return urlParams.toString();
   }
 }

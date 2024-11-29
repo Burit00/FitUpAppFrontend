@@ -35,12 +35,12 @@ export default function ResetPasswordRequestPage() {
     setIsLoading(false);
 
     if (!response.ok) {
-      const error: TApiError = await response.json();
-      setErrorMessage(AuthErrorResultMap.get(error.code as AuthErrorResultEnum));
+      const error: TApiError<AuthErrorResultEnum> = await response.json();
+      setErrorMessage(AuthErrorResultMap.get(error.code) || '');
 
       return;
     }
-    const message = AuthSuccessResultMap.get(AuthSuccessResultEnum.RESET_PASSWORD_REQUEST);
+    const message = AuthSuccessResultMap.get(AuthSuccessResultEnum.RESET_PASSWORD_REQUEST) || '';
     setSuccessMessage(message);
   };
 
