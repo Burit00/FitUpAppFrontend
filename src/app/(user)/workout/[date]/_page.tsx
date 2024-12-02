@@ -10,6 +10,7 @@ import { WorkoutSetSheet } from '@features/workouts/components/workout-sets/shee
 import { AddWorkoutExerciseSheet } from './_components/AddWorkoutExerciseSheet';
 import { WorkoutBar } from './_components/WorkoutBar';
 import { Loader } from '@components/Loader';
+import { NextDayButton, PreviousDayButton } from '@/app/(user)/workout/[date]/_components/NextDayButton';
 
 type WorkoutPageProps = {
   date: Date;
@@ -49,26 +50,26 @@ export default function WorkoutPage(props: WorkoutPageProps) {
           <div
             className={cn(
               'w-full h-full flex flex-col justify-center items-center overflow-auto',
-              workout && workout.exercises.length > 0 && 'justify-start',
+              workout && workout.exercises.length > 0 && 'justify-start'
             )}
           >
             <Loader isLoading={isLoading} />
-            {workout && (
-              <WorkoutDetails
-                workout={workout}
-                onRequestRefresh={fetchWorkout}
-                onExerciseClick={setSelectedExercise}
-                onExerciseDelete={handleWorkoutExerciseDelete}
-              />
-            )}
+            <WorkoutDetails
+              workout={workout}
+              onRequestRefresh={fetchWorkout}
+              onExerciseClick={setSelectedExercise}
+              onExerciseDelete={handleWorkoutExerciseDelete}
+            />
           </div>
         </div>
-        <div className={'w-full flex justify-center md:hidden'}>
+        <div className={'w-full flex gap-2 justify-center md:hidden'}>
+          <PreviousDayButton date={props.date} />
           <AddWorkoutExerciseSheet
             className={'w-full'}
             exercisesToFilter={workout?.exercises}
             onAddNewExercise={createOrUpdateWorkout}
           />
+          <NextDayButton date={props.date} />
         </div>
       </div>
       <WorkoutSetSheet

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { getWorkouts } from '@features/workouts/actions';
 import { TBrowseWorkout } from '@features/workouts/types/workout';
@@ -29,7 +29,6 @@ export default function CalendarPage({ year }: CalendarPageProps) {
 
     setIsLoading(true);
     getWorkouts({ dateStart, dateEnd }, controller.signal)
-      .catch((err) => err)
       .then((res) => res.json())
       .then((data) => {
         try {
@@ -53,24 +52,27 @@ export default function CalendarPage({ year }: CalendarPageProps) {
     if (scrollToToday) setScrollToToday(false);
   }, [scrollToToday]);
 
-  const handleDaySelect = (selectedDay: Date) => {
-    const selectedWorkout = workouts.find((workout) => {
-      const workoutDate = new Date(workout.date);
+  const handleDaySelect = useCallback(
+    (selectedDay: Date) => {
+      const selectedWorkout = workouts.find((workout) => {
+        const workoutDate = new Date(workout.date);
 
-      return (
-        workoutDate.getDate() === selectedDay.getDate() &&
-        workoutDate.getMonth() === selectedDay.getMonth() &&
-        workoutDate.getFullYear() === selectedDay.getFullYear()
-      );
-    });
-
-    if (!selectedWorkout)
-      setSelectedWorkout({
-        id: '',
-        date: selectedDay,
+        return (
+          workoutDate.getDate() === selectedDay.getDate() &&
+          workoutDate.getMonth() === selectedDay.getMonth() &&
+          workoutDate.getFullYear() === selectedDay.getFullYear()
+        );
       });
-    else setSelectedWorkout(selectedWorkout);
-  };
+
+      if (!selectedWorkout)
+        setSelectedWorkout({
+          id: '',
+          date: selectedDay,
+        });
+      else setSelectedWorkout(selectedWorkout);
+    },
+    [workouts]
+  );
 
   const handleWorkoutDialogOpenChange = (value: boolean) => {
     if (!value) setSelectedWorkout(undefined);

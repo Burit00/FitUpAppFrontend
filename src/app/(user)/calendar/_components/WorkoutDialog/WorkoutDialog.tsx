@@ -29,14 +29,14 @@ export const WorkoutDialogLayout: FC<WorkoutDialogLayoutProps> = (props: Workout
   return (
     <DialogContent className={'flex flex-col max-h-[80vh] w-full md:max-h-[80vh] md:w-[600px]'}>
       <DialogHeader>
-        <DialogTitle className={'text-primary text-xl md:text-3xl'}>
+        <DialogTitle className={'text-primary text-xl md:text-3xl text-left'}>
           {props.workoutDate.toLocaleDateString('pl-PL', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric',
           })}
-          <DialogDescription className={'mb-0 mt-1'}>Ćwiczenia wykonane podczas treningu:</DialogDescription>
+          <DialogDescription className={'mb-0 mt-1 text-left'}>Ćwiczenia wykonane podczas treningu:</DialogDescription>
         </DialogTitle>
       </DialogHeader>
       {props.children}
@@ -62,7 +62,11 @@ export const WorkoutDialog = ({ workout, ...props }: WorkoutDialogProps) => {
     let dialogBody;
 
     if (workout.id) {
-      dialogBody = <WorkoutDialogBody workout={workout} />;
+      dialogBody = (
+        // <Suspense fallback={<Loader />}>
+        <WorkoutDialogBody workout={workout} />
+        // </Suspense>
+      );
     } else {
       dialogBody = <p>W tym dniu nie dodano żadnego ćwiczenia.</p>;
     }
