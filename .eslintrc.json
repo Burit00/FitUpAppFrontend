@@ -101,12 +101,7 @@
       }
     ],
     "comma-spacing": "warn",
-    "comma-style": [
-      "warn",
-      {
-        "CallExpression": false
-      }
-    ],
+    "comma-style": "warn",
     "func-call-spacing": "warn",
     "indent": [
       "warn",
