@@ -11,22 +11,18 @@ type PageBarProps = {
 const PageBar = forwardRef<HTMLDivElement, PageBarProps>((props, ref) => {
   const { leftSlot, rightSlot, centerSlot, ...divProps } = props;
 
-  const slots = [leftSlot ?? <HomeButton />, centerSlot, rightSlot];
-
   return (
     <div
       ref={ref}
       {...divProps}
       className={cn(
-        'sticky top-0 z-20 w-full flex justify-between items-center rounded bg-background2 p-2',
-        props.className,
+        'sticky top-0 z-20 w-full flex items-center rounded bg-background2 p-2 text-nowrap',
+        props.className
       )}
     >
-      {slots.map((slot, index) => (
-        <div key={index} className={'flex gap-2'}>
-          {slot}
-        </div>
-      ))}
+      <div className={'flex gap-2 w-full'}>{leftSlot ?? <HomeButton />}</div>
+      <div className={'flex gap-2'}>{centerSlot}</div>
+      <div className={'flex gap-2 justify-end w-full'}>{rightSlot}</div>
     </div>
   );
 });

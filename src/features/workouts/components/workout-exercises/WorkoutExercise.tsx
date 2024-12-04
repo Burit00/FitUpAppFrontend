@@ -30,7 +30,7 @@ export const WorkoutExercise: FC<WorkoutSetProps> = ({ workoutExercise, ...props
       onClick={handleClick}
     >
       <div className={'flex justify-between items-center'}>
-        <h3 className={'w-[90%]'}>
+        <h3 className={'w-[90%] text-lg'}>
           {workoutExercise.name} <span className={'text-muted-foreground text-wrap'}>({workoutExercise.category})</span>
         </h3>
         <div className={'h-full flex flex-col'} onClick={(e) => e.preventDefault()}>

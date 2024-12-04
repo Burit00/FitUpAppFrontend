@@ -6,7 +6,7 @@ import { updateWorkoutExerciseOrderIndex } from '@features/workouts/actions/comm
 import { CSS } from '@dnd-kit/utilities';
 
 type WorkoutDetailsProps = {
-  workout: TWorkout;
+  workout?: TWorkout;
   onRequestRefresh: () => Promise<void>;
   onExerciseClick: (workoutExercise: TWorkoutExercise) => void;
   onExerciseDelete: (workoutExerciseId: string) => void;

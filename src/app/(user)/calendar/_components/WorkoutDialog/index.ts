@@ -1,3 +1,3 @@
-import { WorkoutDialog } from '@/app/(user)/calendar/_components/WorkoutDialog/WorkoutDialog';
+import { WorkoutDialog } from './WorkoutDialog';
 
 export default WorkoutDialog;

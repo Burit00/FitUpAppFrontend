@@ -28,7 +28,7 @@ export const WorkoutDialogBody = ({ workout }: WorkoutDialogBodyProps) => {
   }, [workout]);
 
   return (
-    <>
+    <div className={'w-full min-h-10 relative overflow-hidden'}>
       <Loader isLoading={isLoading} />
       <ul>
         {workoutFromApi?.exercises.map((exercise: TWorkoutExercise) => (
@@ -37,6 +37,6 @@ export const WorkoutDialogBody = ({ workout }: WorkoutDialogBodyProps) => {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };

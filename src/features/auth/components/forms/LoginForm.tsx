@@ -49,12 +49,10 @@ export const LoginForm = ({ className }: LoginFormProps) => {
 
   const onSubmit = async (data: TSignIn) => {
     setIsLoading(true);
-    authContext
-      .login(data)
-      .catch((err: Error) => {
-        setErrorMessage(AuthErrorResultMap.get(err.message as AuthErrorResultEnum) || '');
-      })
-      .finally(() => setIsLoading(false));
+    authContext.login(data).catch((err: Error) => {
+      setErrorMessage(AuthErrorResultMap.get(err.message as AuthErrorResultEnum) || '');
+      setIsLoading(false);
+    });
   };
 
   return (
