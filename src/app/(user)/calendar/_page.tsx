@@ -35,7 +35,8 @@ export default function CalendarPage({ year }: CalendarPageProps) {
           const parsedData = BrowseWorkoutArraySchema.parse(data);
           setWorkouts(parsedData);
         } catch {}
-      });
+      })
+      .finally(() => setIsLoading(false));
 
     return () => {
       controller.abort({});
@@ -43,8 +44,6 @@ export default function CalendarPage({ year }: CalendarPageProps) {
   }, [year]);
 
   const days: Date[] = useMemo<Date[]>(() => {
-    setIsLoading(false);
-
     return workouts?.map((workout: TBrowseWorkout) => workout.date);
   }, [workouts]);
 
