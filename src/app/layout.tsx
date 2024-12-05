@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './reset.css';
 import './globals.css';
@@ -15,11 +14,6 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
   weight: '100 900',
 });
-
-export const metadata: Metadata = {
-  title: 'FitUp',
-  description: 'FitUp - Home Page',
-};
 
 export default function RootLayout({
   children,

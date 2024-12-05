@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import CalendarPage from '@/app/(user)/calendar/_page';
+import { titleMetadata } from '@/utils/metadata';
 
 type CalendarServerPageProps = {
   searchParams: {
@@ -10,7 +11,7 @@ type CalendarServerPageProps = {
 
 export async function generateMetadata({ searchParams }: CalendarServerPageProps): Promise<Metadata> {
   return {
-    title: `Kalendarz roku ${searchParams.year} | FitUp`,
+    title: titleMetadata(`Kalendarz roku ${searchParams.year}`),
     description:
       'Strona prezentuje interaktywny kalendarz roczny, na którym zaznaczone są wszystkie dni, w których odbyły się twoje treningi. Umożliwia szybki wgląd w regularność i postępy w treningach w ujęciu całorocznym, a także pozwala użytkownikowi na analizę swoich aktywności i wyciąganie wniosków na temat konsekwencji w realizacji celów fitness.',
   };

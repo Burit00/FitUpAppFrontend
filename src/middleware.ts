@@ -10,7 +10,7 @@ export const AdminPage = '/admin';
 export const HomePage = '/';
 export const CalendarPage = '/calendar';
 export const WorkoutPage = '/workout';
-export const WorkoutDatePage = '/workout/:date';
+export const WorkoutDatePage = '/workout/:path?';
 
 function isAuthenticated(cookies: RequestCookies): boolean {
   if (!cookies.has(COOKIE_KEYS.USER)) return false;
@@ -69,6 +69,7 @@ export const config = {
     '/',
     '/admin',
     '/calendar',
+    '/workout',
     '/workout/:path?',
   ],
 };

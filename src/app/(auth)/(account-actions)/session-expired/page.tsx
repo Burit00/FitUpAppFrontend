@@ -1,12 +1,13 @@
 import { Redirect } from './_components/Redirect';
+import { titleMetadata } from '@/utils/metadata';
 
 const redirectTime = 5000;
 
 export const metadata = {
-  title: 'Sesja wygasła | FitUP',
+  title: titleMetadata('Sesja wygasła'),
 };
 
-export default function Page() {
+export default function SessionExpiredPage() {
   return (
     <>
       <h3>Twoja sesja wygasła</h3>
