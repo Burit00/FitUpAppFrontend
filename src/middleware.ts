@@ -32,7 +32,7 @@ export default function middleware(req: NextRequest): NextResponse {
   const isLoggedIn = isAuthenticated(req.cookies);
 
   if (!isLoggedIn) {
-    if (nextPathname !== LoginPage && nextPathname !== SignUpPage) {
+    if (!nextPathname.startsWith(LoginPage) && !nextPathname.startsWith(SignUpPage)) {
       return NextResponse.redirect(new URL(LoginPage, req.url));
     }
 

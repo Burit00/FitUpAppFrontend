@@ -9,6 +9,8 @@ export const UserInfoButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
 
+  if (!user) return logout();
+
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen} modal>
       <PopoverTrigger asChild>
