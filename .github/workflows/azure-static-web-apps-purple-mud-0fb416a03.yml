@@ -47,6 +47,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env: # Add environment variables here
           NEXT_PUBLIC_API_URL: https://fitfoliobackend.azurewebsites.net/api/
+          NEXT_PUBLIC_APP_NAME: FITFolio
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
