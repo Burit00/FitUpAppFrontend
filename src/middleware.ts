@@ -62,14 +62,14 @@ export default function middleware(req: NextRequest): NextResponse {
 
 export const config = {
   matcher: [
-    //PublicRoutes
-    '/login',
-    '/signup',
     //AuthRoutes
     '/',
     '/admin',
     '/calendar',
     '/workout',
     '/workout/:path?',
+    //PublicRoutes
+    '/login',
+    '/signup',
   ],
 };

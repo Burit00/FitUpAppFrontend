@@ -11,10 +11,13 @@ type AuthFormProps = FormHTMLAttributes<HTMLFormElement> & {
 };
 
 const AuthForm = forwardRef<HTMLFormElement, AuthFormProps>(
-  ({ title, submitText, isLoading, errorMessage, successMessage, ...props }, ref) => {
+  ({ title, submitText, isLoading, errorMessage, successMessage, onSubmit, ...props }, ref) => {
     return (
       <form
-        {...props}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (onSubmit) onSubmit(e);
+        }}
         ref={ref}
         className={cn('h-full flex flex-col items-center justify-center gap-4', props.className)}
       >
@@ -30,7 +33,7 @@ const AuthForm = forwardRef<HTMLFormElement, AuthFormProps>(
         {successMessage && <p className={'text-primary text-center'}>{successMessage}</p>}
       </form>
     );
-  },
+  }
 );
 
 AuthForm.displayName = 'AuthForm';

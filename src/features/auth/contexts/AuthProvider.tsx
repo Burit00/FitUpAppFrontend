@@ -7,7 +7,7 @@ import { COOKIE_KEYS } from '@/constants/CookieKeys';
 import { TSignIn, TUserToken } from '@features/auth/types';
 import { signIn } from '@features/auth/actions/commands/sign-in';
 import { UserTokenSchema } from '@features/auth/schemas';
-import { AuthErrorResultEnum, UserRoleEnum } from '@features/auth/enums';
+import { AuthErrorResultEnum } from '@features/auth/enums';
 import { TApiError } from '@api/types/api-error';
 
 export type TAuthContext = {
@@ -51,8 +51,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
     setUser(auth, { expires: new Date(auth.expires) });
 
-    if (auth.roles.includes(UserRoleEnum.ADMIN)) router.push('/admin');
-    else router.push('/');
+    router.push('/');
   };
 
   useEffect(() => {

@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import { AuthErrorResultMap } from '@features/auth/maps';
 import { AuthErrorResultEnum } from '@features/auth/enums';
 import { useAuth } from '@features/auth/contexts/AuthProvider';
+import { useRouter } from 'next/navigation';
 
 const formElements: (Partial<React.InputHTMLAttributes<HTMLInputElement>> & {
   name: keyof TSignIn;
@@ -35,6 +36,7 @@ type LoginFormProps = {
 };
 
 export const LoginForm = ({ className }: LoginFormProps) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const authContext = useAuth();
@@ -49,10 +51,15 @@ export const LoginForm = ({ className }: LoginFormProps) => {
 
   const onSubmit = async (data: TSignIn) => {
     setIsLoading(true);
-    authContext.login(data).catch((err: Error) => {
-      setErrorMessage(AuthErrorResultMap.get(err.message as AuthErrorResultEnum) || '');
-      setIsLoading(false);
-    });
+    try {
+      await authContext.login(data);
+      router.push('/');
+    } catch (err) {
+      if (err instanceof Error) {
+        setErrorMessage(AuthErrorResultMap.get(err.message as AuthErrorResultEnum) || '');
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
