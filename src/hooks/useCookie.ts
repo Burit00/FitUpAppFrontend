@@ -12,11 +12,11 @@ export function useCookie<T>(key: TCookieKey, options?: CookieGetOptions): Cooki
     let cookieValue: T | string = value;
 
     if (typeof value === 'object') cookieValue = JSON.stringify(value);
-    setCookies(key, cookieValue, { ...options });
+    setCookies(key, cookieValue, { path: '/', ...options });
   };
 
   const removeCookie = (options?: CookieSetOptions): void => {
-    deleteCookies(key, options);
+    deleteCookies(key, { path: '/', ...options });
   };
 
   return [value, setCookie, removeCookie];
