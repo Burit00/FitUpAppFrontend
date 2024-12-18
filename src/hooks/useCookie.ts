@@ -9,7 +9,10 @@ export function useCookie<T>(key: TCookieKey, options?: CookieGetOptions): Cooki
   const value: T = cookies[key];
 
   const setCookie = (value: T, options?: CookieSetOptions): void => {
-    setCookies(key, JSON.stringify(value), { ...options });
+    let cookieValue: T | string = value;
+
+    if (typeof value === 'object') cookieValue = JSON.stringify(value);
+    setCookies(key, cookieValue, { ...options });
   };
 
   const removeCookie = (options?: CookieSetOptions): void => {

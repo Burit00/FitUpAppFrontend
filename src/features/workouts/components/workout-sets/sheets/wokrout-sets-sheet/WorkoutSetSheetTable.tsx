@@ -17,12 +17,12 @@ export const WorkoutSetSheetTable: FC<WorkoutSetSheetTableProps> = ({ parameters
       <TableHeader className={'sticky top-0 z-[50] bg-background'}>
         <TableRow>
           {parameters.map((parameter, index) => (
-            <>
+            <React.Fragment key={parameter.id}>
               <TableHead key={parameter.id} className={'text-center'}>
                 {SET_PARAMETER_NAMES_TRANSLATION_MAP.get(parameter.name)}
               </TableHead>
               {parameters.length - 1 !== index && <TableCell className={'text-center w-0'}></TableCell>}
-            </>
+            </React.Fragment>
           ))}
         </TableRow>
       </TableHeader>
@@ -39,7 +39,7 @@ export const WorkoutSetSheetTable: FC<WorkoutSetSheetTableProps> = ({ parameters
             onClick={() => onRowClick(set)}
           >
             {set.parameters.map((parameter, index) => (
-              <>
+              <React.Fragment key={parameter.id}>
                 <TableCell key={parameter.id} className={'text-center'}>
                   {parameter.value.toString()}
                   {MEASURES_MAP.get(parameter.name)}
@@ -47,7 +47,7 @@ export const WorkoutSetSheetTable: FC<WorkoutSetSheetTableProps> = ({ parameters
                 {set.parameters.length - 1 !== index && (
                   <TableCell className={' text-center text-muted-foreground'}>x</TableCell>
                 )}
-              </>
+              </React.Fragment>
             ))}
           </TableRow>
         ))}
