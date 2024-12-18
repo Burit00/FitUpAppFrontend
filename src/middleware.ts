@@ -18,6 +18,8 @@ export default function middleware(req: NextRequest): NextResponse {
   const nextPathname = req.nextUrl.pathname;
   const isLoggedIn = isAuthenticated(req.cookies);
 
+  return NextResponse.redirect(new URL('/login', req.url));
+
   if (
     !isLoggedIn &&
     (nextPathname === HomePage || (!nextPathname.startsWith(LoginPage) && !nextPathname.startsWith(SignUpPage)))
