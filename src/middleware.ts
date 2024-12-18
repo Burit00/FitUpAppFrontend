@@ -32,6 +32,9 @@ export default function middleware(req: NextRequest): NextResponse {
     return NextResponse.redirect(new URL(LoginPage, req.url));
   }
 
+  if (isLoggedIn && (nextPathname.startsWith(LoginPage) || nextPathname.startsWith(SignUpPage)))
+    return NextResponse.redirect(new URL(HomePage, req.url));
+
   return NextResponse.next();
 }
 
