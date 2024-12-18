@@ -20,9 +20,7 @@ export default function middleware(req: NextRequest): NextResponse {
 
   if (
     !isLoggedIn &&
-    nextPathname === HomePage &&
-    !nextPathname.startsWith(LoginPage) &&
-    !nextPathname.startsWith(SignUpPage)
+    (nextPathname === HomePage || (!nextPathname.startsWith(LoginPage) && !nextPathname.startsWith(SignUpPage)))
   ) {
     return NextResponse.redirect(new URL(LoginPage, req.url));
   }
