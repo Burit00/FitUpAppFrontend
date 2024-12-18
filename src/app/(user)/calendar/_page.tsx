@@ -21,27 +21,30 @@ export default function CalendarPage({ year }: CalendarPageProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [scrollToToday, setScrollToToday] = useState<boolean>(true);
 
+  const fetchWorkouts = useCallback(
+    async (controller: AbortController) => {
+      const dateStart = new Date(year, 0, 0);
+      const dateEnd = new Date(year + 1, 0, 0);
+      setIsLoading(true);
+      try {
+        const response = await getWorkouts({ dateStart, dateEnd }, controller.signal);
+        const data = await response.json();
+        const parsedData = BrowseWorkoutArraySchema.parse(data);
+        setWorkouts(parsedData);
+      } catch {}
+      setIsLoading(false);
+    },
+    [year]
+  );
+
   useEffect(() => {
-    const dateStart = new Date(year, 0, 0);
-    const dateEnd = new Date(year + 1, 0, 0);
-
     const controller = new AbortController();
-
-    setIsLoading(true);
-    getWorkouts({ dateStart, dateEnd }, controller.signal)
-      .then((res) => res.json())
-      .then((data) => {
-        try {
-          const parsedData = BrowseWorkoutArraySchema.parse(data);
-          setWorkouts(parsedData);
-        } catch {}
-      })
-      .finally(() => setIsLoading(false));
+    fetchWorkouts(controller);
 
     return () => {
       controller.abort({});
     };
-  }, [year]);
+  }, [fetchWorkouts]);
 
   const days: Date[] = useMemo<Date[]>(() => {
     return workouts?.map((workout: TBrowseWorkout) => workout.date);
