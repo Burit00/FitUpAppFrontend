@@ -14,8 +14,6 @@ export const CalendarPage = '/calendar';
 export const WorkoutPage = '/workout';
 export const WorkoutDatePage = '/workout/:path?';
 
-const a = [EmailConfirmationPage, ResetPasswordPage, ResetPasswordRequestPage, SessionExpiredPage];
-
 function isAuthenticated(cookies: RequestCookies): boolean {
   return cookies.has(COOKIE_KEYS.ACCESS_TOKEN);
 }
@@ -24,11 +22,10 @@ export default function middleware(req: NextRequest): NextResponse {
   const nextPathname = req.nextUrl.pathname;
   const isLoggedIn = isAuthenticated(req.cookies);
 
-  if (a.reduce((acc, path) => acc || nextPathname.startsWith(path), false)) {
-    return NextResponse.next();
-  }
-
-  if (!isLoggedIn && !nextPathname.startsWith(LoginPage) && !nextPathname.startsWith(SignUpPage)) {
+  if (
+    !isLoggedIn &&
+    (nextPathname === HomePage || (!nextPathname.startsWith(LoginPage) && !nextPathname.startsWith(SignUpPage)))
+  ) {
     return NextResponse.redirect(new URL(LoginPage, req.url));
   }
 
