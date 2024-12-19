@@ -53,8 +53,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
     setUser(auth, { expires: new Date(auth.expires) });
     setAccessToken(auth.accessToken, { expires: new Date(auth.expires) });
-
-    router.push('/');
   };
 
   useEffect(() => {
