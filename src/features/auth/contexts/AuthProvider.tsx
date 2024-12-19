@@ -51,7 +51,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
     if (!auth) throw new Error(AuthErrorResultEnum.SOMETHING_WENT_WRONG);
 
-    router.push('/');
+    router.replace('/');
     setUser(auth, { expires: new Date(auth.expires) });
     setAccessToken(auth.accessToken, { expires: new Date(auth.expires) });
   };
