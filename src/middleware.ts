@@ -22,14 +22,11 @@ export default function middleware(req: NextRequest): NextResponse {
   const nextPathname = req.nextUrl.pathname;
   const isLoggedIn = isAuthenticated(req.cookies);
 
-  if (
-    !isLoggedIn &&
-    (nextPathname === HomePage || (!nextPathname.startsWith(LoginPage) && !nextPathname.startsWith(SignUpPage)))
-  ) {
+  if (!isLoggedIn && nextPathname !== LoginPage && nextPathname !== SignUpPage) {
     return NextResponse.redirect(new URL(LoginPage, req.url));
   }
 
-  if (isLoggedIn && (nextPathname.startsWith(LoginPage) || nextPathname.startsWith(SignUpPage)))
+  if (isLoggedIn && (nextPathname === LoginPage || nextPathname === SignUpPage))
     return NextResponse.redirect(new URL(HomePage, req.url));
 
   return NextResponse.next();
