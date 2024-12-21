@@ -9,7 +9,7 @@ export const ResetPasswordPage = '/reset-password';
 export const ResetPasswordRequestPage = '/reset-password-request';
 export const UnauthorizedPage = '/unauthorized';
 export const AdminPage = '/admin';
-export const HomePage = '/';
+export const HomePage = '/home';
 export const CalendarPage = '/calendar';
 export const WorkoutPage = '/workout';
 export const WorkoutDatePage = '/workout/:path?';
@@ -19,16 +19,17 @@ function isAuthenticated(cookies: RequestCookies): boolean {
   return cookies.has(COOKIE_KEYS.USER);
 }
 
-const LOGGED_IN_ROUTES = [CalendarPage, WorkoutPage];
+const LOGGED_IN_ROUTES = [HomePage, CalendarPage, WorkoutPage];
 const LOGOUT_ROUTES = [LoginPage, SignUpPage];
 
 export default function middleware(req: NextRequest): NextResponse {
   const nextPathname = req.nextUrl.pathname;
   const isLoggedIn = isAuthenticated(req.cookies);
 
-  if (!isLoggedIn && nextPathname === HomePage) {
-    return NextResponse.redirect(new URL(UnauthorizedPage, req.url));
+  if (nextPathname === '/') {
+    return NextResponse.redirect(new URL(isLoggedIn ? HomePage : LoginPage, req.url));
   }
+
   if (
     !isLoggedIn &&
     LOGGED_IN_ROUTES.some(
@@ -47,8 +48,9 @@ export default function middleware(req: NextRequest): NextResponse {
 
 export const config = {
   matcher: [
-    //AuthRoutes
     '/',
+    //AuthRoutes
+    '/home',
     '/calendar',
     '/workout',
     '/workout/:path?',

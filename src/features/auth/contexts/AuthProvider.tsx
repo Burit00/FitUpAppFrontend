@@ -9,6 +9,7 @@ import { signIn } from '@features/auth/actions/commands/sign-in';
 import { UserTokenSchema } from '@features/auth/schemas';
 import { AuthErrorResultEnum } from '@features/auth/enums';
 import { TApiError } from '@api/types/api-error';
+import { HomePage, LoginPage, UnauthorizedPage } from '@/middleware';
 
 export type TAuthContext = {
   user: TUserToken;
@@ -34,7 +35,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = useCallback((): void => {
     deleteUser();
-    router.push('/login');
+    router.push(LoginPage);
   }, [deleteUser, router]);
 
   const login = async (userCredentials: TSignIn): Promise<void> => {
@@ -50,7 +51,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     if (!auth) throw new Error(AuthErrorResultEnum.SOMETHING_WENT_WRONG);
 
     setUser(auth, { expires: new Date(auth.expires) });
-    router.push('/');
+    router.push(HomePage);
   };
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
     const sessionExpired = () => {
       deleteUser();
-      router.push('/unauthorized');
+      router.push(UnauthorizedPage);
     };
 
     const tokenExpires = user.expires - Date.now();
