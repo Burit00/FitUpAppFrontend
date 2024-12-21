@@ -2,6 +2,7 @@ import { HttpClient } from '@/api/http/http-client';
 import { env } from '@/environment/env';
 import { getCookie } from '@/utils/cookies';
 import { COOKIE_KEYS } from '@/constants/CookieKeys';
+import { TUserToken } from '@features/auth/types';
 
 const FitUpHttpClient = new HttpClient({
   baseUrl: env.API_URL,
@@ -11,12 +12,13 @@ const FitUpHttpClient = new HttpClient({
 });
 
 FitUpHttpClient.addRequestInterceptor((request: RequestInit) => {
-  const token = getCookie(COOKIE_KEYS.ACCESS_TOKEN);
-  if (!token) return request;
+  const userCookie = getCookie(COOKIE_KEYS.USER);
 
+  if (!userCookie) return request;
+  const user = JSON.parse(userCookie) as TUserToken;
   request.headers = {
     ...request?.headers,
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${user.accessToken}`,
   };
 
   return request;

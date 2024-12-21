@@ -30,14 +30,12 @@ type AuthProviderProps = {} & PropsWithChildren;
 
 export default function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser, deleteUser] = useCookie<TUserToken>(COOKIE_KEYS.USER);
-  const [_, setAccessToken, deleteAccessToken] = useCookie<string>(COOKIE_KEYS.ACCESS_TOKEN);
   const router = useRouter();
 
   const logout = useCallback((): void => {
     deleteUser();
-    deleteAccessToken();
     router.push('/login');
-  }, [deleteUser, deleteAccessToken, router]);
+  }, [deleteUser, router]);
 
   const login = async (userCredentials: TSignIn): Promise<void> => {
     const res = await signIn(userCredentials);
@@ -51,9 +49,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
     if (!auth) throw new Error(AuthErrorResultEnum.SOMETHING_WENT_WRONG);
 
-    router.push('/');
     setUser(auth, { expires: new Date(auth.expires) });
-    setAccessToken(auth.accessToken, { expires: new Date(auth.expires) });
+    router.push('/');
   };
 
   useEffect(() => {
@@ -71,7 +68,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [user, deleteUser, deleteAccessToken, router]);
+  }, [user, deleteUser, router]);
 
   return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
 }
