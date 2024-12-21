@@ -17,9 +17,9 @@ type UserLayoutProps = Readonly<{
 export default function UserLayout({ children }: UserLayoutProps) {
   return (
     <>
+      <AuthGuard/>
       <AuthHeader />
       <NavigationLayout>{children}</NavigationLayout>
-      <AuthGuard/>
     </>
   );
 }

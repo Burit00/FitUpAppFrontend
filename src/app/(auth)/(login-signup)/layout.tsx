@@ -9,9 +9,9 @@ type AuthLayoutProps = {
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className={'relative w-full h-full p-10 sm:px-[5rem] flex-grow flex justify-around items-center'}>
+      <AuthGuard />
       {children}
       <LogoSlider />
-      <AuthGuard />
     </div>
   );
 }
