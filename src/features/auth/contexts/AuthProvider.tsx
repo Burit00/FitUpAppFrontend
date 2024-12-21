@@ -58,8 +58,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
     const sessionExpired = () => {
       deleteUser();
-      deleteAccessToken();
-      router.push('/session-expired');
+      router.push('/unauthorized');
     };
 
     const tokenExpires = user.expires - Date.now();

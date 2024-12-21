@@ -1,7 +1,9 @@
+import { ReactNode } from 'react';
+import type { Metadata } from 'next';
 import NavigationLayout from '@components/layouts/NavigationLayout/NavigationLayout';
 import { AuthHeader } from '@features/auth/components/common/AuthHeader';
-import type { Metadata } from 'next';
 import { titleMetadata } from '@/utils/metadata';
+import AuthGuard from './_components/AuthGuard';
 
 export const metadata: Metadata = {
   title: titleMetadata('Home'),
@@ -9,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 type UserLayoutProps = Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>;
 
 export default function UserLayout({ children }: UserLayoutProps) {
@@ -17,6 +19,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
     <>
       <AuthHeader />
       <NavigationLayout>{children}</NavigationLayout>
+      <AuthGuard/>
     </>
   );
 }
