@@ -11,7 +11,7 @@ const Navigation = () => {
     return appLinks.filter((link) => link !== settings);
   }, []);
 
-  if (['/'].includes(pathname)) return null;
+  if (['/home'].includes(pathname)) return null;
 
   return (
     <nav
