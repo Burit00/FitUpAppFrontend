@@ -1,7 +1,6 @@
 import { FaChartLine, FaCirclePlay, FaGear, FaHeartPulse } from 'react-icons/fa6';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { IconType } from 'react-icons';
-import { toDateOnly } from '@/utils/date';
 
 export type Link = {
   name: string;
@@ -12,7 +11,7 @@ export type Link = {
 
 export const quickStart: Link = {
   name: 'Szybki start',
-  link: '/workout/' + toDateOnly(new Date()),
+  link: '/workout/',
   icon: FaCirclePlay,
 };
 
