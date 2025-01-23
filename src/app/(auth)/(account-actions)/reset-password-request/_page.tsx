@@ -50,7 +50,7 @@ export default function ResetPasswordRequestClientPage() {
         <h3>Resetuj hasło</h3>
         {!successMessage ? (
           <p>
-            Wpisz adres email powiązany z twoim kontem, następnie wyślemy Ci wiadomoć e- mail z linkiem do resetowania
+            Wpisz adres email powiązany z twoim kontem, następnie wyślemy Ci wiadomość email z linkiem do resetowania
             hasła.
           </p>
         ) : (

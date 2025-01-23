@@ -1,6 +1,12 @@
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { toDateOnly } from '@/utils/date';
+import { Loader } from '@components/Loader';
 
 export default function WorkoutPage() {
-  return redirect(`/workout/${toDateOnly(new Date())}`);
+  const router = useRouter();
+  router.replace(`/workout/${toDateOnly(new Date())}`);
+
+  return <Loader />;
 }
