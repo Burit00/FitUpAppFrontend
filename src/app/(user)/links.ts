@@ -1,17 +1,12 @@
+'use client';
+
 import { FaChartLine, FaCirclePlay, FaGear, FaHeartPulse } from 'react-icons/fa6';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { IconType } from 'react-icons';
-
-export type Link = {
-  name: string;
-  link: string;
-  icon: IconType;
-  disabled?: boolean;
-};
+import { Link } from '@/types/link';
 
 export const quickStart: Link = {
   name: 'Szybki start',
-  link: '/workout/',
+  link: '/workout',
   icon: FaCirclePlay,
 };
 
@@ -23,7 +18,7 @@ export const calendar: Link = {
 
 export const statistics: Link = {
   name: 'Statystyki',
-  link: '/exercise',
+  link: '/stats',
   icon: FaChartLine,
   disabled: true,
 };
@@ -41,5 +36,3 @@ export const settings: Link = {
   icon: FaGear,
   disabled: true,
 };
-
-export const appLinks: Link[] = [quickStart, calendar, statistics, parameters, settings];

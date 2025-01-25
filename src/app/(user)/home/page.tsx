@@ -1,5 +1,7 @@
-import { ModuleButton, ModuleButtonProps } from '@/app/(user)/_components/ModuleButton';
-import { appLinks, quickStart } from '@/roots/links';
+'use client';
+
+import { ModuleButton, ModuleButtonProps } from '@components/ModuleButton';
+import { calendar, parameters, quickStart, settings, statistics } from '@/app/(user)/links';
 
 export default function Home() {
   const modules: ModuleButtonProps[] = [
@@ -7,7 +9,10 @@ export default function Home() {
       ...quickStart,
       className: 'col-span-2 sm:col-span-1 row-start-1',
     },
-    ...appLinks.filter((link) => link !== quickStart),
+    calendar,
+    statistics,
+    parameters,
+    settings
   ];
 
   return (

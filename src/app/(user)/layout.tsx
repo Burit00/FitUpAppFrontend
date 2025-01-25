@@ -4,6 +4,7 @@ import NavigationLayout from '@components/layouts/NavigationLayout/NavigationLay
 import { AuthHeader } from '@features/auth/components/common/AuthHeader';
 import { titleMetadata } from '@/utils/metadata';
 import AuthGuard from './_components/AuthGuard';
+import { calendar, parameters, quickStart, settings, statistics } from './links';
 
 export const metadata: Metadata = {
   title: titleMetadata('Home'),
@@ -17,9 +18,14 @@ type UserLayoutProps = Readonly<{
 export default function UserLayout({ children }: UserLayoutProps) {
   return (
     <>
-      <AuthGuard/>
+      <AuthGuard />
       <AuthHeader />
-      <NavigationLayout>{children}</NavigationLayout>
+      <NavigationLayout
+        topSectionLinks={[quickStart, calendar, statistics, parameters]}
+        bottomSectionLinks={[settings]}
+      >
+        {children}
+      </NavigationLayout>
     </>
   );
 }
