@@ -205,7 +205,6 @@
     "no-setter-return": "error",
     "no-sparse-arrays": "error",
     "no-unsafe-negation": "error",
-    "no-use-before-define": "error",
     "valid-typeof": "error",
     "block-scoped-var": "error",
     "default-case-last": "error",

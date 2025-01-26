@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@com
 import { Button, Input } from '@components/ui';
 import { TExercise, TWorkoutExercise } from '@features/workouts/types';
 import { getExercises } from '@features/workouts/actions';
-import { useExerciseCategories } from '@/app/(user)/workout/[date]/_hooks/useExerciseCategories';
+import { useExerciseCategories } from '@features/workouts/hooks/useExerciseCategories';
 import { ExerciseCategoriesSelect } from '@/app/(user)/workout/[date]/_components/ExerciseCategoriesSelect';
 import { useDebounceState } from '@/hooks/useDebounceState';
 import { ExerciseRow } from '@/app/(user)/workout/[date]/_components/ExerciseRow';
@@ -69,7 +69,7 @@ export const AddWorkoutExerciseSheet: FC<AddWorkoutExerciseButtonProps> = (props
             onCategorySelect={handleSelectCategory}
           />
           {/* hard height value enforce show scroll on element*/}
-          <div className={'w-full flex-grow h-0 overflow-auto flex flex-col gap-2 p-1'}>
+          <div className={'w-full flex-grow h-0 overflow-auto flex flex-col gap-2 p-1 relative'}>
             <Loader isLoading={isLoading} />
             {exercises.length === 0 && <p>Nie znaleziono ćwiczeń spełniających podane kryteria.</p>}
             {exercises.map((exercise) => (

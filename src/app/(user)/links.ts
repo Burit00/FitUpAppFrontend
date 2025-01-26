@@ -20,7 +20,6 @@ export const statistics: Link = {
   name: 'Statystyki',
   link: '/stats',
   icon: FaChartLine,
-  disabled: true,
 };
 
 export const parameters: Link = {
