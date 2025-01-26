@@ -1,7 +1,8 @@
-import { Link } from '@/roots/links';
+
 import { useRouter } from 'next/navigation';
 import { Button } from '@components/ui';
 import React from 'react';
+import { Link } from '@/types/link';
 
 type NavigationButtonProps = {
   link: Link;

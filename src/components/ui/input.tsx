@@ -11,6 +11,7 @@ import { HiEye, HiEyeSlash } from 'react-icons/hi2';
 
 export type InputProps = {
   label?: string;
+  fieldClassName?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, className, type, ...props }, ref) => {
@@ -42,7 +43,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, className
   };
 
   return (
-    <div className={'w-full grid items-center gap-1.5 relative'}>
+    <div className={cn('w-full grid items-center gap-1.5 relative', props.fieldClassName)}>
       {label && (
         <Label htmlFor={id} className={'ml-2'}>
           {label}
