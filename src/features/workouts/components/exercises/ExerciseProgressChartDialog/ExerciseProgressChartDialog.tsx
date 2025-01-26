@@ -60,7 +60,7 @@ const ExerciseProgressChartDialogBody: FC<ExerciseProgressChartDialogBodyProps> 
   }, [requestParameters]);
 
   return (
-    <DialogContent className={'w-full md:w-full lg:w-[600px]'}>
+    <DialogContent className={'w-full md:w-[600px]'}>
       <DialogHeader>
         <DialogTitle>{exercise.name}</DialogTitle>
         <DialogDescription>
@@ -68,7 +68,7 @@ const ExerciseProgressChartDialogBody: FC<ExerciseProgressChartDialogBodyProps> 
         </DialogDescription>
       </DialogHeader>
       <div>
-        <Select onValueChange={val => setParameter(val as TSetParameterName)} value={parameter}>
+        <Select onValueChange={(val) => setParameter(val as TSetParameterName)} value={parameter}>
           <SelectTrigger>
             <SelectValue placeholder={'Wybierz parametr'} />
           </SelectTrigger>

@@ -25,7 +25,7 @@ export default function StatsPage() {
   const [selectedExercise, setSelectedExercise] = useState<TExercise | undefined>(undefined);
 
   return (
-    <div className={'w-full flex flex-col gap-2 p-2 rounded'}>
+    <div className={'w-full flex flex-col gap-2'}>
       <div className={'flex items-end gap-2 w-full p-4 pb-4 bg-background2 rounded'}>
         <Input
           label={'Szukaj ćwiczenia'}
