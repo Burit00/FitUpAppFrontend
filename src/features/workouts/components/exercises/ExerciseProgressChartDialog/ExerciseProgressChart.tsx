@@ -24,6 +24,14 @@ const ExerciseProgressChart = (props: ExerciseProgressChartProps) => {
     },
   } satisfies ChartConfig;
 
+  if (props.chartData.length === 0) {
+    return (
+      <div className={'text-center'}>
+        <h4 className={'text-center'}>Brak danych.</h4>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h4 className={'text-center'}>{parameterMap.get(props.requestParameters.parameterName)}</h4>
