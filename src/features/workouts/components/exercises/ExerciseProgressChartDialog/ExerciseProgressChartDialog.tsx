@@ -30,11 +30,13 @@ function isSelectItemDisabled(setParameterName: string, exercise: TExerciseDetai
 type ExerciseProgressChartDialogBodyProps = {
   exercise: TExerciseDetails;
   isLoading: boolean;
+  setIsLoading: (state: boolean) => void;
 };
 
 const ExerciseProgressChartDialogBody: FC<ExerciseProgressChartDialogBodyProps> = ({
   exercise,
   isLoading,
+  setIsLoading,
 }: ExerciseProgressChartDialogBodyProps) => {
   const [parameter, setParameter] = useState<TSetParameterName | undefined>(undefined);
   const [requestParameters, setRequestParameters] = useState<GetExerciseAnalyticDataHttpParams | undefined>(undefined);
@@ -43,6 +45,7 @@ const ExerciseProgressChartDialogBody: FC<ExerciseProgressChartDialogBodyProps> 
   useEffect(() => {
     if (!parameter) return;
 
+    setIsLoading(true);
     getExerciseAnalyticData({
       exerciseId: exercise.id,
       parameterName: parameter,
@@ -56,20 +59,20 @@ const ExerciseProgressChartDialogBody: FC<ExerciseProgressChartDialogBodyProps> 
           date: toDateOnly(new Date(item.date)),
         }))
       );
-    });
+    }).finally(() => setIsLoading(false));
   }, [requestParameters]);
 
   return (
-    <DialogContent className={'w-full md:w-[600px]'}>
+    <DialogContent className={'w-full md:w-[90%] max-w-none'}>
       <DialogHeader>
         <DialogTitle>{exercise.name}</DialogTitle>
         <DialogDescription>
           Analiza wyników ćwiczenia <b>{exercise.name}</b>.
         </DialogDescription>
       </DialogHeader>
-      <div>
+      <div className={'flex flex-col gap-2'}>
         <Select onValueChange={(val) => setParameter(val as TSetParameterName)} value={parameter}>
-          <SelectTrigger>
+          <SelectTrigger className={'w-fit gap-2'}>
             <SelectValue placeholder={'Wybierz parametr'} />
           </SelectTrigger>
           <SelectContent>
@@ -87,14 +90,17 @@ const ExerciseProgressChartDialogBody: FC<ExerciseProgressChartDialogBodyProps> 
           {requestParameters && chartData && (
             <ExerciseProgressChart chartData={chartData} requestParameters={requestParameters}></ExerciseProgressChart>
           )}
-          <Loader isLoading={isLoading}></Loader>
+          <Loader isLoading={isLoading} />
         </div>
       </div>
       <DialogFooter>
         <Button
           isLoading={isLoading}
           disabled={isLoading || !parameter}
-          onClick={() => setRequestParameters({ exerciseId: exercise.id, parameterName: parameter ?? 'weight' })}
+          onClick={() => {
+            setChartData(undefined);
+            setRequestParameters({ exerciseId: exercise.id, parameterName: parameter ?? 'weight' });
+          }}
         >
           Generuj wykres
         </Button>
@@ -134,7 +140,7 @@ export const ExerciseProgressChartDialog: FC<ExerciseProgressChartDialogProps> =
 
   return (
     <Dialog open={!!props.exercise} onOpenChange={props.onOpenChange} modal>
-      {exercise ? <ExerciseProgressChartDialogBody exercise={exercise} isLoading={isLoading} /> : null}
+      {exercise ? <ExerciseProgressChartDialogBody exercise={exercise} isLoading={isLoading} setIsLoading={setIsLoading} /> : null}
     </Dialog>
   );
 };
