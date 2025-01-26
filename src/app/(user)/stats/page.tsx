@@ -26,10 +26,10 @@ export default function StatsPage() {
 
   return (
     <div className={'w-full flex flex-col gap-2'}>
-      <div className={'flex items-end gap-2 w-full p-4 pb-4 bg-background2 rounded'}>
+      <div className={'flex flex-col sm:flex-row gap-2 w-full p-4 pb-4 bg-background2 rounded'}>
         <Input
           label={'Szukaj ćwiczenia'}
-          fieldClassName={'w-full max-w-[400px]'}
+          fieldClassName={'w-full sm:max-w-[400px]'}
           onChange={(e) => setExerciseSearch(e.target.value)}
         />
         <Select
@@ -37,7 +37,7 @@ export default function StatsPage() {
             handleSelectCategory(value);
           }}
         >
-          <SelectTrigger label={'Kategoria'} className={'w-40'}>
+          <SelectTrigger label={'Kategoria'} className={'gap-2'}>
             <SelectValue placeholder={'Wszystkie'} />
           </SelectTrigger>
           <SelectContent>
@@ -71,7 +71,10 @@ export default function StatsPage() {
           ))}
         <Loader isLoading={isLoading} />
       </div>
-      <ExerciseProgressChartDialog exercise={selectedExercise} onOpenChange={(isOpen) => !isOpen && setSelectedExercise(undefined)}/>
+      <ExerciseProgressChartDialog
+        exercise={selectedExercise}
+        onOpenChange={(isOpen) => !isOpen && setSelectedExercise(undefined)}
+      />
     </div>
   );
 }
