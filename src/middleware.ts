@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { COOKIE_KEYS } from '@/constants/CookieKeys';
-import { TUserToken } from '@features/auth/types';
 
 export const LoginPage = '/login';
 export const SignUpPage = '/signup';
@@ -20,9 +19,9 @@ function isAuthenticated(cookies: RequestCookies): boolean {
   return cookies.has(COOKIE_KEYS.USER);
 }
 
-function getUserInfo(cookies: RequestCookies): TUserToken | undefined {
-  return JSON.parse(cookies.get(COOKIE_KEYS.USER)?.value ?? '') as TUserToken;
-}
+// function getUserInfo(cookies: RequestCookies): TUserToken | undefined {
+//   return JSON.parse(cookies.get(COOKIE_KEYS.USER)?.value ?? '') as TUserToken;
+// }
 
 const LOGGED_IN_ROUTES = [HomePage, CalendarPage, WorkoutPage];
 const LOGOUT_ROUTES = [LoginPage, SignUpPage];
